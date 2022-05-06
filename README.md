@@ -1,9 +1,23 @@
 # Go with Fun (Functions)
 
-## Get
+## Install
 
 ```
 go get -u github.com/x-funs/go-fun
+```
+
+## Example
+
+```
+import (
+	"fmt"
+
+	"github.com/x-funs/go-fun"
+)
+
+func main() {
+	fmt.Println(fun.Md5("123456"))
+}
 ```
 
 ## APIs
