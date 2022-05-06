@@ -1,2 +1,2 @@
-# go-fun
-go-fun
+# Go with Fun (Functions)
+
