@@ -1,6 +1,12 @@
 # Go with Fun (Functions)
 
-## API
+## Get
+
+```
+go get -u github.com/x-funs/go-fun
+```
+
+## APIs
 
 * Timestamp
 * UnixTimestamp
