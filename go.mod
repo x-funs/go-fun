@@ -1,10 +1,8 @@
-module github.com/suosi-inc/go-fun
+module github.com/x-funs/go-fun
 
 go 1.18
 
-require (
-	github.com/stretchr/testify v1.7.1
-)
+require github.com/stretchr/testify v1.7.1
 
 require (
 	github.com/davecgh/go-spew v1.1.0 // indirect
