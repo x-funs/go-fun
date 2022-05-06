@@ -23,8 +23,8 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/suosi-inc/go-fun/constant"
-	"github.com/suosi-inc/go-fun/strtotime"
+	"github.com/x-funs/go-fun/constant"
+	"github.com/x-funs/go-fun/strtotime"
 )
 
 var (

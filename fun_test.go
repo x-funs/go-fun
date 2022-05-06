@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/suosi-inc/go-fun/constant"
+	"github.com/x-funs/go-fun/constant"
 )
 
 func TestMemory(t *testing.T) {
