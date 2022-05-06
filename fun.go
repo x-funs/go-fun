@@ -681,7 +681,7 @@ func Remove(str, remove string) string {
 // RemovePrefix 移除指定字符串左侧给定字符串
 func RemovePrefix(str, prefix string) string {
 	if str == "" || prefix == "" {
-		return prefix
+		return str
 	}
 	return strings.TrimPrefix(str, prefix)
 }
@@ -708,9 +708,19 @@ func RemoveAny(str string, removes ...string) string {
 // SubString 字符串截取
 func SubString(str string, pos, length int) string {
 	runes := []rune(str)
+	max := len(runes)
+
+	if pos < 0 || length <= 0 {
+		return str
+	}
+
+	if pos > max {
+		return ""
+	}
+
 	l := pos + length
-	if l > len(runes) {
-		l = len(runes)
+	if l > max {
+		l = max
 	}
 	return string(runes[pos:l])
 }

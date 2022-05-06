@@ -318,6 +318,10 @@ func TestMatches(t *testing.T) {
 func TestRemove(t *testing.T) {
 	assert.Equal(t, "ac", Remove("abc", "b"))
 	assert.Equal(t, "a", RemoveAny("abc", "b", "c"))
+	assert.Equal(t, "abcdefg", RemovePrefix("abcdefg", ""))
+	assert.Equal(t, "abcdefg", RemovePrefix("abcdefg", "b"))
+	assert.Equal(t, "cdefg", RemovePrefix("abcdefg", "ab"))
+	assert.Equal(t, "abcd", RemoveSuffix("abcdefg", "efg"))
 }
 
 func TestRandom(t *testing.T) {
@@ -327,4 +331,11 @@ func TestRandom(t *testing.T) {
 	t.Log(RandomNumber(10))
 	t.Log(RandomLetter(10))
 	t.Log(RandomString(10))
+}
+
+func TestSubString(t *testing.T) {
+	assert.Equal(t, "abcdefg", SubString("abcdefg", 0, 0))
+	assert.Equal(t, "abc", SubString("abcdefg", 0, 3))
+	assert.Equal(t, "abcdefg", SubString("abcdefg", 0, 100))
+	assert.Equal(t, "abcdefg", SubString("abcdefg", 0, -1))
 }
