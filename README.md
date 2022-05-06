@@ -2,13 +2,13 @@
 
 ## Install
 
-```
+```shell
 go get -u github.com/x-funs/go-fun
 ```
 
 ## Example
 
-```
+```go
 import (
 	"fmt"
 
@@ -20,7 +20,7 @@ func main() {
 }
 ```
 
-## APIs
+## Methods
 
 * Timestamp
 * UnixTimestamp
