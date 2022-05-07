@@ -18,8 +18,8 @@ import (
 )
 
 func main() {
-	// 字符串 MD5
-	fmt.Println(fun.Md5("123456"))
+	// MD5
+	fmt.Println(fun.Md5("go-fun"))
 
 	// Http Get 请求
 	html, _ := fun.HttpGet("https://www.163.com")
