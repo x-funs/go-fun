@@ -34,26 +34,26 @@ func Timestamp(millis ...any) int64 {
 	l := len(millis)
 	switch l {
 	case 0:
-		return UnixTimestamp()
+		return unixTimestamp()
 	case 1:
 		switch v := millis[0].(type) {
 		case bool:
 			if v {
-				return UnixMilliTimestamp()
+				return unixMilliTimestamp()
 			}
 		}
 	}
 
-	return UnixTimestamp()
+	return unixTimestamp()
 }
 
-// UnixTimestamp 返回当前时间的 Unix 秒级时间戳
-func UnixTimestamp() int64 {
+// unixTimestamp 返回当前时间的 Unix 秒级时间戳
+func unixTimestamp() int64 {
 	return time.Now().Unix()
 }
 
-// UnixMilliTimestamp 返回当前时间的 Unix 毫秒级时间戳
-func UnixMilliTimestamp() int64 {
+// unixMilliTimestamp 返回当前时间的 Unix 毫秒级时间戳
+func unixMilliTimestamp() int64 {
 	return time.Now().UnixMilli()
 }
 
@@ -77,20 +77,20 @@ func Date(layouts ...any) string {
 
 	switch l {
 	case 0:
-		return DateByDefault()
+		return dateByDefault()
 	case 1:
 		switch v := layouts[0].(type) {
 		case string:
-			return DateByPattern(ToString(v))
+			return dateByPattern(ToString(v))
 		case int, int8, int16, int32, int64:
-			return DateByPatternAndTime("", ToInt64(v))
+			return dateByPatternAndTime("", ToInt64(v))
 		}
 	case 2:
 		switch layouts[0].(type) {
 		case string:
 			switch v := layouts[1].(type) {
 			case int, int8, int16, int32, int64:
-				return DateByPatternAndTime(ToString(layouts[0]), ToInt64(v))
+				return dateByPatternAndTime(ToString(layouts[0]), ToInt64(v))
 			}
 		}
 	}
@@ -98,14 +98,14 @@ func Date(layouts ...any) string {
 	return ""
 }
 
-// DateByDefault 返回格式化后的日期时间字符串
-func DateByDefault() string {
+// dateByDefault 返回格式化后的日期时间字符串
+func dateByDefault() string {
 	now := time.Now()
 	return now.Format(DatetimePattern)
 }
 
-// DateByPattern 返回指定格式化后的日期时间字符串
-func DateByPattern(layout string) string {
+// dateByPattern 返回指定格式化后的日期时间字符串
+func dateByPattern(layout string) string {
 	now := time.Now()
 
 	if Blank(layout) {
@@ -115,8 +115,8 @@ func DateByPattern(layout string) string {
 	}
 }
 
-// DateByPatternAndTime 返回指定时间戳格式化后的日期时间字符串
-func DateByPatternAndTime(layout string, timeStamp int64) string {
+// dateByPatternAndTime 返回指定时间戳格式化后的日期时间字符串
+func dateByPatternAndTime(layout string, timeStamp int64) string {
 	if timeStamp < 0 {
 		timeStamp = 0
 	}
@@ -616,12 +616,12 @@ func Reverse(str string) string {
 	return string(runes)
 }
 
-// Random 返回随机数 [0, MaxInt)
+// Random 返回随机数 `[0, MaxInt)`
 func Random() int {
 	return randomNew.Intn(math.MaxInt)
 }
 
-// RandomInt 返回随机数 [min, max)
+// RandomInt 返回随机数 `[min, max)`
 func RandomInt(min, max int) int {
 	if min > max {
 		min, max = max, min
@@ -630,7 +630,7 @@ func RandomInt(min, max int) int {
 	return randomNew.Intn(max-min) + min
 }
 
-// RandomInt64 返回随机数 [min, max)
+// RandomInt64 返回随机数 `[min, max)`
 func RandomInt64(min, max int64) int64 {
 	if min > max {
 		min, max = max, min
@@ -721,13 +721,4 @@ func SubString(str string, pos, length int) string {
 		l = max
 	}
 	return string(runes[pos:l])
-}
-
-func InSlice(str string, slice []string) bool {
-	for _, s := range slice {
-		if s == str {
-			return true
-		}
-	}
-	return false
 }
