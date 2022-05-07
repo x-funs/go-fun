@@ -16,17 +16,12 @@ import (
 )
 
 func main() {
+	// 字符串 MD5
 	fmt.Println(fun.Md5("123456"))
 
+	// Http Get 请求
     url := "https://www.163.com"
-	timeout: = 1000
-    req := &fun.HttpReq{
-        Headers: map[string]string{
-            "User-Agent": "test-ua",
-            "X-Header":   "test-header",
-        },
-    }
-    html, _ := fun.HttpGet(url, req, timeout)
+    html, _ := fun.HttpGet(url)
     fmt.Println(html)
 }
 ```
