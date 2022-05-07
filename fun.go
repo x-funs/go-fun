@@ -775,3 +775,21 @@ func InSlice[T GenNumber | string](v T, slice []T) bool {
 	}
 	return false
 }
+
+// UniqueSlice 对切片进行去重
+func UniqueSlice[T GenNumber | string](slice []T) []T {
+	if len(slice) == 0 {
+		return slice
+	}
+	m := make(map[T]bool)
+	for i := range slice {
+		m[slice[i]] = true
+	}
+
+	slice = slice[:0]
+	for k := range m {
+		slice = append(slice, k)
+	}
+
+	return slice
+}

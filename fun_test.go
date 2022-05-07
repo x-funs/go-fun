@@ -327,3 +327,9 @@ func TestInSlice(t *testing.T) {
 	assert.Equal(t, false, InSlice(2, []int{}))
 	assert.Equal(t, false, InSlice(0.4, []float64{0.1, 0.2, 0.3}))
 }
+
+func TestUniqueSlice(t *testing.T) {
+	assert.Equal(t, []string{"a", "b", "c"}, UniqueSlice([]string{"a", "b", "c", "a", "b", "c"}))
+	assert.Equal(t, []string{""}, UniqueSlice([]string{"", "", ""}))
+	assert.Equal(t, []int{1, 2, 3}, UniqueSlice([]int{1, 2, 3, 1, 2, 3}))
+}
