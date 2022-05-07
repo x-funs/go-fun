@@ -29,6 +29,21 @@ var (
 	randomNew = rand.New(rand.NewSource(time.Now().UnixNano()))
 )
 
+// GenInteger 整型范型集合
+type GenInteger interface {
+	int | int8 | int16 | int32 | int64 | uint | uint8 | uint16 | uint32 | uint64
+}
+
+// GenFloat 浮点型范型集合
+type GenFloat interface {
+	float32 | float64
+}
+
+// GenNumber 数值范型集合
+type GenNumber interface {
+	GenInteger | GenFloat
+}
+
 // Timestamp 返回当前时间的 Unix 时间戳。
 // 默认返回秒级，支持 Timestamp(true) 返回毫秒级
 func Timestamp(millis ...any) int64 {
@@ -745,4 +760,18 @@ func SubString(str string, pos, length int) string {
 		l = max
 	}
 	return string(runes[pos:l])
+}
+
+// InSlice 判断数值和字符串是否在切片中
+func InSlice[T GenNumber | string](v T, slice []T) bool {
+	if len(slice) == 0 {
+		return false
+	}
+
+	for _, s := range slice {
+		if s == v {
+			return true
+		}
+	}
+	return false
 }

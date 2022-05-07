@@ -317,3 +317,13 @@ func TestSubString(t *testing.T) {
 	assert.Equal(t, "abcdefg", SubString("abcdefg", 0, 100))
 	assert.Equal(t, "abcdefg", SubString("abcdefg", 0, -1))
 }
+
+func TestInSlice(t *testing.T) {
+	assert.Equal(t, true, InSlice("a", []string{"a", "b", "c"}))
+	assert.Equal(t, true, InSlice(7, []int{3, 5, 7}))
+	assert.Equal(t, true, InSlice(0.2, []float64{0.1, 0.2, 0.3}))
+	assert.Equal(t, false, InSlice(0.4, []float64{0.1, 0.2, 0.3}))
+	assert.Equal(t, false, InSlice(2, []int{3, 5, 7}))
+	assert.Equal(t, false, InSlice(2, []int{}))
+	assert.Equal(t, false, InSlice(0.4, []float64{0.1, 0.2, 0.3}))
+}
