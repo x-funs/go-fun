@@ -9,6 +9,8 @@ go get -u github.com/x-funs/go-fun
 ## Example
 
 ```go
+package main
+
 import (
 	"fmt"
 
@@ -20,9 +22,8 @@ func main() {
 	fmt.Println(fun.Md5("123456"))
 
 	// Http Get 请求
-    url := "https://www.163.com"
-    html, _ := fun.HttpGet(url)
-    fmt.Println(html)
+	html, _ := fun.HttpGet("https://www.163.com")
+	fmt.Println(html)
 }
 ```
 
