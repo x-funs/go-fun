@@ -722,3 +722,12 @@ func SubString(str string, pos, length int) string {
 	}
 	return string(runes[pos:l])
 }
+
+func InSlice(str string, slice []string) bool {
+	for _, s := range slice {
+		if s == str {
+			return true
+		}
+	}
+	return false
+}

@@ -261,11 +261,6 @@ func TestContains(t *testing.T) {
 
 }
 
-func TestHttpPost(t *testing.T) {
-	body, _ := HttpPost("http://localhost:9090/post")
-	t.Log(body)
-}
-
 func TestReverse(t *testing.T) {
 	assert.Equal(t, "", Reverse(""))
 	assert.Equal(t, "olleh", Reverse("hello"))

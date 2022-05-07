@@ -11,56 +11,63 @@ import (
 )
 
 const (
-	DefaultTimeOut   = 5
+	DefaultTimeOut   = 5000
 	DefaultUserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36"
 )
 
-// HttpGet 参数为请求地址（超时时间，请求头map[string]string），返回值为请求内容，错误信息
+// HttpGet 参数为请求地址（请求头 map[string]string, 超时时间）
+// HttpGet(url)、HttpGet(url, timeout)、HttpGet(url, headers, timeout)
+// 返回值为请求内容 String，错误信息
 func HttpGet(urlStr string, args ...any) (string, error) {
 	l := len(args)
 
 	switch l {
 	case 0:
-		return HttpGetBody(urlStr, 0, nil)
+		return HttpGetBody(urlStr, nil, 0)
 	case 1:
 		timeout := ToInt(args[0])
-		return HttpGetBody(urlStr, timeout, nil)
+		return HttpGetBody(urlStr, nil, timeout)
 	case 2:
-		timeout := ToInt(args[0])
-		switch v := args[1].(type) {
+		timeout := ToInt(args[1])
+		switch v := args[0].(type) {
 		case map[string]string:
-			return HttpGetBody(urlStr, timeout, v)
+			return HttpGetBody(urlStr, v, timeout)
 		}
 	}
 
 	return "", errors.New("HttpGet() 参数错误")
 }
 
-// HttpPost 参数为请求地址（数据map[string]string，超时时间，请求头map[string]string），返回值为请求内容，错误信息
+// HttpPost 参数为请求地址（Form 数据 map[string]string，请求头map[string]string，超时时间）
+// HttpPost(url)、HttpPost(url, timeout)、HttpPost(url, posts)、HttpPost(url, posts, timeout)、HttpPost(url, posts, headers, timeout)
+// 返回值为请求内容 String，错误信息
 func HttpPost(urlStr string, args ...any) (string, error) {
 	l := len(args)
 
 	switch l {
 	case 0:
-		return HttpPost(urlStr, nil, 0, nil)
+		return HttpPostBody(urlStr, nil, nil, 0)
 	case 1:
 		switch v := args[0].(type) {
+		case int:
+			timeout := ToInt(args[0])
+			return HttpPostBody(urlStr, nil, nil, timeout)
 		case map[string]string:
-			return HttpPost(urlStr, v, 0, nil)
+			return HttpPostBody(urlStr, v, nil, 0)
 		}
 	case 2:
 		switch v := args[0].(type) {
 		case map[string]string:
 			timeout := ToInt(args[1])
-			return HttpPost(urlStr, v, timeout, nil)
+			return HttpPostBody(urlStr, v, nil, timeout)
 		}
 	case 3:
 		switch v := args[0].(type) {
 		case map[string]string:
-			timeout := ToInt(args[1])
-			switch h := args[2].(type) {
+			switch h := args[1].(type) {
 			case map[string]string:
-				return HttpPost(urlStr, v, timeout, h)
+				timeout := ToInt(args[2])
+				return HttpPostBody(urlStr, v, h, timeout)
 			}
 		}
 	}
@@ -68,14 +75,51 @@ func HttpPost(urlStr string, args ...any) (string, error) {
 	return "", errors.New("HttpPost() 参数错误")
 }
 
-// HttpGetBody Http Get，参数为请求地址，超时时间，请求头 map[string]string，返回值为请求内容，错误信息
-func HttpGetBody(urlStr string, timeout int, headers map[string]string) (string, error) {
+// HttpPostJson 参数为请求地址（Json 数据 string，请求头map[string]string, 超时时间）
+// HttpPostJson(url)、HttpPostJson(url, timeout)、HttpPostJson(url, json)、HttpPost(url, json, timeout)、HttpPost(url, json, headers, timeout)
+// 返回值为请求内容 String，错误信息
+func HttpPostJson(urlStr string, args ...any) (string, error) {
+	l := len(args)
+	switch l {
+	case 0:
+		return HttpPostJsonBody(urlStr, "{}", nil, 0)
+	case 1:
+		switch v := args[0].(type) {
+		case int:
+			timeout := ToInt(args[0])
+			return HttpPostJsonBody(urlStr, "{}", nil, timeout)
+		case string:
+			return HttpPostJsonBody(urlStr, v, nil, 0)
+		}
+	case 2:
+		switch v := args[0].(type) {
+		case string:
+			timeout := ToInt(args[1])
+			return HttpPostJsonBody(urlStr, v, nil, timeout)
+		}
+	case 3:
+		switch v := args[0].(type) {
+		case string:
+			switch h := args[1].(type) {
+			case map[string]string:
+				timeout := ToInt(args[2])
+				return HttpPostJsonBody(urlStr, v, h, timeout)
+			}
+		}
+	}
+
+	return "", errors.New("HttpPostJson() 参数错误")
+}
+
+// HttpGetBody Http Get 请求，参数为请求地址，请求头 map[string]string，超时时间(毫秒)
+// 返回请求内容 String，错误信息
+func HttpGetBody(urlStr string, headers map[string]string, timeout int) (string, error) {
 	if timeout == 0 {
 		timeout = DefaultTimeOut
 	}
 
 	client := &http.Client{
-		Timeout: time.Duration(timeout) * time.Second,
+		Timeout: time.Duration(timeout) * time.Millisecond,
 		Transport: &http.Transport{
 			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 		},
@@ -114,14 +158,15 @@ func HttpGetBody(urlStr string, timeout int, headers map[string]string) (string,
 	return string(body), nil
 }
 
-// HttpPostBody Http Post Form，参数为请求地址，Form 数据map[string]string，超时时间，请求头 map[string]string，返回值为请求内容，错误信息
-func HttpPostBody(urlStr string, posts map[string]string, timeout int, headers map[string]string) (string, error) {
+// HttpPostBody Http Post Form，参数为请求地址，Form 数据 map[string]string，请求头 map[string]string，超时时间(毫秒)
+// 返回请求内容 String，错误信息
+func HttpPostBody(urlStr string, posts map[string]string, headers map[string]string, timeout int) (string, error) {
 	if timeout == 0 {
 		timeout = DefaultTimeOut
 	}
 
 	client := &http.Client{
-		Timeout: time.Duration(timeout) * time.Second,
+		Timeout: time.Duration(timeout) * time.Millisecond,
 		Transport: &http.Transport{
 			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 		},
@@ -170,8 +215,9 @@ func HttpPostBody(urlStr string, posts map[string]string, timeout int, headers m
 	return string(body), nil
 }
 
-// HttpPostJsonBody Http Post Json，参数为请求地址，Json数据string，超时时间，请求头 map[string]string，返回值为请求内容，错误信息
-func HttpPostJsonBody(urlStr string, json string, timeout int, headers map[string]string) (string, error) {
+// HttpPostJsonBody Http Post Json 请求，参数为请求地址，Json 数据 string，请求头 map[string]string，超时时间(毫秒)
+// 返回请求内容 String，错误信息
+func HttpPostJsonBody(urlStr string, json string, headers map[string]string, timeout int) (string, error) {
 	if timeout == 0 {
 		timeout = DefaultTimeOut
 	}
