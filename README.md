@@ -1,4 +1,4 @@
-# Go with fun (functions)
+# Go With Fun (Functions)
 
 ## Install
 
