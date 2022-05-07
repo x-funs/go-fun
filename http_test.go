@@ -22,11 +22,13 @@ func TestHttpGet(t *testing.T) {
 	t.Log(body)
 
 	// Headers 与超时时间
-	headers := map[string]string{
-		"User-Agent": "test-ua",
-		"X-Header":   "test-header",
+	req := &HttpReq{
+		Headers: map[string]string{
+			"User-Agent": "test-ua",
+			"X-Header":   "test-header",
+		},
 	}
-	body, _ = HttpGet(urlStr, headers, 1000)
+	body, _ = HttpGet(urlStr, req, 1000)
 	t.Log(body)
 
 	// 错误的 Headers
@@ -57,11 +59,13 @@ func TestHttpPost(t *testing.T) {
 	body, _ = HttpPost(urlStr, posts, 1000)
 	t.Log(body)
 
-	headers := map[string]string{
-		"User-Agent": "test-ua",
-		"X-Header":   "test-header",
+	req := &HttpReq{
+		Headers: map[string]string{
+			"User-Agent": "test-ua",
+			"X-Header":   "test-header",
+		},
 	}
-	body, _ = HttpPost(urlStr, posts, headers, 1000)
+	body, _ = HttpPost(urlStr, posts, req, 1000)
 	t.Log(body)
 }
 
@@ -81,10 +85,12 @@ func TestHttpPostJson(t *testing.T) {
 	body, _ = HttpPostJson(urlStr, json, 1000)
 	t.Log(body)
 
-	headers := map[string]string{
-		"User-Agent": "test-ua",
-		"X-Header":   "test-header",
+	req := &HttpReq{
+		Headers: map[string]string{
+			"User-Agent": "test-ua",
+			"X-Header":   "test-header",
+		},
 	}
-	body, _ = HttpPostJson(urlStr, json, headers, 1000)
+	body, _ = HttpPostJson(urlStr, json, req, 1000)
 	t.Log(body)
 }
