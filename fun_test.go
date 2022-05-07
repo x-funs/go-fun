@@ -232,7 +232,7 @@ func TestSplitTrim(t *testing.T) {
 	assert.Equal(t, []string{"a", "b", "c"}, SplitTrim("a,,b,c", ","))
 	assert.Equal(t, []string{"a", "b", "c"}, SplitTrim("  a ,  , b ,		c", ","))
 
-	assert.Equal(t, []int{2, 3, 5}, SplitTrimToInt("2,,3,5", ","))
+	assert.Equal(t, []int{2, 3, 5}, SplitTrimToInts("2,,3,5", ","))
 }
 
 func TestIsNumber(t *testing.T) {
@@ -331,5 +331,12 @@ func TestInSlice(t *testing.T) {
 func TestUniqueSlice(t *testing.T) {
 	assert.Equal(t, []string{"a", "b", "c"}, UniqueSlice([]string{"a", "b", "c", "a", "b", "c"}))
 	assert.Equal(t, []string{""}, UniqueSlice([]string{"", "", ""}))
-	assert.Equal(t, []int{1, 2, 3}, UniqueSlice([]int{1, 2, 3, 1, 2, 3}))
+}
+
+func TestIntsStrings(t *testing.T) {
+	assert.Equal(t, []string{"1", "2", "3"}, IntsToStrings([]int{1, 2, 3}))
+	assert.Equal(t, []string{}, IntsToStrings([]int{}))
+	assert.Equal(t, []int{}, StringsToInts([]string{}))
+	assert.Equal(t, []int{23, 45}, StringsToInts([]string{"23", "45"}))
+	assert.Equal(t, []int{12}, StringsToInts([]string{"a", "12"}))
 }

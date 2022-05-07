@@ -436,8 +436,8 @@ func SplitTrim(str, sep string) []string {
 	return slices
 }
 
-// SplitTrimToInt 分割字符串为 int 切片，对分割后的值进行 Trim ，并自动忽略空值
-func SplitTrimToInt(str, sep string) []int {
+// SplitTrimToInts 分割字符串为 int 切片，对分割后的值进行 Trim ，并自动忽略空值
+func SplitTrimToInts(str, sep string) []int {
 	if len(str) == 0 || len(sep) == 0 {
 		return []int{}
 	}
@@ -641,7 +641,7 @@ func buildPadStr(str string, padStr string, padLen int, padLeft bool, padRight b
 func ToJson(object any) string {
 	res, err := json.Marshal(object)
 	if err != nil {
-		res = []byte("")
+		return ""
 	}
 	return string(res)
 }
@@ -792,4 +792,30 @@ func UniqueSlice[T GenNumber | string](slice []T) []T {
 	}
 
 	return slice
+}
+
+// IntsToStrings int 切片转换为字符串切片
+func IntsToStrings(slice []int) []string {
+	if len(slice) == 0 {
+		return []string{}
+	}
+	var str []string
+	for _, v := range slice {
+		str = append(str, strconv.Itoa(v))
+	}
+	return str
+}
+
+// StringsToInts 字符串切片转换为 int 切片
+func StringsToInts(slice []string) []int {
+	if len(slice) == 0 {
+		return []int{}
+	}
+	var ints = []int{}
+	for _, v := range slice {
+		if i, err := strconv.Atoi(v); err == nil {
+			ints = append(ints, i)
+		}
+	}
+	return ints
 }
