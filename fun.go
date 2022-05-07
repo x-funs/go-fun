@@ -9,7 +9,6 @@ import (
 	"encoding/binary"
 	"encoding/hex"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"math"
 	"math/rand"
@@ -23,7 +22,6 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/x-funs/go-fun/constant"
 	"github.com/x-funs/go-fun/strtotime"
 )
 
@@ -103,7 +101,7 @@ func Date(layouts ...any) string {
 // DateByDefault 返回格式化后的日期时间字符串
 func DateByDefault() string {
 	now := time.Now()
-	return now.Format(constant.DatetimePattern)
+	return now.Format(DatetimePattern)
 }
 
 // DateByPattern 返回指定格式化后的日期时间字符串
@@ -111,7 +109,7 @@ func DateByPattern(layout string) string {
 	now := time.Now()
 
 	if Blank(layout) {
-		return now.Format(constant.DatetimePattern)
+		return now.Format(DatetimePattern)
 	} else {
 		return now.Format(layout)
 	}
@@ -125,7 +123,7 @@ func DateByPatternAndTime(layout string, timeStamp int64) string {
 	uTime := time.Unix(timeStamp, 0)
 
 	if Blank(layout) {
-		return uTime.Format(constant.DatetimePattern)
+		return uTime.Format(DatetimePattern)
 	} else {
 		return uTime.Format(layout)
 	}
@@ -643,17 +641,17 @@ func RandomInt64(min, max int64) int64 {
 
 // RandomString 返回指定长度的随机字符串，包含大小写字母和数字
 func RandomString(length int) string {
-	return RandomPool(constant.RandomLetterAndNumber, length)
+	return RandomPool(StringLetterAndNumber, length)
 }
 
 // RandomLetter 返回指定长度的随机字符串，包含大小写字母
 func RandomLetter(length int) string {
-	return RandomPool(constant.RandomLetter, length)
+	return RandomPool(StringLetter, length)
 }
 
 // RandomNumber 返回指定长度的随机字符串，包含数字
 func RandomNumber(length int) string {
-	return RandomPool(constant.RandomNumber, length)
+	return RandomPool(StringNumber, length)
 }
 
 // RandomPool 从字符串池中返回指定长度的随机字符串
@@ -723,57 +721,4 @@ func SubString(str string, pos, length int) string {
 		l = max
 	}
 	return string(runes[pos:l])
-}
-
-// HttpGet 参数为请求地址（超时时间，请求头map[string]string），返回值为请求内容，错误信息
-func HttpGet(urlStr string, args ...any) (string, error) {
-	l := len(args)
-
-	switch l {
-	case 0:
-		return HttpGetBody(urlStr, 0, nil)
-	case 1:
-		timeout := ToInt(args[0])
-		return HttpGetBody(urlStr, timeout, nil)
-	case 2:
-		timeout := ToInt(args[0])
-		switch v := args[1].(type) {
-		case map[string]string:
-			return HttpGetBody(urlStr, timeout, v)
-		}
-	}
-
-	return "", errors.New("HttpGet() 参数错误")
-}
-
-// HttpPost 参数为请求地址（数据map[string]string，超时时间，请求头map[string]string），返回值为请求内容，错误信息
-func HttpPost(urlStr string, args ...any) (string, error) {
-	l := len(args)
-
-	switch l {
-	case 0:
-		return HttpPost(urlStr, nil, 0, nil)
-	case 1:
-		switch v := args[0].(type) {
-		case map[string]string:
-			return HttpPost(urlStr, v, 0, nil)
-		}
-	case 2:
-		switch v := args[0].(type) {
-		case map[string]string:
-			timeout := ToInt(args[1])
-			return HttpPost(urlStr, v, timeout, nil)
-		}
-	case 3:
-		switch v := args[0].(type) {
-		case map[string]string:
-			timeout := ToInt(args[1])
-			switch h := args[2].(type) {
-			case map[string]string:
-				return HttpPost(urlStr, v, timeout, h)
-			}
-		}
-	}
-
-	return "", errors.New("HttpPost() 参数错误")
 }

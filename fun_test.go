@@ -6,8 +6,11 @@ import (
 	"time"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/x-funs/go-fun/constant"
 )
+
+func ExampleMemoryBytes() {
+	fmt.Println(MemoryBytes())
+}
 
 func TestMemory(t *testing.T) {
 	fmt.Println(MemoryBytes())
@@ -41,7 +44,7 @@ func TestSha(t *testing.T) {
 func TestDate(t *testing.T) {
 
 	fmt.Println(Date(Timestamp()))
-	fmt.Println(Date(constant.DatetimeMilliPattern, Timestamp(true)))
+	fmt.Println(Date(DatetimeMilliPattern, Timestamp(true)))
 
 	timeStamp := 1650732457
 	now := time.Now()
@@ -49,17 +52,17 @@ func TestDate(t *testing.T) {
 	assert.NotEmpty(t, Date())
 	assert.NotEmpty(t, Date(""))
 	assert.NotEmpty(t, Date(timeStamp))
-	assert.NotEmpty(t, Date(constant.DatetimePattern, timeStamp))
+	assert.NotEmpty(t, Date(DatetimePattern, timeStamp))
 
 	// 无效的参数，返回空
 	assert.Empty(t, Date(123, ""))
 	assert.Empty(t, Date("", ""))
 	assert.Empty(t, Date("", "", ""))
 
-	assert.Equal(t, now.Format(constant.DatetimePattern), Date())
-	assert.Equal(t, now.Format(constant.DatetimePattern), Date(constant.DatetimePattern))
+	assert.Equal(t, now.Format(DatetimePattern), Date())
+	assert.Equal(t, now.Format(DatetimePattern), Date(DatetimePattern))
 	assert.Equal(t, "2022-04-24 00:47:37", Date(timeStamp))
-	assert.Equal(t, "2022-04-24 00:47:37", Date(constant.DatetimePattern, timeStamp))
+	assert.Equal(t, "2022-04-24 00:47:37", Date(DatetimePattern, timeStamp))
 }
 
 func TestPad(t *testing.T) {
@@ -258,28 +261,6 @@ func TestContains(t *testing.T) {
 
 }
 
-func TestHttpGet(t *testing.T) {
-	body, _ := HttpGet("http://localhost:9090/get")
-	t.Log(body)
-
-	body, _ = HttpGet("http://localhost:9090/get?param1=abc1&param2=abc2")
-	t.Log(body)
-
-	body, _ = HttpGet("http://localhost:9090/get", 1)
-	t.Log(body)
-
-	headers := map[string]string{
-		"User-Agent": "test-ua",
-		"X-Header":   "test-header",
-	}
-	body, _ = HttpGet("http://localhost:9090/get", 1, headers)
-	t.Log(body)
-
-	body, err := HttpGet("http://localhost:9090/get", 1, "error header")
-	t.Log(body)
-	fmt.Println(err)
-}
-
 func TestHttpPost(t *testing.T) {
 	body, _ := HttpPost("http://localhost:9090/post")
 	t.Log(body)
@@ -312,7 +293,7 @@ func TestCamel(t *testing.T) {
 }
 
 func TestMatches(t *testing.T) {
-	assert.Equal(t, true, Matches("abc@abc.com", constant.Email))
+	assert.Equal(t, true, Matches("abc@abc.com", RegexEmail))
 }
 
 func TestRemove(t *testing.T) {
