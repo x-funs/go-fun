@@ -11,8 +11,8 @@ import (
 )
 
 const (
-	DefaultTimeOut   = 5000
-	DefaultUserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36"
+	HttpDefaultTimeOut   = 5000
+	HttpDefaultUserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36"
 )
 
 // HttpGet 参数为请求地址（请求头 map[string]string, 超时时间）
@@ -115,7 +115,7 @@ func HttpPostJson(urlStr string, args ...any) (string, error) {
 // 返回请求内容 String，错误信息
 func HttpGetBody(urlStr string, headers map[string]string, timeout int) (string, error) {
 	if timeout == 0 {
-		timeout = DefaultTimeOut
+		timeout = HttpDefaultTimeOut
 	}
 
 	client := &http.Client{
@@ -133,10 +133,10 @@ func HttpGetBody(urlStr string, headers map[string]string, timeout int) (string,
 	// 处理请求头
 	if headers == nil || len(headers) == 0 {
 		headers = make(map[string]string)
-		headers["User-Agent"] = DefaultUserAgent
+		headers["User-Agent"] = HttpDefaultUserAgent
 	} else {
 		if _, exist := headers["User-Agent"]; !exist {
-			headers["User-Agent"] = DefaultUserAgent
+			headers["User-Agent"] = HttpDefaultUserAgent
 		}
 	}
 
@@ -162,7 +162,7 @@ func HttpGetBody(urlStr string, headers map[string]string, timeout int) (string,
 // 返回请求内容 String，错误信息
 func HttpPostBody(urlStr string, posts map[string]string, headers map[string]string, timeout int) (string, error) {
 	if timeout == 0 {
-		timeout = DefaultTimeOut
+		timeout = HttpDefaultTimeOut
 	}
 
 	client := &http.Client{
@@ -188,10 +188,10 @@ func HttpPostBody(urlStr string, posts map[string]string, headers map[string]str
 	// 处理请求头
 	if headers == nil || len(headers) == 0 {
 		headers = make(map[string]string)
-		headers["User-Agent"] = DefaultUserAgent
+		headers["User-Agent"] = HttpDefaultUserAgent
 	} else {
 		if _, exist := headers["User-Agent"]; !exist {
-			headers["User-Agent"] = DefaultUserAgent
+			headers["User-Agent"] = HttpDefaultUserAgent
 		}
 	}
 
@@ -219,7 +219,7 @@ func HttpPostBody(urlStr string, posts map[string]string, headers map[string]str
 // 返回请求内容 String，错误信息
 func HttpPostJsonBody(urlStr string, json string, headers map[string]string, timeout int) (string, error) {
 	if timeout == 0 {
-		timeout = DefaultTimeOut
+		timeout = HttpDefaultTimeOut
 	}
 
 	client := &http.Client{
@@ -238,10 +238,10 @@ func HttpPostJsonBody(urlStr string, json string, headers map[string]string, tim
 	// 处理请求头
 	if headers == nil || len(headers) == 0 {
 		headers = make(map[string]string)
-		headers["User-Agent"] = DefaultUserAgent
+		headers["User-Agent"] = HttpDefaultUserAgent
 	} else {
 		if _, exist := headers["User-Agent"]; !exist {
-			headers["User-Agent"] = DefaultUserAgent
+			headers["User-Agent"] = HttpDefaultUserAgent
 		}
 	}
 
