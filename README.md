@@ -20,6 +20,9 @@ import (
 func main() {
 	// 字符串 MD5
 	fmt.Println(fun.Md5("go-fun"))
+	
+	// 字符串转时间戳
+	fmt.Println(fun.StrToTime("2015年04月06日 16时03分03秒"))
 
 	// 切片去重
 	fmt.Println(fun.UniqueSlice([]string{"a", "b", "c", "a", "b", "c"}))
