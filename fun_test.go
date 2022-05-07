@@ -227,10 +227,12 @@ func TestToString(t *testing.T) {
 }
 
 func TestSplitTrim(t *testing.T) {
-	assert.Equal(t, []string{"abc"}, SplitTrim("abc", ""))
-	assert.Equal(t, []string{"a", "b", "c"}, SplitTrim("a b c", ""))
+	assert.Equal(t, []string{}, SplitTrim("abc", ""))
+	assert.Equal(t, []string{"a", "b", "c"}, SplitTrim("a b c", " "))
 	assert.Equal(t, []string{"a", "b", "c"}, SplitTrim("a,,b,c", ","))
 	assert.Equal(t, []string{"a", "b", "c"}, SplitTrim("  a ,  , b ,		c", ","))
+
+	assert.Equal(t, []int{2, 3, 5}, SplitTrimToInt("2,,3,5", ","))
 }
 
 func TestIsNumber(t *testing.T) {
@@ -311,7 +313,7 @@ func TestRandom(t *testing.T) {
 
 func TestSubString(t *testing.T) {
 	assert.Equal(t, "abcdefg", SubString("abcdefg", 0, 0))
-	assert.Equal(t, "abc", SubString("abcdefg", 0, 3))
+	assert.Equal(t, "bcde", SubString("abcdefg", 1, 4))
 	assert.Equal(t, "abcdefg", SubString("abcdefg", 0, 100))
 	assert.Equal(t, "abcdefg", SubString("abcdefg", 0, -1))
 }

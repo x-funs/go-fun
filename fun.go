@@ -29,7 +29,8 @@ var (
 	randomNew = rand.New(rand.NewSource(time.Now().UnixNano()))
 )
 
-// Timestamp 返回当前时间的 Unix 时间戳，默认返回秒级，支持 Timestamp(true) 返回毫秒级
+// Timestamp 返回当前时间的 Unix 时间戳。
+// 默认返回秒级，支持 Timestamp(true) 返回毫秒级
 func Timestamp(millis ...any) int64 {
 	l := len(millis)
 	switch l {
@@ -71,7 +72,8 @@ func MemoryBytes() map[string]int64 {
 	return maps
 }
 
-// Date 返回格式化后的日期时间字符串，支持 Date()、Date(int)、Date(string)、Date(string, int)
+// Date 返回格式化后的日期时间字符串。
+// 支持 Date()、Date(unixstamp)、Date(layout)、Date(layout, unixstamp)
 func Date(layouts ...any) string {
 	l := len(layouts)
 
@@ -98,13 +100,13 @@ func Date(layouts ...any) string {
 	return ""
 }
 
-// dateByDefault 返回格式化后的日期时间字符串
+// dateByDefault 返回默认 layout 格式化后的日期时间字符串
 func dateByDefault() string {
 	now := time.Now()
 	return now.Format(DatetimePattern)
 }
 
-// dateByPattern 返回指定格式化后的日期时间字符串
+// dateByPattern 返回指定 layout 格式化后的日期时间字符串
 func dateByPattern(layout string) string {
 	now := time.Now()
 
@@ -115,7 +117,7 @@ func dateByPattern(layout string) string {
 	}
 }
 
-// dateByPatternAndTime 返回指定时间戳格式化后的日期时间字符串
+// dateByPatternAndTime 返回指定时间戳、指定 layout 格式化后的日期时间字符串
 func dateByPatternAndTime(layout string, timeStamp int64) string {
 	if timeStamp < 0 {
 		timeStamp = 0
@@ -134,7 +136,7 @@ func ToString(value any) string {
 	return fmt.Sprintf("%v", value)
 }
 
-// ToInt 数字和字符串转 Int
+// ToInt 数字或字符串转 int 类型
 func ToInt(value any) int {
 	switch v := value.(type) {
 	case int8:
@@ -157,12 +159,12 @@ func ToInt(value any) int {
 	return 0
 }
 
-// ToLong 数字和字符串转 Int64
+// ToLong ToInt64 别名，数字或字符串转 Int64
 func ToLong(value any) int64 {
 	return ToInt64(value)
 }
 
-// ToInt64 数字和字符串转 Int64
+// ToInt64 数字或字符串转 Int64
 func ToInt64(value any) int64 {
 	switch v := value.(type) {
 	case int:
@@ -224,7 +226,7 @@ func Base64Encode(str string) string {
 	return base64.StdEncoding.EncodeToString([]byte(str))
 }
 
-// Base64Decode 返回 Base64 对应的字符串
+// Base64Decode 返回 Base64 值对应的字符串
 func Base64Decode(str string) string {
 	decode, _ := base64.StdEncoding.DecodeString(str)
 	return string(decode)
@@ -235,7 +237,7 @@ func Base64UrlEncode(str string) string {
 	return base64.URLEncoding.EncodeToString([]byte(str))
 }
 
-// Base64UrlDecode 返回 Url Safe Base64 对应的字符串
+// Base64UrlDecode 返回 Url Safe Base64 值对应的字符串
 func Base64UrlDecode(str string) string {
 	decode, _ := base64.URLEncoding.DecodeString(str)
 	return string(decode)
@@ -312,7 +314,7 @@ func EmptyAny(values ...any) bool {
 	return false
 }
 
-// Empty 判断是否为空，支持字符串、数值、数组、切片、Map
+// Empty 判断是否为空，支持字符串、数值、数组、Slice、Map
 func Empty(value any) bool {
 	if value == nil {
 		return true
@@ -365,7 +367,8 @@ func Long2Ip(long uint32) string {
 	return ip.String()
 }
 
-// StrToTime 日期时间字符串转时间戳，支持 StrToTime()、StrToTime(string)、StrToTime(string, int64)
+// StrToTime 日期时间字符串转时间戳
+// 支持 StrToTime()、StrToTime(string)、StrToTime(string, int64)
 func StrToTime(args ...any) int64 {
 	l := len(args)
 
@@ -396,14 +399,10 @@ func StrToTime(args ...any) int64 {
 	return 0
 }
 
-// SplitTrim 分割字符串为切片，对分割后的值进行 Trim ，并自动忽略空值
+// SplitTrim 分割字符串为字符串切片，对分割后的值进行 Trim ，并自动忽略空值
 func SplitTrim(str, sep string) []string {
-	if len(str) == 0 {
+	if len(str) == 0 || len(sep) == 0 {
 		return []string{}
-	}
-
-	if len(sep) == 0 {
-		sep = " "
 	}
 
 	ss := strings.Split(str, sep)
@@ -416,6 +415,30 @@ func SplitTrim(str, sep string) []string {
 		s := strings.TrimSpace(ss[i])
 		if len(s) > 0 {
 			slices = append(slices, s)
+		}
+	}
+
+	return slices
+}
+
+// SplitTrimToInt 分割字符串为 int 切片，对分割后的值进行 Trim ，并自动忽略空值
+func SplitTrimToInt(str, sep string) []int {
+	if len(str) == 0 || len(sep) == 0 {
+		return []int{}
+	}
+
+	ss := strings.Split(str, sep)
+	if len(ss) == 0 {
+		return []int{}
+	}
+
+	slices := make([]int, 0, len(ss))
+	for i := range ss {
+		s := strings.TrimSpace(ss[i])
+		if len(s) > 0 {
+			if n, err := strconv.Atoi(s); err == nil {
+				slices = append(slices, n)
+			}
 		}
 	}
 
@@ -452,16 +475,17 @@ func IsLetter(str string) bool {
 	return true
 }
 
-// Contains 判断字符串是否包含子串
+// Contains 判断字符串是否包含指定的子串
 func Contains(str, substr string) bool {
 	return strings.Contains(str, substr)
 }
 
-// ContainsCase 判断字符串是否包含子串，不区分大小写
+// ContainsCase 判断字符串是否包含指定的子串，不区分大小写
 func ContainsCase(str, substr string) bool {
 	return Contains(strings.ToLower(str), strings.ToLower(substr))
 }
 
+// ContainsAny 判断字符串是否包含任意一个指定的多个子串
 func ContainsAny(str string, substr ...string) bool {
 	if len(str) == 0 || len(substr) == 0 {
 		return false
@@ -476,7 +500,7 @@ func ContainsAny(str string, substr ...string) bool {
 	return false
 }
 
-// Matches 判断字符串是否匹配正则表达式
+// Matches 判断字符串是否匹配指定的正则表达式
 func Matches(str, pattern string) bool {
 	match, _ := regexp.MatchString(pattern, str)
 	return match
@@ -598,7 +622,7 @@ func buildPadStr(str string, padStr string, padLen int, padLeft bool, padRight b
 	return leftSide + str + rightSide
 }
 
-// ToJson 将对象转换为json字符串
+// ToJson 将对象转换为 Json 字符串
 func ToJson(object any) string {
 	res, err := json.Marshal(object)
 	if err != nil {
@@ -639,22 +663,22 @@ func RandomInt64(min, max int64) int64 {
 	return randomNew.Int63n(max-min) + min
 }
 
-// RandomString 返回指定长度的随机字符串，包含大小写字母和数字
+// RandomString 返回指定长度的随机字符串，包含字母和数字
 func RandomString(length int) string {
 	return RandomPool(StringLetterAndNumber, length)
 }
 
-// RandomLetter 返回指定长度的随机字符串，包含大小写字母
+// RandomLetter 返回指定长度的随机字符串，仅包含字母
 func RandomLetter(length int) string {
 	return RandomPool(StringLetter, length)
 }
 
-// RandomNumber 返回指定长度的随机字符串，包含数字
+// RandomNumber 返回指定长度的随机字符串，仅包含数字
 func RandomNumber(length int) string {
 	return RandomPool(StringNumber, length)
 }
 
-// RandomPool 从字符串池中返回指定长度的随机字符串
+// RandomPool 从提供的字符串池中返回指定长度的随机字符串
 func RandomPool(pool string, length int) string {
 	if length <= 0 {
 		return ""
@@ -668,7 +692,7 @@ func RandomPool(pool string, length int) string {
 	return string(result)
 }
 
-// Remove 移除指定字符串中给定字符串
+// Remove 移除字符串中指定的字符串
 func Remove(str, remove string) string {
 	if str == "" || remove == "" {
 		return remove
@@ -676,7 +700,7 @@ func Remove(str, remove string) string {
 	return strings.Replace(str, remove, "", -1)
 }
 
-// RemovePrefix 移除指定字符串左侧给定字符串
+// RemovePrefix 左侧移除字符串中指定的字符串
 func RemovePrefix(str, prefix string) string {
 	if str == "" || prefix == "" {
 		return str
@@ -684,7 +708,7 @@ func RemovePrefix(str, prefix string) string {
 	return strings.TrimPrefix(str, prefix)
 }
 
-// RemoveSuffix 移除指定字符串右侧给定字符串
+// RemoveSuffix 右侧移除字符串中指定的字符串
 func RemoveSuffix(str string, suffix string) string {
 	if str == "" || suffix == "" {
 		return str
@@ -692,7 +716,7 @@ func RemoveSuffix(str string, suffix string) string {
 	return strings.TrimSuffix(str, suffix)
 }
 
-// RemoveAny 移除指定字符串中给定字符串集
+// RemoveAny 移除字符串中指定的字符串集
 func RemoveAny(str string, removes ...string) string {
 	if str == "" || len(removes) == 0 {
 		return str
