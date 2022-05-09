@@ -16,8 +16,8 @@ const (
 )
 
 type HttpReq struct {
-	Headers map[string]string
-	Proxy   string
+	Headers     map[string]string
+	ProxyString string
 }
 
 type HttpResp struct {
@@ -130,11 +130,19 @@ func HttpGetBody(urlStr string, r *HttpReq, timeout int) (string, error) {
 		timeout = HttpDefaultTimeOut
 	}
 
+	transport := &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+	}
+
+	// 设置 Proxy 代理
+	if r != nil && r.ProxyString != "" {
+		proxy, _ := url.Parse(r.ProxyString)
+		transport.Proxy = http.ProxyURL(proxy)
+	}
+
 	client := &http.Client{
-		Timeout: time.Duration(timeout) * time.Millisecond,
-		Transport: &http.Transport{
-			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-		},
+		Timeout:   time.Duration(timeout) * time.Millisecond,
+		Transport: transport,
 	}
 
 	req, err := http.NewRequest(http.MethodGet, urlStr, nil)

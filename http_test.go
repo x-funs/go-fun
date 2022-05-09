@@ -35,6 +35,20 @@ func TestHttpGet(t *testing.T) {
 	body, err := HttpGet(urlStr, "error header", 1000)
 	t.Log(body)
 	t.Log(err)
+
+}
+
+func TestHttpGetProxy(t *testing.T) {
+	urlStr := "https://www.ip138.com/"
+	req := &HttpReq{
+		Headers: map[string]string{
+			"User-Agent": "test-ua",
+			"X-Header":   "test-header",
+		},
+		ProxyString: "http://username:password@localhost:8080",
+	}
+	body, _ := HttpGet(urlStr, req, 5000)
+	t.Log(body)
 }
 
 func TestHttpPost(t *testing.T) {
