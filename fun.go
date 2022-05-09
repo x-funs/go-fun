@@ -10,6 +10,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"github.com/x-funs/go-fun/strtotime"
 	"math"
 	"math/rand"
 	"net"
@@ -21,8 +22,7 @@ import (
 	"time"
 	"unicode"
 	"unicode/utf8"
-
-	"github.com/x-funs/go-fun/strtotime"
+	"unsafe"
 )
 
 var (
@@ -208,54 +208,54 @@ func ToInt64(value any) int64 {
 
 // Md5 返回字符串 Md5 值
 func Md5(str string) string {
-	hexStr := md5.Sum([]byte(str))
+	hexStr := md5.Sum(StringToBytes(str))
 	return hex.EncodeToString(hexStr[:])
 }
 
 // Sha1 返回字符串 Sha1 值
 func Sha1(str string) string {
-	hexStr := sha1.Sum([]byte(str))
+	hexStr := sha1.Sum(StringToBytes(str))
 	return hex.EncodeToString(hexStr[:])
 }
 
 // Sha256 返回字符串 Sha256 值
 func Sha256(str string) string {
-	hexStr := sha256.Sum256([]byte(str))
+	hexStr := sha256.Sum256(StringToBytes(str))
 	return hex.EncodeToString(hexStr[:])
 }
 
 // Sha384 返回字符串 Sha384 值
 func Sha384(str string) string {
-	hexStr := sha512.Sum384([]byte(str))
+	hexStr := sha512.Sum384(StringToBytes(str))
 	return hex.EncodeToString(hexStr[:])
 }
 
 // Sha512 返回字符串 Sha512 值
 func Sha512(str string) string {
-	hexStr := sha512.Sum512([]byte(str))
+	hexStr := sha512.Sum512(StringToBytes(str))
 	return hex.EncodeToString(hexStr[:])
 }
 
 // Base64Encode 返回字符串 Base64 值
 func Base64Encode(str string) string {
-	return base64.StdEncoding.EncodeToString([]byte(str))
+	return base64.StdEncoding.EncodeToString(StringToBytes(str))
 }
 
 // Base64Decode 返回 Base64 值对应的字符串
 func Base64Decode(str string) string {
 	decode, _ := base64.StdEncoding.DecodeString(str)
-	return string(decode)
+	return BytesToString(decode)
 }
 
 // Base64UrlEncode 返回字符串 Url Safe Base64 值
 func Base64UrlEncode(str string) string {
-	return base64.URLEncoding.EncodeToString([]byte(str))
+	return base64.URLEncoding.EncodeToString(StringToBytes(str))
 }
 
 // Base64UrlDecode 返回 Url Safe Base64 值对应的字符串
 func Base64UrlDecode(str string) string {
 	decode, _ := base64.URLEncoding.DecodeString(str)
-	return string(decode)
+	return BytesToString(decode)
 }
 
 // BlankAll 判断 Trim 后的字符串集，是否全部为空白
@@ -490,6 +490,16 @@ func IsLetter(str string) bool {
 	return true
 }
 
+// IsASCII 判断字符串是否全部 ASCII
+func IsASCII(s string) bool {
+	for i := 0; i < len(s); i++ {
+		if s[i] > unicode.MaxASCII {
+			return false
+		}
+	}
+	return true
+}
+
 // Contains 判断字符串是否包含指定的子串
 func Contains(str, substr string) bool {
 	return strings.Contains(str, substr)
@@ -643,7 +653,7 @@ func ToJson(object any) string {
 	if err != nil {
 		return ""
 	}
-	return string(res)
+	return BytesToString(res)
 }
 
 // Reverse 反转字符串
@@ -698,13 +708,13 @@ func RandomPool(pool string, length int) string {
 	if length <= 0 {
 		return ""
 	}
-	var chars = []byte(pool)
+	var chars = StringToBytes(pool)
 	var result []byte
 	for i := 0; i < length; i++ {
 		c := chars[RandomInt(0, len(chars))]
 		result = append(result, c)
 	}
-	return string(result)
+	return BytesToString(result)
 }
 
 // Remove 移除字符串中指定的字符串
@@ -811,11 +821,26 @@ func StringsToInts(slice []string) []int {
 	if len(slice) == 0 {
 		return []int{}
 	}
-	var ints = []int{}
+	var ints []int
 	for _, v := range slice {
 		if i, err := strconv.Atoi(v); err == nil {
 			ints = append(ints, i)
 		}
 	}
 	return ints
+}
+
+// StringToBytes 更高效的字符串转字节数组
+func StringToBytes(s string) []byte {
+	return *(*[]byte)(unsafe.Pointer(
+		&struct {
+			string
+			Cap int
+		}{s, len(s)},
+	))
+}
+
+// BytesToString 更高效的字节数组转字符串
+func BytesToString(b []byte) string {
+	return *(*string)(unsafe.Pointer(&b))
 }

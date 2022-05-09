@@ -340,3 +340,9 @@ func TestIntsStrings(t *testing.T) {
 	assert.Equal(t, []int{23, 45}, StringsToInts([]string{"23", "45"}))
 	assert.Equal(t, []int{12}, StringsToInts([]string{"a", "12"}))
 }
+
+func TestIsASCII(t *testing.T) {
+	assert.Equal(t, true, IsASCII(""))
+	assert.Equal(t, true, IsASCII("#"))
+	assert.Equal(t, false, IsASCII("中文"))
+}

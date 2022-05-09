@@ -167,7 +167,7 @@ func HttpGetBody(urlStr string, r *HttpReq, timeout int) (string, error) {
 	}
 
 	defer resp.Body.Close()
-	return string(body), nil
+	return BytesToString(body), nil
 }
 
 // HttpPostBody Http Post Form，参数为请求地址，Form 数据 map[string]string，HttpReq，超时时间(毫秒)
@@ -211,7 +211,7 @@ func HttpPostBody(urlStr string, posts map[string]string, r *HttpReq, timeout in
 		req.Header.Set(k, v)
 	}
 
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	req.Header.Set("Content-Type", MimeMultipartPostForm)
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -224,7 +224,7 @@ func HttpPostBody(urlStr string, posts map[string]string, r *HttpReq, timeout in
 	}
 
 	defer resp.Body.Close()
-	return string(body), nil
+	return BytesToString(body), nil
 }
 
 // HttpPostJsonBody Http Post Json 请求，参数为请求地址，Json 数据 string，HttpReq，超时时间(毫秒)
@@ -242,7 +242,7 @@ func HttpPostJsonBody(urlStr string, json string, r *HttpReq, timeout int) (stri
 	}
 
 	// 处理 Json
-	req, err := http.NewRequest("POST", urlStr, strings.NewReader(json))
+	req, err := http.NewRequest(http.MethodPost, urlStr, strings.NewReader(json))
 	if err != nil {
 		return "", err
 	}
@@ -261,7 +261,7 @@ func HttpPostJsonBody(urlStr string, json string, r *HttpReq, timeout int) (stri
 		req.Header.Set(k, v)
 	}
 
-	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Content-Type", MimeJson)
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -274,5 +274,5 @@ func HttpPostJsonBody(urlStr string, json string, r *HttpReq, timeout int) (stri
 	}
 
 	defer resp.Body.Close()
-	return string(body), nil
+	return BytesToString(body), nil
 }
