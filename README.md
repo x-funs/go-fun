@@ -1,5 +1,7 @@
 # Go With Fun (Functions)
 
+Go with functions is a small golang tools and utils library. 
+
 ## Install
 
 ```shell

@@ -8,8 +8,12 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func ExampleMemoryBytes() {
-	fmt.Println(MemoryBytes())
+func ExampleMd5() {
+	fmt.Println(Md5(""))
+	fmt.Println(Md5("123456"))
+	// Output:
+	// d41d8cd98f00b204e9800998ecf8427e
+	// e10adc3949ba59abbe56e057f20f883e
 }
 
 func TestMemory(t *testing.T) {

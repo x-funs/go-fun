@@ -5,7 +5,7 @@ import (
 )
 
 const (
-	TestUrl = "http://localhost:9090"
+	TestUrl = "http://localhost:8080"
 )
 
 func TestHttpGet(t *testing.T) {
@@ -14,7 +14,7 @@ func TestHttpGet(t *testing.T) {
 	body, _ := HttpGet(urlStr)
 	t.Log(body)
 
-	body, _ = HttpGet(urlStr + "?param1=abc1&param2=abc2")
+	body, _ = HttpGet(urlStr + "?query1=abc1&query2=abc2")
 	t.Log(body)
 
 	// 超时时间
