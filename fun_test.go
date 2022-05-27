@@ -282,15 +282,15 @@ func TestToJson(t *testing.T) {
 }
 
 func TestCamel(t *testing.T) {
-	assert.Equal(t, "_abc", UnderToCamel("_abc"))
-	assert.Equal(t, "AAbc", UnderToCamel("a_abc"))
-	assert.Equal(t, "AAbc", UnderToCamel("a__abc"))
-	assert.Equal(t, "TestAbc", UnderToCamel("test_abc_"))
-	assert.Equal(t, "TestAbc", UnderToCamel("test_abc"))
-	assert.Equal(t, "TestAbc", UnderToCamel("Test_Abc"))
-	assert.Equal(t, "TestAbcDe", UnderToCamel("test_aBC_DE"))
+	assert.Equal(t, "_abc", SnakeToCamel("_abc"))
+	assert.Equal(t, "AAbc", SnakeToCamel("a_abc"))
+	assert.Equal(t, "AAbc", SnakeToCamel("a__abc"))
+	assert.Equal(t, "TestAbc", SnakeToCamel("test_abc_"))
+	assert.Equal(t, "TestAbc", SnakeToCamel("test_abc"))
+	assert.Equal(t, "TestAbc", SnakeToCamel("Test_Abc"))
+	assert.Equal(t, "TestAbcDe", SnakeToCamel("test_aBC_DE"))
 
-	assert.Equal(t, "test_abc_de", CamelToUnder("TestAbcDe"))
+	assert.Equal(t, "test_abc_de", CamelToSnake("TestAbcDe"))
 }
 
 func TestMatches(t *testing.T) {

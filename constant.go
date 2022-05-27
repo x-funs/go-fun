@@ -3,12 +3,12 @@ package fun
 const (
 	DatePattern               = "2006-01-02"
 	DatePatternSlash          = "2006/01/02"
-	DatePatternCn             = "2006年01月02日"
+	DatePatternZh             = "2006年01月02日"
 	DatetimePattern           = "2006-01-02 15:04:05"
 	DatetimeMilliPattern      = "2006-01-02 15:04:05.999"
 	DatetimePatternSlash      = "2006/01/02 15:04:05"
 	DatetimeMilliPatternSlash = "2006/01/02 15:04:05.999"
-	DatetimePatternCn         = "2006年01月02日 15时04分05秒"
+	DatetimePatternZh         = "2006年01月02日 15时04分05秒"
 	DatetimePatternUtc        = "2006-01-02'T'15:04:05'Z'"
 )
 

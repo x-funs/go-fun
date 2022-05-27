@@ -10,7 +10,6 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
-	"github.com/x-funs/go-fun/strtotime"
 	"math"
 	"math/rand"
 	"net"
@@ -23,6 +22,8 @@ import (
 	"unicode"
 	"unicode/utf8"
 	"unsafe"
+
+	"github.com/x-funs/go-fun/strtotime"
 )
 
 var (
@@ -531,8 +532,8 @@ func Matches(str, pattern string) bool {
 	return match
 }
 
-// UnderToCamel 下划线转大驼峰
-func UnderToCamel(str string) string {
+// SnakeToCamel 蛇形转大驼峰
+func SnakeToCamel(str string) string {
 	if len(str) == 0 {
 		return ""
 	}
@@ -565,8 +566,8 @@ func UnderToCamel(str string) string {
 	return sb.String()
 }
 
-// CamelToUnder 大驼峰转下划线
-func CamelToUnder(str string) string {
+// CamelToSnake 大驼峰转蛇形
+func CamelToSnake(str string) string {
 	if len(str) == 0 {
 		return ""
 	}
