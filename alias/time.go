@@ -22,6 +22,16 @@ type DateTimeFormat struct {
 	Format string
 }
 
+func parseTime(data []byte) time.Time {
+	dataStr := strings.Trim(string(data), `"`)
+	timestamp := fun.StrToTime(dataStr)
+	if timestamp == 0 {
+		return time.Time{}
+	} else {
+		return time.Unix(timestamp, 0)
+	}
+}
+
 func (d Date) MarshalJSON() ([]byte, error) {
 	if d.Time.IsZero() {
 		return []byte("null"), nil
@@ -31,13 +41,7 @@ func (d Date) MarshalJSON() ([]byte, error) {
 }
 
 func (d *Date) UnmarshalJSON(data []byte) (err error) {
-	dataStr := strings.Trim(string(data), `"`)
-	timestamp := fun.StrToTime(dataStr)
-	if timestamp == 0 {
-		d.Time = time.Time{}
-	} else {
-		d.Time = time.Unix(timestamp, 0)
-	}
+	d.Time = parseTime(data)
 	return nil
 }
 
@@ -65,13 +69,7 @@ func (d DateTime) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DateTime) UnmarshalJSON(data []byte) (err error) {
-	dataStr := strings.Trim(string(data), `"`)
-	timestamp := fun.StrToTime(dataStr)
-	if timestamp == 0 {
-		d.Time = time.Time{}
-	} else {
-		d.Time = time.Unix(timestamp, 0)
-	}
+	d.Time = parseTime(data)
 	return nil
 }
 
@@ -102,13 +100,7 @@ func (d DateTimeFormat) MarshalJSON() ([]byte, error) {
 }
 
 func (d *DateTimeFormat) UnmarshalJSON(data []byte) (err error) {
-	dataStr := strings.Trim(string(data), `"`)
-	timestamp := fun.StrToTime(dataStr)
-	if timestamp == 0 {
-		d.Time = time.Time{}
-	} else {
-		d.Time = time.Unix(timestamp, 0)
-	}
+	d.Time = parseTime(data)
 	return nil
 }
 
