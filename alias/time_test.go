@@ -110,3 +110,22 @@ func TestAliasTimeFormatMarshal(t *testing.T) {
 	b2json2, _ := json.Marshal(b2)
 	t.Log(string(b2json2))
 }
+
+func TestErrorParse(t *testing.T) {
+	var u user
+	jsonStr := `{"name":"Alice","birthday":"1991-02-03 01:02:03"}`
+	json.Unmarshal([]byte(jsonStr), &u)
+	t.Log(u)
+
+	jsonStr = `{"name":"Alice","birthday":null}`
+	json.Unmarshal([]byte(jsonStr), &u)
+	t.Log(u)
+
+	jsonStr = `{"name":"Alice","birthday":""}`
+	json.Unmarshal([]byte(jsonStr), &u)
+	t.Log(u)
+
+	jsonStr = `{"name":"Alice","birthday":"now"}`
+	json.Unmarshal([]byte(jsonStr), &u)
+	t.Log(u)
+}
