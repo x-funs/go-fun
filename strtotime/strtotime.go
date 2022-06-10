@@ -46,7 +46,6 @@ func Parse(s string, relativeTo int64) (int64, error) {
 
 			v, err := time.ParseInLocation(layout, s, zoneLocal)
 			if err != nil {
-				// fmt.Printf("err: %v\n", err)
 				continue
 			} else {
 				return v.Unix(), nil
@@ -89,7 +88,7 @@ func Parse(s string, relativeTo int64) (int64, error) {
 	}
 }
 
-//processMeridian converts 12 hour format type to 24 hour format
+// processMeridian converts 12 hour format type to 24 hour format
 func processMeridian(h int, m string) int {
 	m = strings.ToLower(m)
 	switch m {
@@ -108,11 +107,11 @@ func processMeridian(h int, m string) int {
 	return h
 }
 
-//processYear converts a year string such as "75" to a year, such as 1975
+// processYear converts a year string such as "75" to a year, such as 1975
 func processYear(yearStr string) (int, error) {
 	y, err := strconv.Atoi(yearStr)
 
-	cutoffYear := 70 //Magic number. Anything before this will be in the 2000s. After, 1900s.
+	cutoffYear := 70 // Magic number. Anything before this will be in the 2000s. After, 1900s.
 
 	if err != nil {
 		return 0, err
@@ -260,7 +259,7 @@ func lookupRelative(rel string) (amount int, behavior int) {
 	return relativeNumbersMap[rel], relativeBehaviorValue
 }
 
-//processTzCorrection converts a time zone offset (i.e. GMT-5) to minutes (i.e. 300)
+// processTzCorrection converts a time zone offset (i.e. GMT-5) to minutes (i.e. 300)
 func processTzCorrection(tzOffset string, oldValue int) int {
 	const reTzCorrectionLoose = `(?:GMT)?([+-])(\d+)(:?)(\d{0,2})`
 	re := regexp.MustCompile(reTzCorrectionLoose)

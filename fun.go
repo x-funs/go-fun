@@ -394,7 +394,7 @@ func StrToTime(args ...any) int64 {
 	case 1:
 		exp := ToString(args[0])
 		if !Blank(exp) {
-			v, err := strtotime.Parse(ToString(exp), Timestamp())
+			v, err := strtotime.Parse(exp, Timestamp())
 			if err == nil {
 				return v
 			}
