@@ -100,11 +100,11 @@ func TestAliasTimeFormatMarshal(t *testing.T) {
 	t.Log(b2)
 	t.Log(b2.Birthday.Time.IsZero())
 
-	// 此时 Format 空，使用默认的 RFC3339 格式序列化
+	// 此时 Format 空，再次序列化使用默认的 RFC3339 格式
 	b2json1, _ := json.Marshal(b2)
 	t.Log(string(b2json1))
 
-	// 重新赋值 Format 才能继续使用自定义格式
+	// 重新赋值 Format 继续使用自定义格式
 	b2.Birthday.Format = fun.DatePatternZh
 	b2.JoinTime.Format = fun.DatetimePatternZh
 	b2json2, _ := json.Marshal(b2)
