@@ -22,8 +22,8 @@ type user struct {
 
 type body struct {
 	Name     string         `json:"name"`
-	Birthday DateTimeFormat `json:"birthday"`
-	JoinTime DateTimeFormat `json:"joinTime"`
+	Birthday DateTimeLayout `json:"birthday"`
+	JoinTime DateTimeLayout `json:"joinTime"`
 }
 
 func TestTimeMarshal(t *testing.T) {
@@ -80,33 +80,33 @@ func TestAliasTimeFormatMarshal(t *testing.T) {
 	// 自定义时间序列化格式，如果不定义则使用 RFC3339
 	b1 := body{
 		Name: "Alice",
-		Birthday: DateTimeFormat{
+		Birthday: DateTimeLayout{
 			Time:   birthday,
-			Format: fun.DatePatternZh,
+			Layout: fun.DatePatternZh,
 		},
-		JoinTime: DateTimeFormat{
+		JoinTime: DateTimeLayout{
 			Time:   joinTime,
-			Format: fun.DatetimePatternZh,
+			Layout: fun.DatetimePatternZh,
 		},
 	}
 
 	b1json, _ := json.Marshal(b1)
 	t.Log(string(b1json))
 
-	// 反序列化自动识别格式，但无法自动赋值 Format
+	// 反序列化自动识别格式，但无法自动赋值 Layout
 	var b2 body
 	jsonStr := `{"name":"Alice","birthday":"1991-02-03","joinTime":"2021/02/03 01:02:03"}`
 	json.Unmarshal([]byte(jsonStr), &b2)
 	t.Log(b2)
 	t.Log(b2.Birthday.Time.IsZero())
 
-	// 此时 Format 空，再次序列化使用默认的 RFC3339 格式
+	// 此时 Layout 空，再次序列化使用默认的 RFC3339 格式
 	b2json1, _ := json.Marshal(b2)
 	t.Log(string(b2json1))
 
-	// 重新赋值 Format 继续使用自定义格式
-	b2.Birthday.Format = fun.DatePatternZh
-	b2.JoinTime.Format = fun.DatetimePatternZh
+	// 重新赋值 Layout 继续使用自定义格式
+	b2.Birthday.Layout = fun.DatePatternZh
+	b2.JoinTime.Layout = fun.DatetimePatternZh
 	b2json2, _ := json.Marshal(b2)
 	t.Log(string(b2json2))
 }

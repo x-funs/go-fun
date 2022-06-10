@@ -17,9 +17,9 @@ type DateTime struct {
 	time.Time
 }
 
-type DateTimeFormat struct {
+type DateTimeLayout struct {
 	Time   time.Time
-	Format string
+	Layout string
 }
 
 func parseTime(data []byte) time.Time {
@@ -60,6 +60,10 @@ func (d Date) Value() (driver.Value, error) {
 	return d.Time, nil
 }
 
+func (d Date) String() string {
+	return d.Format(fun.DatePattern)
+}
+
 func (d DateTime) MarshalJSON() ([]byte, error) {
 	if d.Time.IsZero() {
 		return []byte("null"), nil
@@ -88,23 +92,27 @@ func (d DateTime) Value() (driver.Value, error) {
 	return d.Time, nil
 }
 
-func (d DateTimeFormat) MarshalJSON() ([]byte, error) {
-	if fun.Blank(d.Format) {
-		d.Format = time.RFC3339
+func (d DateTime) String() string {
+	return d.Format(fun.DatetimePattern)
+}
+
+func (d DateTimeLayout) MarshalJSON() ([]byte, error) {
+	if fun.Blank(d.Layout) {
+		d.Layout = time.RFC3339
 	}
 	if d.Time.IsZero() {
 		return []byte("null"), nil
 	}
-	str := fmt.Sprintf(`"%s"`, d.Time.Format(d.Format))
+	str := fmt.Sprintf(`"%s"`, d.Time.Format(d.Layout))
 	return []byte(str), nil
 }
 
-func (d *DateTimeFormat) UnmarshalJSON(data []byte) (err error) {
+func (d *DateTimeLayout) UnmarshalJSON(data []byte) (err error) {
 	d.Time = parseTime(data)
 	return nil
 }
 
-func (d *DateTimeFormat) Scan(src any) error {
+func (d *DateTimeLayout) Scan(src any) error {
 	var err error
 	switch x := src.(type) {
 	case time.Time:
@@ -115,6 +123,10 @@ func (d *DateTimeFormat) Scan(src any) error {
 	return err
 }
 
-func (d DateTimeFormat) Value() (driver.Value, error) {
+func (d DateTimeLayout) Value() (driver.Value, error) {
 	return d.Time, nil
+}
+
+func (d DateTimeLayout) String() string {
+	return d.Time.Format(d.Layout)
 }
