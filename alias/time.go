@@ -91,6 +91,9 @@ func (d DateTime) Value() (driver.Value, error) {
 }
 
 func (d DateTimeFormat) MarshalJSON() ([]byte, error) {
+	if fun.Blank(d.Format) {
+		d.Format = time.RFC3339
+	}
 	if d.Time.IsZero() {
 		return []byte("null"), nil
 	}

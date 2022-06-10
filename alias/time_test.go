@@ -29,6 +29,8 @@ type body struct {
 func TestTimeMarshal(t *testing.T) {
 	birthday, _ := time.ParseInLocation("2006-01-02", "1991-02-03", time.Local)
 	joinTime, _ := time.ParseInLocation("2006-01-02 15:04:05", "2021-02-03 01:02:03", time.Local)
+
+	// time.Time 默认使用 RFC3339 格式序列化
 	p1 := person{
 		Name:     "Bob",
 		Birthday: birthday,
@@ -48,6 +50,8 @@ func TestTimeMarshal(t *testing.T) {
 func TestAliasTimeMarshal(t *testing.T) {
 	birthday, _ := time.ParseInLocation("2006-01-02", "1991-02-03", time.Local)
 	joinTime, _ := time.ParseInLocation("2006-01-02 15:04:05", "2021-02-03 01:02:03", time.Local)
+
+	// 使用默认日期时间格式序列化
 	u1 := user{
 		Name:     "Alice",
 		Birthday: Date{birthday},
@@ -57,16 +61,23 @@ func TestAliasTimeMarshal(t *testing.T) {
 	u1json, _ := json.Marshal(u1)
 	t.Log(string(u1json))
 
+	// 反序列化自动识别格式
 	var u2 user
 	jsonStr := `{"name":"Alice","birthday":"2006年01月02日","joinTime":"2021/02/03 01:02:03"}`
 	json.Unmarshal([]byte(jsonStr), &u2)
 	t.Log(u2)
 	t.Log(u2.Birthday.Time.IsZero())
+
+	u2json, _ := json.Marshal(u2)
+	t.Log(string(u2json))
+
 }
 
 func TestAliasTimeFormatMarshal(t *testing.T) {
 	birthday, _ := time.ParseInLocation("2006-01-02", "1991-02-03", time.Local)
 	joinTime, _ := time.ParseInLocation("2006-01-02 15:04:05", "2021-02-03 01:02:03", time.Local)
+
+	// 自定义时间序列化格式，如果不定义则使用 RFC3339
 	b1 := body{
 		Name: "Alice",
 		Birthday: DateTimeFormat{
@@ -82,12 +93,20 @@ func TestAliasTimeFormatMarshal(t *testing.T) {
 	b1json, _ := json.Marshal(b1)
 	t.Log(string(b1json))
 
+	// 反序列化自动识别格式，但无法自动赋值 Format
 	var b2 body
 	jsonStr := `{"name":"Alice","birthday":"1991-02-03","joinTime":"2021/02/03 01:02:03"}`
 	json.Unmarshal([]byte(jsonStr), &b2)
 	t.Log(b2)
 	t.Log(b2.Birthday.Time.IsZero())
 
-	b2json, _ := json.Marshal(b2)
-	t.Log(string(b2json))
+	// 此时 Format 空，使用默认的 RFC3339 格式序列化
+	b2json1, _ := json.Marshal(b2)
+	t.Log(string(b2json1))
+
+	// 重新赋值 Format 才能继续使用自定义格式
+	b2.Birthday.Format = fun.DatePatternZh
+	b2.JoinTime.Format = fun.DatetimePatternZh
+	b2json2, _ := json.Marshal(b2)
+	t.Log(string(b2json2))
 }
