@@ -50,6 +50,8 @@ func (d *Date) Scan(src any) error {
 	switch x := src.(type) {
 	case time.Time:
 		d.Time = x
+	case nil:
+		return nil
 	default:
 		err = fmt.Errorf("null: cannot scan type %T into null.Time: %v", src, src)
 	}
@@ -57,6 +59,9 @@ func (d *Date) Scan(src any) error {
 }
 
 func (d Date) Value() (driver.Value, error) {
+	if d.Time.IsZero() {
+		return nil, nil
+	}
 	return d.Time, nil
 }
 
@@ -82,6 +87,8 @@ func (d *DateTime) Scan(src any) error {
 	switch x := src.(type) {
 	case time.Time:
 		d.Time = x
+	case nil:
+		return nil
 	default:
 		err = fmt.Errorf("null: cannot scan type %T into null.Time: %v", src, src)
 	}
@@ -89,6 +96,9 @@ func (d *DateTime) Scan(src any) error {
 }
 
 func (d DateTime) Value() (driver.Value, error) {
+	if d.Time.IsZero() {
+		return nil, nil
+	}
 	return d.Time, nil
 }
 
@@ -117,6 +127,8 @@ func (d *DateTimeLayout) Scan(src any) error {
 	switch x := src.(type) {
 	case time.Time:
 		d.Time = x
+	case nil:
+		return nil
 	default:
 		err = fmt.Errorf("null: cannot scan type %T into null.Time: %v", src, src)
 	}
@@ -124,6 +136,9 @@ func (d *DateTimeLayout) Scan(src any) error {
 }
 
 func (d DateTimeLayout) Value() (driver.Value, error) {
+	if d.Time.IsZero() {
+		return nil, nil
+	}
 	return d.Time, nil
 }
 
