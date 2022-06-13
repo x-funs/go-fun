@@ -175,12 +175,38 @@ func ToInt(value any) int {
 	return 0
 }
 
-// ToLong ToInt64 别名，数字或字符串转 Int64
+// ToLong ToInt64 别名，数字或字符串转 int64
 func ToLong(value any) int64 {
 	return ToInt64(value)
 }
 
-// ToInt64 数字或字符串转 Int64
+// ToUint 数字或字符串转 uint
+func ToUint(value any) uint {
+	switch v := value.(type) {
+	case int8:
+		return uint(v)
+	case uint8:
+		return uint(v)
+	case uint16:
+		return uint(v)
+	case int16:
+		return uint(v)
+	case int32:
+		return uint(v)
+	case int:
+		return uint(v)
+	case uint:
+		return v
+	case string:
+		i, _ := strconv.ParseUint(v, 10, 0)
+		return uint(i)
+	}
+
+	return 0
+
+}
+
+// ToInt64 数字或字符串转 int64
 func ToInt64(value any) int64 {
 	switch v := value.(type) {
 	case int:
