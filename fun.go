@@ -198,12 +198,26 @@ func ToUint(value any) uint {
 	case uint:
 		return v
 	case string:
-		i, _ := strconv.ParseUint(v, 10, 0)
+		i, _ := strconv.ParseUint(v, 10, 32)
 		return uint(i)
 	}
 
 	return 0
+}
 
+// ToUint8 数字或字符串转 uint8
+func ToUint8(value any) uint8 {
+	switch v := value.(type) {
+	case int8:
+		return uint8(v)
+	case uint8:
+		return v
+	case string:
+		i, _ := strconv.ParseUint(v, 10, 8)
+		return uint8(i)
+	}
+
+	return 0
 }
 
 // ToInt64 数字或字符串转 int64

@@ -86,6 +86,7 @@ func TestToInt(t *testing.T) {
 	assert.Equal(t, 123, ToInt("123"))
 	assert.Equal(t, 123, ToInt("0123"))
 	assert.Equal(t, 0, ToInt("1.1"))
+	assert.Equal(t, -123, ToInt("-123"))
 }
 
 func TestToInt64(t *testing.T) {
@@ -96,6 +97,13 @@ func TestToInt64(t *testing.T) {
 	assert.Equal(t, int64(123), ToInt64("0123"))
 	assert.Equal(t, int64(0), ToInt64("1.1"))
 	assert.Equal(t, int64(0), ToLong("1.1"))
+	assert.Equal(t, int64(-123), ToLong("-123"))
+}
+
+func TestToUnit(t *testing.T) {
+	assert.Equal(t, uint(0), ToUint(""))
+	assert.Equal(t, uint(123), ToUint("0123"))
+	assert.Equal(t, uint8(0), ToUint8("-1"))
 }
 
 func TestBase64(t *testing.T) {
