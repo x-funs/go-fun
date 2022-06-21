@@ -20,6 +20,9 @@ import (
 )
 
 func main() {
+	// 字符串trim后是否为空
+	fmt.Println(fun.Blank("  "))
+	
 	// 字符串 MD5
 	fmt.Println(fun.Md5("go-fun"))
 	

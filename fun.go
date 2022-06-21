@@ -572,8 +572,8 @@ func Matches(str, pattern string) bool {
 	return match
 }
 
-// SnakeToCamel 蛇形转大驼峰
-func SnakeToCamel(str string) string {
+// SnakeToCamel 蛇形转驼峰
+func SnakeToCamel(str string, bigCamel bool) string {
 	if len(str) == 0 {
 		return ""
 	}
@@ -590,7 +590,11 @@ func SnakeToCamel(str string) string {
 	underscore := false
 	for i, r := range str {
 		if i == 0 {
-			sb.WriteRune(unicode.ToUpper(r))
+			if bigCamel {
+				sb.WriteRune(unicode.ToUpper(r))
+			} else {
+				sb.WriteRune(unicode.ToLower(r))
+			}
 		} else if r == '_' {
 			if i < len(str) {
 				underscore = true
@@ -606,7 +610,7 @@ func SnakeToCamel(str string) string {
 	return sb.String()
 }
 
-// CamelToSnake 大驼峰转蛇形
+// CamelToSnake 驼峰转蛇形
 func CamelToSnake(str string) string {
 	if len(str) == 0 {
 		return ""
