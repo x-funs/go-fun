@@ -335,18 +335,18 @@ func TestSubString(t *testing.T) {
 }
 
 func TestInSlice(t *testing.T) {
-	assert.Equal(t, true, InSlice("a", []string{"a", "b", "c"}))
-	assert.Equal(t, true, InSlice(7, []int{3, 5, 7}))
-	assert.Equal(t, true, InSlice(0.2, []float64{0.1, 0.2, 0.3}))
-	assert.Equal(t, false, InSlice(0.4, []float64{0.1, 0.2, 0.3}))
-	assert.Equal(t, false, InSlice(2, []int{3, 5, 7}))
-	assert.Equal(t, false, InSlice(2, []int{}))
-	assert.Equal(t, false, InSlice(0.4, []float64{0.1, 0.2, 0.3}))
+	assert.Equal(t, true, SliceContains("a", []string{"a", "b", "c"}))
+	assert.Equal(t, true, SliceContains(7, []int{3, 5, 7}))
+	assert.Equal(t, true, SliceContains(0.2, []float64{0.1, 0.2, 0.3}))
+	assert.Equal(t, false, SliceContains(0.4, []float64{0.1, 0.2, 0.3}))
+	assert.Equal(t, false, SliceContains(2, []int{3, 5, 7}))
+	assert.Equal(t, false, SliceContains(2, []int{}))
+	assert.Equal(t, false, SliceContains(0.4, []float64{0.1, 0.2, 0.3}))
 }
 
 func TestUniqueSlice(t *testing.T) {
-	assert.Equal(t, []string{"a", "b", "c"}, UniqueSlice([]string{"a", "b", "c", "a", "b", "c"}))
-	assert.Equal(t, []string{""}, UniqueSlice([]string{"", "", ""}))
+	assert.Equal(t, []string{"a", "b", "c"}, SliceUnique([]string{"a", "b", "c", "a", "b", "c"}))
+	assert.Equal(t, []string{""}, SliceUnique([]string{"", "", ""}))
 }
 
 func TestIntsStrings(t *testing.T) {
