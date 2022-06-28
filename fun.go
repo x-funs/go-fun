@@ -817,8 +817,8 @@ func SubString(str string, pos, length int) string {
 	return string(runes[pos:l])
 }
 
-// InSlice 判断数值和字符串是否在切片中
-func InSlice[T GenNumber | string](v T, slice []T) bool {
+// SliceContains 判断数值和字符串是否在切片中
+func SliceContains[T GenNumber | string](v T, slice []T) bool {
 	if len(slice) == 0 {
 		return false
 	}
@@ -831,8 +831,8 @@ func InSlice[T GenNumber | string](v T, slice []T) bool {
 	return false
 }
 
-// UniqueSlice 对切片进行去重
-func UniqueSlice[T GenNumber | string](slice []T) []T {
+// SliceUnique 对数值和字符串切片进行去重
+func SliceUnique[T GenNumber | string](slice []T) []T {
 	if len(slice) == 0 {
 		return slice
 	}
