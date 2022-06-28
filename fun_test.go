@@ -8,14 +8,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func ExampleMd5() {
-	fmt.Println(Md5(""))
-	fmt.Println(Md5("123456"))
-	// Output:
-	// d41d8cd98f00b204e9800998ecf8427e
-	// e10adc3949ba59abbe56e057f20f883e
-}
-
 func TestMemory(t *testing.T) {
 	fmt.Println(MemoryBytes())
 }
@@ -104,6 +96,14 @@ func TestToUnit(t *testing.T) {
 	assert.Equal(t, uint(0), ToUint(""))
 	assert.Equal(t, uint(123), ToUint("0123"))
 	assert.Equal(t, uint8(0), ToUint8("-1"))
+}
+
+func TestToBool(t *testing.T) {
+	assert.Equal(t, false, ToBool(""))
+	assert.Equal(t, true, ToBool("true"))
+	assert.Equal(t, false, ToBool("false"))
+	assert.Equal(t, false, ToBool(" "))
+	assert.Equal(t, false, ToBool("a"))
 }
 
 func TestBase64(t *testing.T) {
@@ -334,7 +334,13 @@ func TestSubString(t *testing.T) {
 	assert.Equal(t, "abcdefg", SubString("abcdefg", 0, -1))
 }
 
-func TestInSlice(t *testing.T) {
+func TestWrap(t *testing.T) {
+	assert.Equal(t, "`abcdefg`", Wrap("abcdefg", "`"))
+	assert.Equal(t, "abcdefg", Unwrap("`abcdefg`", "`"))
+	assert.Equal(t, "`abcdefg`", Unwrap("``abcdefg``", "`"))
+}
+
+func TestSliceContains(t *testing.T) {
 	assert.Equal(t, true, SliceContains("a", []string{"a", "b", "c"}))
 	assert.Equal(t, true, SliceContains(7, []int{3, 5, 7}))
 	assert.Equal(t, true, SliceContains(0.2, []float64{0.1, 0.2, 0.3}))
@@ -344,9 +350,43 @@ func TestInSlice(t *testing.T) {
 	assert.Equal(t, false, SliceContains(0.4, []float64{0.1, 0.2, 0.3}))
 }
 
-func TestUniqueSlice(t *testing.T) {
+func TestMapKeysValues(t *testing.T) {
+	assert.Equal(t, []string{"a", "b", "c"}, MapKeys(map[string]string{"a": "1", "b": "2", "c": "3"}))
+	assert.Equal(t, []string{"1"}, MapValues(map[string]string{"a": "1"}))
+}
+
+func TestMapMerge(t *testing.T) {
+	m1 := map[string]int{
+		"a": 1,
+		"b": 2,
+		"c": 3,
+		"d": 4,
+	}
+	m2 := map[string]int{
+		"b": 4,
+		"c": 3,
+	}
+	assert.Equal(t, map[string]int{"a": 1, "b": 4, "c": 3, "d": 4}, MapMerge(m1, m2))
+}
+
+func TestSliceUnique(t *testing.T) {
 	assert.Equal(t, []string{"a", "b", "c"}, SliceUnique([]string{"a", "b", "c", "a", "b", "c"}))
 	assert.Equal(t, []string{""}, SliceUnique([]string{"", "", ""}))
+}
+
+func TestSliceSplit(t *testing.T) {
+	assert.Equal(t, [][]int{{2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}}, SliceSplit([]int{2, 3, 4, 5, 6, 7, 8, 9}, 1))
+	assert.Equal(t, [][]int{{2, 3}, {4, 5}, {6, 7}, {8, 9}}, SliceSplit([]int{2, 3, 4, 5, 6, 7, 8, 9}, 2))
+	assert.Equal(t, [][]int{{2, 3, 4}, {5, 6, 7}, {8, 9}}, SliceSplit([]int{2, 3, 4, 5, 6, 7, 8, 9}, 3))
+	assert.Equal(t, [][]int{{2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}}, SliceSplit([]int{2, 3, 4, 5, 6, 7, 8, 9}, 9))
+	assert.Equal(t, [][]string{{"a", "b", "c"}, {"d", "e", "f"}, {"g"}}, SliceSplit([]string{"a", "b", "c", "d", "e", "f", "g"}, 3))
+}
+
+func TestSliceIndex(t *testing.T) {
+	assert.Equal(t, -1, SliceIndex([]string{"a", "b", "c", "d", "c"}, "e"))
+	assert.Equal(t, 1, SliceIndex([]string{"a", "b", "c", "d", "c"}, "b"))
+	assert.Equal(t, 2, SliceIndex([]string{"a", "b", "c", "d", "c"}, "c"))
+	assert.Equal(t, 4, SliceLastIndex([]string{"a", "b", "c", "d", "c"}, "c"))
 }
 
 func TestIntsStrings(t *testing.T) {
@@ -366,4 +406,14 @@ func TestIsASCII(t *testing.T) {
 func TestMaxMin(t *testing.T) {
 	assert.Equal(t, 2, Max(1, 2))
 	assert.Equal(t, 1, Min(1, 2))
+}
+
+func TestIsDir(t *testing.T) {
+	t.Log(IsDir("/tmp"))
+	t.Log(IsDir("/tmp/test"))
+}
+
+func TestIsExist(t *testing.T) {
+	t.Log(IsExist("/tmp"))
+	t.Log(IsExist("/tmp/test"))
 }

@@ -9,10 +9,12 @@ import (
 	"encoding/binary"
 	"encoding/hex"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"math"
 	"math/rand"
 	"net"
+	"os"
 	"reflect"
 	"regexp"
 	"runtime"
@@ -178,6 +180,16 @@ func ToInt(value any) int {
 // ToLong ToInt64 别名，数字或字符串转 int64
 func ToLong(value any) int64 {
 	return ToInt64(value)
+}
+
+// ToBool 字符串转 bool 类型
+func ToBool(str string) bool {
+	b, err := strconv.ParseBool(str)
+	if err != nil {
+		return false
+	} else {
+		return b
+	}
 }
 
 // ToUint 数字或字符串转 uint
@@ -657,6 +669,37 @@ func PadBoth(str string, padStr string, padLen int) string {
 	return buildPadStr(str, padStr, padLen, true, true)
 }
 
+// Wrap 使用字符串包围原字符串
+func Wrap(str string, wrapStr string) string {
+	if len(str) == 0 || wrapStr == "" {
+		return str
+	}
+	var sb strings.Builder
+	sb.WriteString(wrapStr)
+	sb.WriteString(str)
+	sb.WriteString(wrapStr)
+
+	return sb.String()
+}
+
+// Unwrap 去除字符串包围，非递归
+func Unwrap(str string, wrapStr string) string {
+	if str == "" || wrapStr == "" {
+		return str
+	}
+
+	firstIndex := strings.Index(str, wrapStr)
+	lastIndex := strings.LastIndex(str, wrapStr)
+
+	if firstIndex == 0 && lastIndex > 0 && lastIndex <= len(str)-1 {
+		if len(wrapStr) <= lastIndex {
+			str = str[len(wrapStr):lastIndex]
+		}
+	}
+
+	return str
+}
+
 // buildPadStr
 func buildPadStr(str string, padStr string, padLen int, padLeft bool, padRight bool) string {
 	if padLen < utf8.RuneCountInString(str) {
@@ -847,6 +890,115 @@ func SliceUnique[T GenNumber | string](slice []T) []T {
 	}
 
 	return slice
+}
+
+// SliceSplit 对数值和字符串切片按照指定长度进行分割
+func SliceSplit[T GenNumber | string](slice []T, size int) [][]T {
+	var res [][]T
+
+	if len(slice) == 0 || size <= 0 {
+		return res
+	}
+
+	length := len(slice)
+	if size == 1 || size >= length {
+		for _, v := range slice {
+			var tmp []T
+			tmp = append(tmp, v)
+			res = append(res, tmp)
+		}
+		return res
+	}
+
+	// divide slice equally
+	divideNum := length/size + 1
+	for i := 0; i < divideNum; i++ {
+		if i == divideNum-1 {
+			if len(slice[i*size:]) > 0 {
+				res = append(res, slice[i*size:])
+			}
+		} else {
+			res = append(res, slice[i*size:(i+1)*size])
+		}
+	}
+
+	return res
+}
+
+// SliceIndex 对数值和字符串切片按照指定值进行查找
+func SliceIndex[T GenNumber | string](slice []T, v T) int {
+	for i, s := range slice {
+		if s == v {
+			return i
+		}
+	}
+	return -1
+}
+
+// SliceLastIndex 对数值和字符串切片按照指定值进行查找，返回最后一个匹配的索引
+func SliceLastIndex[T GenNumber | string](slice []T, v T) int {
+	for i := len(slice) - 1; i >= 0; i-- {
+		if slice[i] == v {
+			return i
+		}
+	}
+	return -1
+}
+
+// MapKeys 返回map的键切片
+func MapKeys[K comparable, V any](m map[K]V) []K {
+	keys := make([]K, 0, len(m))
+
+	for k := range m {
+		keys = append(keys, k)
+	}
+
+	return keys
+}
+
+// MapValues 返回map的值切片
+func MapValues[K comparable, V any](m map[K]V) []V {
+	values := make([]V, 0, len(m))
+
+	for _, v := range m {
+		values = append(values, v)
+	}
+
+	return values
+}
+
+// MapMerge 合并两个map，如果有相同的键，则后者会覆盖前者
+func MapMerge[K comparable, V any](maps ...map[K]V) map[K]V {
+	res := make(map[K]V, 0)
+
+	for _, m := range maps {
+		for k, v := range m {
+			res[k] = v
+		}
+	}
+
+	return res
+}
+
+// IsExist 文件或目录是否存在
+func IsExist(path string) bool {
+	_, err := os.Stat(path)
+	if err == nil {
+		return true
+	}
+	if errors.Is(err, os.ErrNotExist) {
+		return false
+	}
+	return false
+}
+
+// IsDir 是否是目录
+func IsDir(path string) bool {
+	s, err := os.Stat(path)
+	if err != nil {
+		return false
+	}
+	return s.IsDir()
 }
 
 // IntsToStrings int 切片转换为字符串切片
