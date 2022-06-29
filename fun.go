@@ -861,7 +861,7 @@ func SubString(str string, pos, length int) string {
 }
 
 // SliceContains 判断数值和字符串是否在切片中
-func SliceContains[T GenNumber | string](v T, slice []T) bool {
+func SliceContains[T GenNumber | string](slice []T, v T) bool {
 	if len(slice) == 0 {
 		return false
 	}
