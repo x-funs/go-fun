@@ -390,15 +390,15 @@ func TestSliceRemove(t *testing.T) {
 func TestSliceTrim(t *testing.T) {
 	assert.Equal(t, []string{"b", "c", "d"}, SliceTrim([]string{"b", "c", "d"}))
 	assert.Equal(t, []string{"b", "c", "d"}, SliceTrim([]string{" b ", "c", "    d "}))
-	assert.Equal(t, []string{"", ""}, SliceTrim([]string{" ", ""}))
+	assert.Equal(t, []string{"a", "b"}, SliceTrim([]string{" a  ", "b", " ", "   	"}))
 }
 
-func TestSliceTrimRemove(t *testing.T) {
+func TestSliceRemoveBlank(t *testing.T) {
 	var s []string
-	assert.Equal(t, []string{"a", "b"}, SliceTrimRemove([]string{"a", "b"}))
-	assert.Equal(t, []string{"b"}, SliceTrimRemove([]string{"", "b"}))
-	assert.Equal(t, []string{"a"}, SliceTrimRemove([]string{" a ", " "}))
-	assert.Equal(t, s, SliceTrimRemove([]string{"  ", " "}))
+	assert.Equal(t, []string{"a", "b"}, SliceRemoveBlank([]string{"a", "b"}))
+	assert.Equal(t, []string{"b"}, SliceRemoveBlank([]string{"", "b"}))
+	assert.Equal(t, []string{" a "}, SliceRemoveBlank([]string{" a ", " "}))
+	assert.Equal(t, s, SliceRemoveBlank([]string{"  ", " "}))
 }
 
 func TestSliceIndex(t *testing.T) {

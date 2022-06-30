@@ -960,7 +960,23 @@ func SliceRemove[T GenInteger | string](slice []T, v T) []T {
 	return res
 }
 
-// SliceTrim 对字符串切片进行 Trim
+// SliceRemoveBlank 移除字符串切片中的空值
+func SliceRemoveBlank(slice []string) []string {
+	if len(slice) == 0 {
+		return slice
+	}
+
+	var res []string
+	for _, s := range slice {
+		str := strings.TrimSpace(s)
+		if len(str) > 0 {
+			res = append(res, s)
+		}
+	}
+	return res
+}
+
+// SliceTrim 对字符串切片进行 Trim，并自动忽略空值
 func SliceTrim(slice []string) []string {
 	if len(slice) == 0 {
 		return slice
@@ -968,23 +984,9 @@ func SliceTrim(slice []string) []string {
 
 	var res []string
 	for _, s := range slice {
-		s = strings.TrimSpace(s)
-		res = append(res, s)
-	}
-	return res
-}
-
-// SliceTrimRemove 对字符串切片进行 Trim，并移除空值
-func SliceTrimRemove(slice []string) []string {
-	if len(slice) == 0 {
-		return slice
-	}
-
-	var res []string
-	for _, s := range slice {
-		s = strings.TrimSpace(s)
-		if len(s) > 0 {
-			res = append(res, s)
+		str := strings.TrimSpace(s)
+		if len(str) > 0 {
+			res = append(res, str)
 		}
 	}
 	return res
