@@ -860,8 +860,8 @@ func SubString(str string, pos, length int) string {
 	return string(runes[pos:l])
 }
 
-// SliceContains 判断数值和字符串是否在切片中
-func SliceContains[T GenNumber | string](slice []T, v T) bool {
+// SliceContains 判断整型和字符串是否在切片中
+func SliceContains[T GenInteger | string](slice []T, v T) bool {
 	if len(slice) == 0 {
 		return false
 	}
@@ -875,7 +875,7 @@ func SliceContains[T GenNumber | string](slice []T, v T) bool {
 }
 
 // SliceUnique 对数值和字符串切片进行去重
-func SliceUnique[T GenNumber | string](slice []T) []T {
+func SliceUnique[T GenInteger | string](slice []T) []T {
 	if len(slice) == 0 {
 		return slice
 	}
@@ -893,7 +893,7 @@ func SliceUnique[T GenNumber | string](slice []T) []T {
 }
 
 // SliceSplit 对数值和字符串切片按照指定长度进行分割
-func SliceSplit[T GenNumber | string](slice []T, size int) [][]T {
+func SliceSplit[T GenInteger | string](slice []T, size int) [][]T {
 	var res [][]T
 
 	if len(slice) == 0 || size <= 0 {
@@ -926,7 +926,7 @@ func SliceSplit[T GenNumber | string](slice []T, size int) [][]T {
 }
 
 // SliceIndex 对数值和字符串切片按照指定值进行查找
-func SliceIndex[T GenNumber | string](slice []T, v T) int {
+func SliceIndex[T GenInteger | string](slice []T, v T) int {
 	for i, s := range slice {
 		if s == v {
 			return i
@@ -936,13 +936,58 @@ func SliceIndex[T GenNumber | string](slice []T, v T) int {
 }
 
 // SliceLastIndex 对数值和字符串切片按照指定值进行查找，返回最后一个匹配的索引
-func SliceLastIndex[T GenNumber | string](slice []T, v T) int {
+func SliceLastIndex[T GenInteger | string](slice []T, v T) int {
 	for i := len(slice) - 1; i >= 0; i-- {
 		if slice[i] == v {
 			return i
 		}
 	}
 	return -1
+}
+
+// SliceRemove 移除数值和字符串切片中的指定值
+func SliceRemove[T GenInteger | string](slice []T, v T) []T {
+	if len(slice) == 0 {
+		return slice
+	}
+
+	var res []T
+	for _, s := range slice {
+		if s != v {
+			res = append(res, s)
+		}
+	}
+	return res
+}
+
+// SliceTrim 对字符串切片进行 Trim
+func SliceTrim(slice []string) []string {
+	if len(slice) == 0 {
+		return slice
+	}
+
+	var res []string
+	for _, s := range slice {
+		s = strings.TrimSpace(s)
+		res = append(res, s)
+	}
+	return res
+}
+
+// SliceTrimRemove 对字符串切片进行 Trim，并移除空值
+func SliceTrimRemove(slice []string) []string {
+	if len(slice) == 0 {
+		return slice
+	}
+
+	var res []string
+	for _, s := range slice {
+		s = strings.TrimSpace(s)
+		if len(s) > 0 {
+			res = append(res, s)
+		}
+	}
+	return res
 }
 
 // MapKeys 返回map的键切片
