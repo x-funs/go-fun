@@ -20,19 +20,19 @@ import (
 )
 
 func main() {
-	// 字符串trim后是否为空
+	// whether the string is empty after trim (blank or not)
 	fmt.Println(fun.Blank("  "))
 	
-	// 字符串 MD5
+	// return string md5 hash
 	fmt.Println(fun.Md5("go-fun"))
 	
-	// 字符串转时间戳
-	fmt.Println(fun.StrToTime("2015年04月06日 16时03分03秒"))
+	// auto parse many datetime string to long timestamp
+	fmt.Println(fun.StrToTime("2015-04-06 16:03:03"))
 
-	// 切片去重
-	fmt.Println(fun.UniqueSlice([]string{"a", "b", "c", "a", "b", "c"}))
+	// return slice unique
+	fmt.Println(fun.SliceUnique([]string{"a", "b", "c", "a", "b", "c"}))
 
-	// Http Get 请求
+	// send a simple http get request
 	html, _ := fun.HttpGet("https://www.163.com")
 	fmt.Println(html)
 }
