@@ -10,6 +10,8 @@ import (
 
 func TestMemory(t *testing.T) {
 	fmt.Println(MemoryBytes())
+	fmt.Println(Memory(SizeKB))
+	fmt.Println(Memory(SizeMB))
 }
 
 func TestTime(t *testing.T) {

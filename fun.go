@@ -76,7 +76,7 @@ func unixMilliTimestamp() int64 {
 	return time.Now().UnixMilli()
 }
 
-// MemoryBytes 返回当前主要的内存指标信息
+// MemoryBytes 返回当前主要的内存指标信息 (ReadMemStats 会进行 stopTheWorld, 谨慎使用)
 func MemoryBytes() map[string]int64 {
 	var m runtime.MemStats
 	runtime.ReadMemStats(&m)
@@ -88,6 +88,35 @@ func MemoryBytes() map[string]int64 {
 	maps["heapAlloc"] = int64(m.HeapAlloc)
 
 	return maps
+}
+
+// Memory 指定格式返回当前主要的内存指标信息，(ReadMemStats 会进行 stopTheWorld, 谨慎使用)
+func Memory(format string) map[string]int64 {
+	m := MemoryBytes()
+	for k, v := range m {
+		if v > 0 {
+			switch format {
+			case SizeB:
+				m[k] = v
+			case SizeKB:
+				m[k] = v / BytesPerKB
+			case SizeMB:
+				m[k] = v / BytesPerMB
+			case SizeGB:
+				m[k] = v / BytesPerGB
+			case SizeTB:
+				m[k] = v / BytesPerTB
+			case SizePB:
+				m[k] = v / BytesPerPB
+			case SizeEB:
+				m[k] = v / BytesPerEB
+			default:
+				m[k] = v
+			}
+		}
+	}
+
+	return m
 }
 
 // Date 返回格式化后的日期时间字符串。
