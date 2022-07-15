@@ -12,7 +12,7 @@ import (
 
 const (
 	HttpDefaultTimeOut   = 5000
-	HttpDefaultUserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36"
+	HttpDefaultUserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
 )
 
 type HttpReq struct {
@@ -21,10 +21,11 @@ type HttpReq struct {
 }
 
 type HttpResp struct {
-	Success bool
-	Code    int
-	Body    string
-	Headers map[string]string
+	Success       bool
+	StatusCode    int
+	Body          string
+	ContentLength int64
+	Headers       http.Header
 }
 
 // HttpGet 参数为请求地址（HttpReq, 超时时间）
@@ -126,6 +127,47 @@ func HttpPostJson(urlStr string, args ...any) (string, error) {
 // HttpGetBody Http Get 请求，参数为请求地址，HttpReq，超时时间(毫秒)
 // 返回请求内容 String，错误信息
 func HttpGetBody(urlStr string, r *HttpReq, timeout int) (string, error) {
+	resp, err := HttpGetResp(urlStr, r, timeout)
+	if err != nil {
+		return "", err
+	} else {
+		return resp.Body, nil
+	}
+}
+
+// HttpPostBody Http Post Form，参数为请求地址，Form 数据 map[string]string，HttpReq，超时时间(毫秒)
+// 返回请求内容 String，错误信息
+func HttpPostBody(urlStr string, posts map[string]string, r *HttpReq, timeout int) (string, error) {
+	resp, err := HttpPostResp(urlStr, posts, r, timeout)
+	if err != nil {
+		return "", err
+	} else {
+		return resp.Body, nil
+	}
+}
+
+// HttpPostJsonBody Http Post Json 请求，参数为请求地址，Json 数据 string，HttpReq，超时时间(毫秒)
+// 返回请求内容 String，错误信息
+func HttpPostJsonBody(urlStr string, json string, r *HttpReq, timeout int) (string, error) {
+	resp, err := HttpPostJsonResp(urlStr, json, r, timeout)
+	if err != nil {
+		return "", err
+	} else {
+		return resp.Body, nil
+	}
+}
+
+// HttpGetResp Http Get 请求，参数为请求地址，HttpReq，超时时间(毫秒)
+// 返回 HttpResp，错误信息
+func HttpGetResp(urlStr string, r *HttpReq, timeout int) (*HttpResp, error) {
+	httpResp := &HttpResp{
+		Success:       false,
+		StatusCode:    0,
+		Body:          "",
+		ContentLength: 0,
+		Headers:       nil,
+	}
+
 	if timeout == 0 {
 		timeout = HttpDefaultTimeOut
 	}
@@ -147,7 +189,7 @@ func HttpGetBody(urlStr string, r *HttpReq, timeout int) (string, error) {
 
 	req, err := http.NewRequest(http.MethodGet, urlStr, nil)
 	if err != nil {
-		return "", err
+		return httpResp, err
 	}
 
 	// 处理请求头
@@ -166,21 +208,37 @@ func HttpGetBody(urlStr string, r *HttpReq, timeout int) (string, error) {
 
 	resp, err := client.Do(req)
 	if err != nil {
-		return "", err
+		return httpResp, err
 	}
+
+	httpResp.StatusCode = resp.StatusCode
+	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
+		httpResp.Success = true
+	}
+	httpResp.Headers = resp.Header
 
 	body, err := ioutil.ReadAll(resp.Body)
+	defer resp.Body.Close()
 	if err != nil {
-		return "", err
+		return httpResp, err
+	} else {
+		httpResp.Body = BytesToString(body)
 	}
 
-	defer resp.Body.Close()
-	return BytesToString(body), nil
+	return httpResp, nil
 }
 
-// HttpPostBody Http Post Form，参数为请求地址，Form 数据 map[string]string，HttpReq，超时时间(毫秒)
-// 返回请求内容 String，错误信息
-func HttpPostBody(urlStr string, posts map[string]string, r *HttpReq, timeout int) (string, error) {
+// HttpPostResp Http Post Form，参数为请求地址，Form 数据 map[string]string，HttpReq，超时时间(毫秒)
+// 返回 HttpResp，错误信息
+func HttpPostResp(urlStr string, posts map[string]string, r *HttpReq, timeout int) (*HttpResp, error) {
+	httpResp := &HttpResp{
+		Success:       false,
+		StatusCode:    0,
+		Body:          "",
+		ContentLength: 0,
+		Headers:       nil,
+	}
+
 	if timeout == 0 {
 		timeout = HttpDefaultTimeOut
 	}
@@ -202,7 +260,7 @@ func HttpPostBody(urlStr string, posts map[string]string, r *HttpReq, timeout in
 	// 处理 Form
 	req, err := http.NewRequest(http.MethodPost, urlStr, strings.NewReader(data.Encode()))
 	if err != nil {
-		return "", err
+		return httpResp, err
 	}
 
 	// 处理请求头
@@ -223,21 +281,37 @@ func HttpPostBody(urlStr string, posts map[string]string, r *HttpReq, timeout in
 
 	resp, err := client.Do(req)
 	if err != nil {
-		return "", err
+		return httpResp, err
 	}
+
+	httpResp.StatusCode = resp.StatusCode
+	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
+		httpResp.Success = true
+	}
+	httpResp.Headers = resp.Header
 
 	body, err := ioutil.ReadAll(resp.Body)
+	defer resp.Body.Close()
 	if err != nil {
-		return "", err
+		return httpResp, err
+	} else {
+		httpResp.Body = BytesToString(body)
 	}
 
-	defer resp.Body.Close()
-	return BytesToString(body), nil
+	return httpResp, nil
 }
 
-// HttpPostJsonBody Http Post Json 请求，参数为请求地址，Json 数据 string，HttpReq，超时时间(毫秒)
-// 返回请求内容 String，错误信息
-func HttpPostJsonBody(urlStr string, json string, r *HttpReq, timeout int) (string, error) {
+// HttpPostJsonResp Http Post Json 请求，参数为请求地址，Json 数据 string，HttpReq，超时时间(毫秒)
+// 返回 HttpResp，错误信息
+func HttpPostJsonResp(urlStr string, json string, r *HttpReq, timeout int) (*HttpResp, error) {
+	httpResp := &HttpResp{
+		Success:       false,
+		StatusCode:    0,
+		Body:          "",
+		ContentLength: 0,
+		Headers:       nil,
+	}
+
 	if timeout == 0 {
 		timeout = HttpDefaultTimeOut
 	}
@@ -252,7 +326,7 @@ func HttpPostJsonBody(urlStr string, json string, r *HttpReq, timeout int) (stri
 	// 处理 Json
 	req, err := http.NewRequest(http.MethodPost, urlStr, strings.NewReader(json))
 	if err != nil {
-		return "", err
+		return httpResp, err
 	}
 
 	// 处理请求头
@@ -273,14 +347,22 @@ func HttpPostJsonBody(urlStr string, json string, r *HttpReq, timeout int) (stri
 
 	resp, err := client.Do(req)
 	if err != nil {
-		return "", err
+		return httpResp, err
 	}
+
+	httpResp.StatusCode = resp.StatusCode
+	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
+		httpResp.Success = true
+	}
+	httpResp.Headers = resp.Header
 
 	body, err := ioutil.ReadAll(resp.Body)
+	defer resp.Body.Close()
 	if err != nil {
-		return "", err
+		return httpResp, err
+	} else {
+		httpResp.Body = BytesToString(body)
 	}
 
-	defer resp.Body.Close()
-	return BytesToString(body), nil
+	return httpResp, nil
 }
