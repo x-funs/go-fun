@@ -216,6 +216,7 @@ func HttpGetResp(urlStr string, r *HttpReq, timeout int) (*HttpResp, error) {
 		httpResp.Success = true
 	}
 	httpResp.Headers = resp.Header
+	httpResp.ContentLength = resp.ContentLength
 
 	body, err := ioutil.ReadAll(resp.Body)
 	defer resp.Body.Close()
@@ -289,6 +290,7 @@ func HttpPostResp(urlStr string, posts map[string]string, r *HttpReq, timeout in
 		httpResp.Success = true
 	}
 	httpResp.Headers = resp.Header
+	httpResp.ContentLength = resp.ContentLength
 
 	body, err := ioutil.ReadAll(resp.Body)
 	defer resp.Body.Close()
@@ -355,6 +357,7 @@ func HttpPostJsonResp(urlStr string, json string, r *HttpReq, timeout int) (*Htt
 		httpResp.Success = true
 	}
 	httpResp.Headers = resp.Header
+	httpResp.ContentLength = resp.ContentLength
 
 	body, err := ioutil.ReadAll(resp.Body)
 	defer resp.Body.Close()
