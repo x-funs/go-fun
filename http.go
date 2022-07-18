@@ -16,6 +16,7 @@ const (
 )
 
 type HttpReq struct {
+	UserAgent   string
 	Headers     map[string]string
 	ProxyString string
 }
@@ -25,7 +26,7 @@ type HttpResp struct {
 	StatusCode    int
 	Body          string
 	ContentLength int64
-	Headers       http.Header
+	Headers       *http.Header
 }
 
 // HttpGet 参数为请求地址（HttpReq, 超时时间）
@@ -194,6 +195,9 @@ func HttpGetResp(urlStr string, r *HttpReq, timeout int) (*HttpResp, error) {
 
 	// 处理请求头
 	headers := make(map[string]string)
+	if r != nil && r.UserAgent != "" {
+		r.Headers["User-Agent"] = r.UserAgent
+	}
 	if r != nil && r.Headers != nil && len(r.Headers) > 0 {
 		headers = r.Headers
 		if _, exist := headers["User-Agent"]; !exist {
@@ -215,7 +219,7 @@ func HttpGetResp(urlStr string, r *HttpReq, timeout int) (*HttpResp, error) {
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
 		httpResp.Success = true
 	}
-	httpResp.Headers = resp.Header
+	httpResp.Headers = &resp.Header
 	httpResp.ContentLength = resp.ContentLength
 
 	body, err := ioutil.ReadAll(resp.Body)
@@ -266,6 +270,9 @@ func HttpPostResp(urlStr string, posts map[string]string, r *HttpReq, timeout in
 
 	// 处理请求头
 	headers := make(map[string]string)
+	if r != nil && r.UserAgent != "" {
+		r.Headers["User-Agent"] = r.UserAgent
+	}
 	if r != nil && r.Headers != nil && len(r.Headers) > 0 {
 		headers = r.Headers
 		if _, exist := headers["User-Agent"]; !exist {
@@ -289,7 +296,7 @@ func HttpPostResp(urlStr string, posts map[string]string, r *HttpReq, timeout in
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
 		httpResp.Success = true
 	}
-	httpResp.Headers = resp.Header
+	httpResp.Headers = &resp.Header
 	httpResp.ContentLength = resp.ContentLength
 
 	body, err := ioutil.ReadAll(resp.Body)
@@ -333,6 +340,9 @@ func HttpPostJsonResp(urlStr string, json string, r *HttpReq, timeout int) (*Htt
 
 	// 处理请求头
 	headers := make(map[string]string)
+	if r != nil && r.UserAgent != "" {
+		r.Headers["User-Agent"] = r.UserAgent
+	}
 	if r != nil && r.Headers != nil && len(r.Headers) > 0 {
 		headers = r.Headers
 		if _, exist := headers["User-Agent"]; !exist {
@@ -356,7 +366,7 @@ func HttpPostJsonResp(urlStr string, json string, r *HttpReq, timeout int) (*Htt
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
 		httpResp.Success = true
 	}
-	httpResp.Headers = resp.Header
+	httpResp.Headers = &resp.Header
 	httpResp.ContentLength = resp.ContentLength
 
 	body, err := ioutil.ReadAll(resp.Body)
