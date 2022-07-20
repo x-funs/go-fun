@@ -18,17 +18,17 @@ const (
 )
 
 type HttpReq struct {
+	Transport http.RoundTripper
 	UserAgent string
 	Headers   map[string]string
-	Transport http.RoundTripper
 }
 
 type HttpResp struct {
+	Headers       *http.Header
 	Success       bool
 	StatusCode    int
 	Body          []byte
 	ContentLength int64
-	Headers       *http.Header
 }
 
 // HttpDefaultTransport 默认全局使用的 http.Transport
