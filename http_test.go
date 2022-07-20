@@ -1,8 +1,11 @@
 package fun
 
 import (
+	"crypto/tls"
+	"net/http"
 	"net/url"
 	"strings"
+	"sync"
 	"testing"
 )
 
@@ -24,13 +27,13 @@ func TestHttpGet(t *testing.T) {
 	t.Log(BytesToString(body))
 
 	// Headers 与超时时间
-	req := &HttpReq{
+	r := &HttpReq{
 		UserAgent: "test-ua",
 		Headers: map[string]string{
 			"X-Header": "test-header",
 		},
 	}
-	body, _ = HttpGet(urlStr+"?query1=value1", req, 1000)
+	body, _ = HttpGet(urlStr+"?query1=value1", r, 1000)
 	t.Log(BytesToString(body))
 
 	// 错误的 Headers
@@ -54,13 +57,13 @@ func TestHttpPostForm(t *testing.T) {
 	body, _ = HttpPostForm(urlStr, posts, 1000)
 	t.Log(BytesToString(body))
 
-	req := &HttpReq{
+	r := &HttpReq{
 		UserAgent: "test-ua",
 		Headers: map[string]string{
 			"X-Header": "test-header",
 		},
 	}
-	body, _ = HttpPostForm(urlStr, posts, req, 1000)
+	body, _ = HttpPostForm(urlStr, posts, r, 1000)
 	t.Log(BytesToString(body))
 }
 
@@ -78,13 +81,13 @@ func TestHttpPutForm(t *testing.T) {
 	body, _ = HttpPutForm(urlStr, posts, 1000)
 	t.Log(BytesToString(body))
 
-	req := &HttpReq{
+	r := &HttpReq{
 		UserAgent: "test-ua",
 		Headers: map[string]string{
 			"X-Header": "test-header",
 		},
 	}
-	body, _ = HttpPutForm(urlStr, posts, req, 1000)
+	body, _ = HttpPutForm(urlStr, posts, r, 1000)
 	t.Log(BytesToString(body))
 }
 
@@ -104,13 +107,13 @@ func TestHttpPostJson(t *testing.T) {
 	body, _ = HttpPostJson(urlStr, json, 1000)
 	t.Log(BytesToString(body))
 
-	req := &HttpReq{
+	r := &HttpReq{
 		UserAgent: "test-ua",
 		Headers: map[string]string{
 			"X-Header": "test-header",
 		},
 	}
-	body, _ = HttpPostJson(urlStr, json, req, 1000)
+	body, _ = HttpPostJson(urlStr, json, r, 1000)
 	t.Log(BytesToString(body))
 }
 
@@ -130,13 +133,13 @@ func TestHttpPutJson(t *testing.T) {
 	body, _ = HttpPutJson(urlStr, json, 1000)
 	t.Log(BytesToString(body))
 
-	req := &HttpReq{
+	r := &HttpReq{
 		UserAgent: "test-ua",
 		Headers: map[string]string{
 			"X-Header": "test-header",
 		},
 	}
-	body, _ = HttpPutJson(urlStr, json, req, 1000)
+	body, _ = HttpPutJson(urlStr, json, r, 1000)
 	t.Log(BytesToString(body))
 }
 
@@ -148,14 +151,14 @@ func TestHttpPost(t *testing.T) {
 	data.Set("post2", "post2")
 	b := strings.NewReader(data.Encode())
 
-	req := &HttpReq{
+	r := &HttpReq{
 		UserAgent: "test-ua",
 		Headers: map[string]string{
 			"Content-Type": MimePostForm,
 		},
 	}
 
-	body, err := HttpPost(urlStr, b, req, 1000)
+	body, err := HttpPost(urlStr, b, r, 1000)
 	t.Log(BytesToString(body))
 	t.Log(err)
 }
@@ -168,14 +171,14 @@ func TestHttpPut(t *testing.T) {
 	data.Set("post2", "post2")
 	b := strings.NewReader(data.Encode())
 
-	req := &HttpReq{
+	r := &HttpReq{
 		UserAgent: "test-ua",
 		Headers: map[string]string{
 			"Content-Type": MimePostForm,
 		},
 	}
 
-	body, err := HttpPut(urlStr, b, req, 1000)
+	body, err := HttpPut(urlStr, b, r, 1000)
 	t.Log(BytesToString(body))
 	t.Log(err)
 }
@@ -184,17 +187,126 @@ func TestHttpDelete(t *testing.T) {
 	urlStr := TestUrl + "/delete/path"
 
 	// Headers 与超时时间
-	req := &HttpReq{
+	r := &HttpReq{
 		UserAgent: "test-ua",
 		Headers: map[string]string{
 			"X-Header": "test-header",
 		},
 	}
-	body, _ := HttpDelete(urlStr+"?query1=value1", req, 1000)
+	body, _ := HttpDelete(urlStr+"?query1=value1", r, 1000)
 	t.Log(BytesToString(body))
 
 	// 错误的 Headers
 	body, err := HttpDelete(urlStr, "error header", 1000)
 	t.Log(BytesToString(body))
 	t.Log(err)
+}
+
+func TestHttpDo(t *testing.T) {
+	urlStr := TestUrl + "/get?query1=value1&query2=value2"
+
+	req, err := http.NewRequest(http.MethodGet, urlStr, nil)
+
+	// Headers 与超时时间
+	r := &HttpReq{
+		UserAgent: "test-ua",
+		Headers: map[string]string{
+			"X-Header": "test-header",
+		},
+	}
+	body, err := HttpDo(req, r, 1000)
+	t.Log(BytesToString(body))
+	t.Log(err)
+}
+
+func TestHttpDoResp(t *testing.T) {
+	urlStr := TestUrl + "/get?query1=value1&query2=value2"
+
+	req, err := http.NewRequest(http.MethodGet, urlStr, nil)
+
+	// Headers 与超时时间
+	r := &HttpReq{
+		UserAgent: "test-ua",
+		Headers: map[string]string{
+			"X-Header": "test-header",
+		},
+	}
+	resp, err := HttpDoResp(req, r, 1000)
+	t.Log(resp.Success)
+	t.Log(resp.StatusCode)
+	t.Log(resp.ContentLength)
+	t.Log(BytesToString(resp.Body))
+	t.Log(err)
+}
+
+func TestHttpGetWithProxy(t *testing.T) {
+	transport := &http.Transport{
+		TLSClientConfig:   &tls.Config{InsecureSkipVerify: true},
+		DisableKeepAlives: true,
+	}
+	proxyString := "http://username:password@host:port"
+	proxy, _ := url.Parse(proxyString)
+	transport.Proxy = http.ProxyURL(proxy)
+
+	r := &HttpReq{
+		Transport: transport,
+	}
+
+	body, _ := HttpGet("http://test/ip.php", r)
+	t.Log(BytesToString(body))
+}
+
+func TestHttpSharedTransport(t *testing.T) {
+	urlStr := TestUrl + "/get"
+
+	transport := &http.Transport{
+		TLSClientConfig:   &tls.Config{InsecureSkipVerify: true},
+		DisableKeepAlives: true,
+	}
+
+	var wg sync.WaitGroup
+
+	// 使用了共享的 Transport
+	for i := 0; i < 30; i++ {
+		wg.Add(1)
+		go func() {
+			r := &HttpReq{
+				Transport: transport,
+			}
+			body, _ := HttpGet(urlStr, r)
+			t.Log(BytesToString(body))
+
+			defer wg.Done()
+		}()
+	}
+
+	wg.Wait()
+}
+
+func TestHttpTransport(t *testing.T) {
+	urlStr := TestUrl + "/get"
+
+	var wg sync.WaitGroup
+
+	// 使用了共享的 Transport
+	for i := 0; i < 30; i++ {
+		wg.Add(1)
+		go func() {
+			transport := &http.Transport{
+				TLSClientConfig:     &tls.Config{InsecureSkipVerify: true},
+				DisableKeepAlives:   true,
+				MaxIdleConnsPerHost: RandomInt(1, 100),
+			}
+
+			r := &HttpReq{
+				Transport: transport,
+			}
+			body, _ := HttpGet(urlStr, r)
+			t.Log(BytesToString(body))
+
+			defer wg.Done()
+		}()
+	}
+
+	wg.Wait()
 }

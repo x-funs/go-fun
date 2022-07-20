@@ -44,7 +44,7 @@ var HttpDefaultTransport = &http.Transport{
 }
 
 // HttpGet 参数为请求地址（HttpReq, 超时时间）
-// HttpGet(url)、HttpGet(url, timeout)、HttpGet(url, httpReq, timeout)
+// HttpGet(url)、HttpGet(url, httpReq)、HttpGet(url, timeout)、HttpGet(url, httpReq, timeout)
 // 返回 body，错误信息
 func HttpGet(urlStr string, args ...any) ([]byte, error) {
 	l := len(args)
@@ -53,8 +53,13 @@ func HttpGet(urlStr string, args ...any) ([]byte, error) {
 	case 0:
 		return HttpGetDo(urlStr, nil, 0)
 	case 1:
-		timeout := ToInt(args[0])
-		return HttpGetDo(urlStr, nil, timeout)
+		switch v := args[0].(type) {
+		case int:
+			timeout := ToInt(args[0])
+			return HttpGetDo(urlStr, nil, timeout)
+		case *HttpReq:
+			return HttpGetDo(urlStr, v, 0)
+		}
 	case 2:
 		timeout := ToInt(args[1])
 		switch v := args[0].(type) {
@@ -67,7 +72,7 @@ func HttpGet(urlStr string, args ...any) ([]byte, error) {
 }
 
 // HttpDelete 参数为请求地址（HttpReq, 超时时间）
-// HttpDelete(url)、HttpDelete(url, timeout)、HttpDelete(url, httpReq, timeout)
+// HttpDelete(url)、HttpDelete(url, httpReq)、HttpDelete(url, timeout)、HttpDelete(url, httpReq, timeout)
 // 返回 body，错误信息
 func HttpDelete(urlStr string, args ...any) ([]byte, error) {
 	l := len(args)
@@ -76,8 +81,13 @@ func HttpDelete(urlStr string, args ...any) ([]byte, error) {
 	case 0:
 		return HttpDeleteDo(urlStr, nil, 0)
 	case 1:
-		timeout := ToInt(args[0])
-		return HttpDeleteDo(urlStr, nil, timeout)
+		switch v := args[0].(type) {
+		case int:
+			timeout := ToInt(args[0])
+			return HttpDeleteDo(urlStr, nil, timeout)
+		case *HttpReq:
+			return HttpDeleteDo(urlStr, v, 0)
+		}
 	case 2:
 		timeout := ToInt(args[1])
 		switch v := args[0].(type) {
@@ -90,7 +100,7 @@ func HttpDelete(urlStr string, args ...any) ([]byte, error) {
 }
 
 // HttpPost 参数为请求地址（body io.Reader，HttpReq，超时时间）
-// HttpPost(url)、HttpPost(url, timeout)、HttpPost(url, body)、HttpPost(url, body, timeout)、HttpPostForm(url, body, httpReq, timeout)
+// HttpPost(url)、HttpPost(url, timeout)、HttpPost(url, body)、HttpPost(url, body, timeout)、HttpPost(url, body, httpReq)、HttpPostForm(url, body, httpReq, timeout)
 // 返回 body，错误信息
 func HttpPost(urlStr string, args ...any) ([]byte, error) {
 	l := len(args)
@@ -109,8 +119,13 @@ func HttpPost(urlStr string, args ...any) ([]byte, error) {
 	case 2:
 		switch v := args[0].(type) {
 		case io.Reader:
-			timeout := ToInt(args[1])
-			return HttpPostDo(urlStr, v, nil, timeout)
+			switch h := args[1].(type) {
+			case int:
+				timeout := ToInt(args[1])
+				return HttpPostDo(urlStr, v, nil, timeout)
+			case *HttpReq:
+				return HttpPostDo(urlStr, v, h, 0)
+			}
 		}
 	case 3:
 		switch v := args[0].(type) {
@@ -127,7 +142,7 @@ func HttpPost(urlStr string, args ...any) ([]byte, error) {
 }
 
 // HttpPostForm 参数为请求地址（Form 数据 map[string]string，HttpReq，超时时间）
-// HttpPostForm(url)、HttpPostForm(url, timeout)、HttpPostForm(url, posts)、HttpPostForm(url, posts, timeout)、HttpPostForm(url, posts, httpReq, timeout)
+// HttpPostForm(url)、HttpPostForm(url, timeout)、HttpPostForm(url, posts)、HttpPostForm(url, posts, timeout)、HttpPostForm(url, posts, httpReq)、HttpPostForm(url, posts, httpReq, timeout)
 // 返回 body，错误信息
 func HttpPostForm(urlStr string, args ...any) ([]byte, error) {
 	l := len(args)
@@ -146,8 +161,13 @@ func HttpPostForm(urlStr string, args ...any) ([]byte, error) {
 	case 2:
 		switch v := args[0].(type) {
 		case map[string]string:
-			timeout := ToInt(args[1])
-			return HttpPostFormDo(urlStr, v, nil, timeout)
+			switch h := args[1].(type) {
+			case int:
+				timeout := ToInt(args[1])
+				return HttpPostFormDo(urlStr, v, nil, timeout)
+			case *HttpReq:
+				return HttpPostFormDo(urlStr, v, h, 0)
+			}
 		}
 	case 3:
 		switch v := args[0].(type) {
@@ -164,7 +184,7 @@ func HttpPostForm(urlStr string, args ...any) ([]byte, error) {
 }
 
 // HttpPostJson 参数为请求地址（Json 数据 string，HttpReq, 超时时间）
-// HttpPostJson(url)、HttpPostJson(url, timeout)、HttpPostJson(url, json)、HttpPost(url, json, timeout)、HttpPost(url, json, httpReq, timeout)
+// HttpPostJson(url)、HttpPostJson(url, timeout)、HttpPostJson(url, json)、HttpPost(url, json, timeout)、HttpPost(url, json, httpReq)、HttpPost(url, json, httpReq, timeout)
 // 返回 body，错误信息
 func HttpPostJson(urlStr string, args ...any) ([]byte, error) {
 	l := len(args)
@@ -182,8 +202,13 @@ func HttpPostJson(urlStr string, args ...any) ([]byte, error) {
 	case 2:
 		switch v := args[0].(type) {
 		case string:
-			timeout := ToInt(args[1])
-			return HttpPostJsonDo(urlStr, v, nil, timeout)
+			switch h := args[1].(type) {
+			case int:
+				timeout := ToInt(args[1])
+				return HttpPostJsonDo(urlStr, v, nil, timeout)
+			case *HttpReq:
+				return HttpPostJsonDo(urlStr, v, h, 0)
+			}
 		}
 	case 3:
 		switch v := args[0].(type) {
@@ -200,7 +225,7 @@ func HttpPostJson(urlStr string, args ...any) ([]byte, error) {
 }
 
 // HttpPut 参数为请求地址（body io.Reader，HttpReq，超时时间）
-// HttpPut(url)、HttpPut(url, timeout)、HttpPut(url, body)、HttpPut(url, body, timeout)、HttpPut(url, body, httpReq, timeout)
+// HttpPut(url)、HttpPut(url, timeout)、HttpPut(url, body)、HttpPut(url, body, timeout)、HttpPut(url, body, httpReq)、HttpPut(url, body, httpReq, timeout)
 // 返回 body，错误信息
 func HttpPut(urlStr string, args ...any) ([]byte, error) {
 	l := len(args)
@@ -219,8 +244,13 @@ func HttpPut(urlStr string, args ...any) ([]byte, error) {
 	case 2:
 		switch v := args[0].(type) {
 		case io.Reader:
-			timeout := ToInt(args[1])
-			return HttpPutDo(urlStr, v, nil, timeout)
+			switch h := args[1].(type) {
+			case int:
+				timeout := ToInt(args[1])
+				return HttpPutDo(urlStr, v, nil, timeout)
+			case *HttpReq:
+				return HttpPutDo(urlStr, v, h, 0)
+			}
 		}
 	case 3:
 		switch v := args[0].(type) {
@@ -237,7 +267,7 @@ func HttpPut(urlStr string, args ...any) ([]byte, error) {
 }
 
 // HttpPutForm 参数为请求地址（Form 数据 map[string]string，HttpReq，超时时间）
-// HttpPutForm(url)、HttpPutForm(url, timeout)、HttpPutForm(url, posts)、HttpPutForm(url, posts, timeout)、HttpPutForm(url, posts, httpReq, timeout)
+// HttpPutForm(url)、HttpPutForm(url, timeout)、HttpPutForm(url, posts)、HttpPutForm(url, posts, timeout)、HttpPutForm(url, posts, httpReq)、HttpPutForm(url, posts, httpReq, timeout)
 // 返回 body，错误信息
 func HttpPutForm(urlStr string, args ...any) ([]byte, error) {
 	l := len(args)
@@ -256,8 +286,13 @@ func HttpPutForm(urlStr string, args ...any) ([]byte, error) {
 	case 2:
 		switch v := args[0].(type) {
 		case map[string]string:
-			timeout := ToInt(args[1])
-			return HttpPutFormDo(urlStr, v, nil, timeout)
+			switch h := args[1].(type) {
+			case int:
+				timeout := ToInt(args[1])
+				return HttpPutFormDo(urlStr, v, nil, timeout)
+			case *HttpReq:
+				return HttpPutFormDo(urlStr, v, h, 0)
+			}
 		}
 	case 3:
 		switch v := args[0].(type) {
@@ -274,7 +309,7 @@ func HttpPutForm(urlStr string, args ...any) ([]byte, error) {
 }
 
 // HttpPutJson 参数为请求地址（Json 数据 string，HttpReq, 超时时间）
-// HttpPutJson(url)、HttpPutJson(url, timeout)、HttpPutJson(url, json)、HttpPutJson(url, json, timeout)、HttpPutJson(url, json, httpReq, timeout)
+// HttpPutJson(url)、HttpPutJson(url, timeout)、HttpPutJson(url, json)、HttpPutJson(url, json, timeout)、HttpPutJson(url, json, httpReq)、HttpPutJson(url, json, httpReq, timeout)
 // 返回 body，错误信息
 func HttpPutJson(urlStr string, args ...any) ([]byte, error) {
 	l := len(args)
@@ -292,8 +327,13 @@ func HttpPutJson(urlStr string, args ...any) ([]byte, error) {
 	case 2:
 		switch v := args[0].(type) {
 		case string:
-			timeout := ToInt(args[1])
-			return HttpPutJsonDo(urlStr, v, nil, timeout)
+			switch h := args[1].(type) {
+			case int:
+				timeout := ToInt(args[1])
+				return HttpPutJsonDo(urlStr, v, nil, timeout)
+			case *HttpReq:
+				return HttpPutJsonDo(urlStr, v, h, 0)
+			}
 		}
 	case 3:
 		switch v := args[0].(type) {
@@ -538,6 +578,8 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 			Transport: HttpDefaultTransport,
 		}
 	}
+
+	// fmt.Println(client.Transport)
 
 	// 处理请求头
 	headers := make(map[string]string)
