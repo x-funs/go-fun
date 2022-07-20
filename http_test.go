@@ -260,8 +260,9 @@ func TestHttpSharedTransport(t *testing.T) {
 	urlStr := TestUrl + "/get"
 
 	transport := &http.Transport{
-		TLSClientConfig:   &tls.Config{InsecureSkipVerify: true},
-		DisableKeepAlives: true,
+		TLSClientConfig:     &tls.Config{InsecureSkipVerify: true},
+		DisableKeepAlives:   true,
+		MaxIdleConnsPerHost: RandomInt(10, 100),
 	}
 
 	var wg sync.WaitGroup
@@ -295,7 +296,7 @@ func TestHttpTransport(t *testing.T) {
 			transport := &http.Transport{
 				TLSClientConfig:     &tls.Config{InsecureSkipVerify: true},
 				DisableKeepAlives:   true,
-				MaxIdleConnsPerHost: RandomInt(1, 100),
+				MaxIdleConnsPerHost: RandomInt(10, 100),
 			}
 
 			r := &HttpReq{
