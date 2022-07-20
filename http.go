@@ -17,18 +17,6 @@ const (
 	HttpDefaultUserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
 )
 
-// HttpDefaultTransport 定义了一个默认全局使用的 http.Transport
-var HttpDefaultTransport = &http.Transport{
-	DialContext:           (&net.Dialer{Timeout: time.Second}).DialContext,
-	ForceAttemptHTTP2:     true,
-	MaxIdleConns:          200,
-	MaxIdleConnsPerHost:   5,
-	IdleConnTimeout:       60 * time.Second,
-	TLSHandshakeTimeout:   10 * time.Second,
-	ExpectContinueTimeout: 1 * time.Second,
-	TLSClientConfig:       &tls.Config{InsecureSkipVerify: true},
-}
-
 type HttpReq struct {
 	UserAgent string
 	Headers   map[string]string
@@ -41,6 +29,18 @@ type HttpResp struct {
 	Body          []byte
 	ContentLength int64
 	Headers       *http.Header
+}
+
+// HttpDefaultTransport 默认全局使用的 http.Transport
+var HttpDefaultTransport = &http.Transport{
+	DialContext:           (&net.Dialer{Timeout: time.Second}).DialContext,
+	ForceAttemptHTTP2:     true,
+	MaxIdleConns:          200,
+	MaxIdleConnsPerHost:   5,
+	IdleConnTimeout:       60 * time.Second,
+	TLSHandshakeTimeout:   10 * time.Second,
+	ExpectContinueTimeout: 1 * time.Second,
+	TLSClientConfig:       &tls.Config{InsecureSkipVerify: true},
 }
 
 // HttpGet 参数为请求地址（HttpReq, 超时时间）
@@ -199,6 +199,116 @@ func HttpPostJson(urlStr string, args ...any) ([]byte, error) {
 	return nil, errors.New("HttpPostJson params error")
 }
 
+// HttpPut 参数为请求地址（body io.Reader，HttpReq，超时时间）
+// HttpPut(url)、HttpPut(url, timeout)、HttpPut(url, body)、HttpPut(url, body, timeout)、HttpPut(url, body, httpReq, timeout)
+// 返回 body，错误信息
+func HttpPut(urlStr string, args ...any) ([]byte, error) {
+	l := len(args)
+
+	switch l {
+	case 0:
+		return HttpPutDo(urlStr, nil, nil, 0)
+	case 1:
+		switch v := args[0].(type) {
+		case int:
+			timeout := ToInt(args[0])
+			return HttpPutDo(urlStr, nil, nil, timeout)
+		case io.Reader:
+			return HttpPutDo(urlStr, v, nil, 0)
+		}
+	case 2:
+		switch v := args[0].(type) {
+		case io.Reader:
+			timeout := ToInt(args[1])
+			return HttpPutDo(urlStr, v, nil, timeout)
+		}
+	case 3:
+		switch v := args[0].(type) {
+		case io.Reader:
+			switch h := args[1].(type) {
+			case *HttpReq:
+				timeout := ToInt(args[2])
+				return HttpPutDo(urlStr, v, h, timeout)
+			}
+		}
+	}
+
+	return nil, errors.New("HttpPost params error")
+}
+
+// HttpPutForm 参数为请求地址（Form 数据 map[string]string，HttpReq，超时时间）
+// HttpPutForm(url)、HttpPutForm(url, timeout)、HttpPutForm(url, posts)、HttpPutForm(url, posts, timeout)、HttpPutForm(url, posts, httpReq, timeout)
+// 返回 body，错误信息
+func HttpPutForm(urlStr string, args ...any) ([]byte, error) {
+	l := len(args)
+
+	switch l {
+	case 0:
+		return HttpPutFormDo(urlStr, nil, nil, 0)
+	case 1:
+		switch v := args[0].(type) {
+		case int:
+			timeout := ToInt(args[0])
+			return HttpPutFormDo(urlStr, nil, nil, timeout)
+		case map[string]string:
+			return HttpPutFormDo(urlStr, v, nil, 0)
+		}
+	case 2:
+		switch v := args[0].(type) {
+		case map[string]string:
+			timeout := ToInt(args[1])
+			return HttpPutFormDo(urlStr, v, nil, timeout)
+		}
+	case 3:
+		switch v := args[0].(type) {
+		case map[string]string:
+			switch h := args[1].(type) {
+			case *HttpReq:
+				timeout := ToInt(args[2])
+				return HttpPutFormDo(urlStr, v, h, timeout)
+			}
+		}
+	}
+
+	return nil, errors.New("HttpPostFrom params error")
+}
+
+// HttpPutJson 参数为请求地址（Json 数据 string，HttpReq, 超时时间）
+// HttpPutJson(url)、HttpPutJson(url, timeout)、HttpPutJson(url, json)、HttpPutJson(url, json, timeout)、HttpPutJson(url, json, httpReq, timeout)
+// 返回 body，错误信息
+func HttpPutJson(urlStr string, args ...any) ([]byte, error) {
+	l := len(args)
+	switch l {
+	case 0:
+		return HttpPutJsonDo(urlStr, "{}", nil, 0)
+	case 1:
+		switch v := args[0].(type) {
+		case int:
+			timeout := ToInt(args[0])
+			return HttpPutJsonDo(urlStr, "{}", nil, timeout)
+		case string:
+			return HttpPutJsonDo(urlStr, v, nil, 0)
+		}
+	case 2:
+		switch v := args[0].(type) {
+		case string:
+			timeout := ToInt(args[1])
+			return HttpPutJsonDo(urlStr, v, nil, timeout)
+		}
+	case 3:
+		switch v := args[0].(type) {
+		case string:
+			switch h := args[1].(type) {
+			case *HttpReq:
+				timeout := ToInt(args[2])
+				return HttpPutJsonDo(urlStr, v, h, timeout)
+			}
+		}
+	}
+
+	return nil, errors.New("HttpPostJson params error")
+}
+
 // HttpGetDo Http Get 请求，参数为请求地址，HttpReq，超时时间(毫秒)
 // 返回 body，错误信息
 func HttpGetDo(urlStr string, r *HttpReq, timeout int) ([]byte, error) {
@@ -247,6 +357,39 @@ func HttpPostFormDo(urlStr string, posts map[string]string, r *HttpReq, timeout 
 // 返回 body，错误信息
 func HttpPostJsonDo(urlStr string, json string, r *HttpReq, timeout int) ([]byte, error) {
 	resp, err := HttpPostJsonResp(urlStr, json, r, timeout)
+	if err != nil {
+		return nil, err
+	} else {
+		return resp.Body, nil
+	}
+}
+
+// HttpPutDo Http Put，参数为请求地址，body io.Reader，HttpReq，超时时间(毫秒)
+// 返回 body，错误信息
+func HttpPutDo(urlStr string, body io.Reader, r *HttpReq, timeout int) ([]byte, error) {
+	resp, err := HttpPutResp(urlStr, body, r, timeout)
+	if err != nil {
+		return nil, err
+	} else {
+		return resp.Body, nil
+	}
+}
+
+// HttpPutFormDo Http Put Form，参数为请求地址，Form 数据 map[string]string，HttpReq，超时时间(毫秒)
+// 返回 body，错误信息
+func HttpPutFormDo(urlStr string, posts map[string]string, r *HttpReq, timeout int) ([]byte, error) {
+	resp, err := HttpPutFormResp(urlStr, posts, r, timeout)
+	if err != nil {
+		return nil, err
+	} else {
+		return resp.Body, nil
+	}
+}
+
+// HttpPutJsonDo Http Put Json 请求，参数为请求地址，Json 数据 string，HttpReq，超时时间(毫秒)
+// 返回 body，错误信息
+func HttpPutJsonDo(urlStr string, json string, r *HttpReq, timeout int) ([]byte, error) {
+	resp, err := HttpPutJsonResp(urlStr, json, r, timeout)
 	if err != nil {
 		return nil, err
 	} else {
@@ -311,6 +454,50 @@ func HttpPostFormResp(urlStr string, posts map[string]string, r *HttpReq, timeou
 // 返回 HttpResp，错误信息
 func HttpPostJsonResp(urlStr string, json string, r *HttpReq, timeout int) (*HttpResp, error) {
 	req, err := http.NewRequest(http.MethodPost, urlStr, strings.NewReader(json))
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Content-Type", MimeJson)
+
+	return HttpDoResp(req, r, timeout)
+}
+
+// HttpPutResp Http Put，参数为请求地址，body io.Reader，HttpReq，超时时间(毫秒)
+// 返回 HttpResp，错误信息
+func HttpPutResp(urlStr string, body io.Reader, r *HttpReq, timeout int) (*HttpResp, error) {
+	req, err := http.NewRequest(http.MethodPut, urlStr, body)
+	if err != nil {
+		return nil, err
+	}
+
+	return HttpDoResp(req, r, timeout)
+}
+
+// HttpPutFormResp Http Put Form，参数为请求地址，Form 数据 map[string]string，HttpReq，超时时间(毫秒)
+// 返回 HttpResp，错误信息
+func HttpPutFormResp(urlStr string, posts map[string]string, r *HttpReq, timeout int) (*HttpResp, error) {
+	data := url.Values{}
+	if posts != nil && len(posts) > 0 {
+		for k, v := range posts {
+			data.Set(k, v)
+		}
+	}
+
+	req, err := http.NewRequest(http.MethodPut, urlStr, strings.NewReader(data.Encode()))
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Set("Content-Type", MimePostForm)
+
+	return HttpDoResp(req, r, timeout)
+}
+
+// HttpPutJsonResp Http Put Json 请求，参数为请求地址，Json 数据 string，HttpReq，超时时间(毫秒)
+// 返回 HttpResp，错误信息
+func HttpPutJsonResp(urlStr string, json string, r *HttpReq, timeout int) (*HttpResp, error) {
+	req, err := http.NewRequest(http.MethodPut, urlStr, strings.NewReader(json))
 	if err != nil {
 		return nil, err
 	}

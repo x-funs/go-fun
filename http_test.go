@@ -41,7 +41,7 @@ func TestHttpGet(t *testing.T) {
 }
 
 func TestHttpPostForm(t *testing.T) {
-	urlStr := TestUrl + "/post"
+	urlStr := TestUrl + "/postForm"
 
 	// Post 数据
 	posts := map[string]string{
@@ -64,8 +64,32 @@ func TestHttpPostForm(t *testing.T) {
 	t.Log(BytesToString(body))
 }
 
+func TestHttpPutForm(t *testing.T) {
+	urlStr := TestUrl + "/putForm"
+
+	// Post 数据
+	posts := map[string]string{
+		"post1": "post1",
+	}
+	body, _ := HttpPutForm(urlStr, posts)
+	t.Log(BytesToString(body))
+
+	// Post 数据与超时时间
+	body, _ = HttpPutForm(urlStr, posts, 1000)
+	t.Log(BytesToString(body))
+
+	req := &HttpReq{
+		UserAgent: "test-ua",
+		Headers: map[string]string{
+			"X-Header": "test-header",
+		},
+	}
+	body, _ = HttpPutForm(urlStr, posts, req, 1000)
+	t.Log(BytesToString(body))
+}
+
 func TestHttpPostJson(t *testing.T) {
-	urlStr := TestUrl + "/postJson"
+	urlStr := TestUrl + "/bindPostJson"
 
 	body, _ := HttpPostJson(urlStr)
 	t.Log(BytesToString(body))
@@ -73,7 +97,7 @@ func TestHttpPostJson(t *testing.T) {
 	body, _ = HttpPostJson(urlStr, 1000)
 	t.Log(BytesToString(body))
 
-	json := `{"username":"admin","email":"admin@test.com"}`
+	json := `{"username":"admin","email":"admin@admin.com", "joinTime":"2006-01-02 15:04:05", "isVip":true}`
 	body, _ = HttpPostJson(urlStr, json)
 	t.Log(BytesToString(body))
 
@@ -90,8 +114,34 @@ func TestHttpPostJson(t *testing.T) {
 	t.Log(BytesToString(body))
 }
 
+func TestHttpPutJson(t *testing.T) {
+	urlStr := TestUrl + "/bindPutJson"
+
+	body, _ := HttpPutJson(urlStr)
+	t.Log(BytesToString(body))
+
+	body, _ = HttpPutJson(urlStr, 1000)
+	t.Log(BytesToString(body))
+
+	json := `{"username":"admin","email":"admin@admin.com", "joinTime":"2006-01-02 15:04:05", "isVip":true}`
+	body, _ = HttpPutJson(urlStr, json)
+	t.Log(BytesToString(body))
+
+	body, _ = HttpPutJson(urlStr, json, 1000)
+	t.Log(BytesToString(body))
+
+	req := &HttpReq{
+		UserAgent: "test-ua",
+		Headers: map[string]string{
+			"X-Header": "test-header",
+		},
+	}
+	body, _ = HttpPutJson(urlStr, json, req, 1000)
+	t.Log(BytesToString(body))
+}
+
 func TestHttpPost(t *testing.T) {
-	urlStr := TestUrl + "/post"
+	urlStr := TestUrl + "/postForm"
 
 	data := url.Values{}
 	data.Set("post1", "post1")
@@ -106,6 +156,26 @@ func TestHttpPost(t *testing.T) {
 	}
 
 	body, err := HttpPost(urlStr, b, req, 1000)
+	t.Log(BytesToString(body))
+	t.Log(err)
+}
+
+func TestHttpPut(t *testing.T) {
+	urlStr := TestUrl + "/putForm"
+
+	data := url.Values{}
+	data.Set("post1", "post1")
+	data.Set("post2", "post2")
+	b := strings.NewReader(data.Encode())
+
+	req := &HttpReq{
+		UserAgent: "test-ua",
+		Headers: map[string]string{
+			"Content-Type": MimePostForm,
+		},
+	}
+
+	body, err := HttpPut(urlStr, b, req, 1000)
 	t.Log(BytesToString(body))
 	t.Log(err)
 }
