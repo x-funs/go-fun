@@ -579,8 +579,6 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 		}
 	}
 
-	// fmt.Println(client.Transport)
-
 	// 处理请求头
 	headers := make(map[string]string)
 	if r != nil && r.UserAgent != "" {
