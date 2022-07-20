@@ -289,7 +289,7 @@ func TestHttpTransport(t *testing.T) {
 
 	var wg sync.WaitGroup
 
-	// 使用了共享的 Transport
+	// 使用了不同的 Transport
 	for i := 0; i < 30; i++ {
 		wg.Add(1)
 		go func() {
