@@ -43,9 +43,9 @@ var HttpDefaultTransport = &http.Transport{
 	TLSClientConfig:       &tls.Config{InsecureSkipVerify: true},
 }
 
-// HttpGet 参数为请求地址（HttpReq, 超时时间）
-// HttpGet(url)、HttpGet(url, httpReq)、HttpGet(url, timeout)、HttpGet(url, httpReq, timeout)
-// 返回 body，错误信息
+// HttpGet 参数为请求地址 (HttpReq, 超时时间)
+// HttpGet(url)、HttpGet(url, HttpReq)、HttpGet(url, timeout)、HttpGet(url, HttpReq, timeout)
+// 返回 body, 错误信息
 func HttpGet(urlStr string, args ...any) ([]byte, error) {
 	l := len(args)
 
@@ -71,9 +71,9 @@ func HttpGet(urlStr string, args ...any) ([]byte, error) {
 	return nil, errors.New("HttpGet() params error")
 }
 
-// HttpDelete 参数为请求地址（HttpReq, 超时时间）
-// HttpDelete(url)、HttpDelete(url, httpReq)、HttpDelete(url, timeout)、HttpDelete(url, httpReq, timeout)
-// 返回 body，错误信息
+// HttpDelete 参数为请求地址 (HttpReq, 超时时间)
+// HttpDelete(url)、HttpDelete(url, HttpReq)、HttpDelete(url, timeout)、HttpDelete(url, HttpReq, timeout)
+// 返回 body, 错误信息
 func HttpDelete(urlStr string, args ...any) ([]byte, error) {
 	l := len(args)
 
@@ -99,9 +99,9 @@ func HttpDelete(urlStr string, args ...any) ([]byte, error) {
 	return nil, errors.New("HttpDelete params error")
 }
 
-// HttpPost 参数为请求地址（body io.Reader，HttpReq，超时时间）
-// HttpPost(url)、HttpPost(url, timeout)、HttpPost(url, body)、HttpPost(url, body, timeout)、HttpPost(url, body, httpReq)、HttpPostForm(url, body, httpReq, timeout)
-// 返回 body，错误信息
+// HttpPost 参数为请求地址 (body io.Reader, HttpReq, 超时时间)
+// HttpPost(url)、HttpPost(url, timeout)、HttpPost(url, body)、HttpPost(url, body, timeout)、HttpPost(url, body, HttpReq)、HttpPostForm(url, body, HttpReq, timeout)
+// 返回 body, 错误信息
 func HttpPost(urlStr string, args ...any) ([]byte, error) {
 	l := len(args)
 
@@ -141,9 +141,9 @@ func HttpPost(urlStr string, args ...any) ([]byte, error) {
 	return nil, errors.New("HttpPost params error")
 }
 
-// HttpPostForm 参数为请求地址（Form 数据 map[string]string，HttpReq，超时时间）
-// HttpPostForm(url)、HttpPostForm(url, timeout)、HttpPostForm(url, posts)、HttpPostForm(url, posts, timeout)、HttpPostForm(url, posts, httpReq)、HttpPostForm(url, posts, httpReq, timeout)
-// 返回 body，错误信息
+// HttpPostForm 参数为请求地址 (Form 数据 map[string]string, HttpReq, 超时时间)
+// HttpPostForm(url)、HttpPostForm(url, timeout)、HttpPostForm(url, posts)、HttpPostForm(url, posts, timeout)、HttpPostForm(url, posts, HttpReq)、HttpPostForm(url, posts, HttpReq, timeout)
+// 返回 body, 错误信息
 func HttpPostForm(urlStr string, args ...any) ([]byte, error) {
 	l := len(args)
 
@@ -183,9 +183,9 @@ func HttpPostForm(urlStr string, args ...any) ([]byte, error) {
 	return nil, errors.New("HttpPostFrom params error")
 }
 
-// HttpPostJson 参数为请求地址（Json 数据 string，HttpReq, 超时时间）
-// HttpPostJson(url)、HttpPostJson(url, timeout)、HttpPostJson(url, json)、HttpPost(url, json, timeout)、HttpPost(url, json, httpReq)、HttpPost(url, json, httpReq, timeout)
-// 返回 body，错误信息
+// HttpPostJson 参数为请求地址 (Json 数据 string, HttpReq, 超时时间)
+// HttpPostJson(url)、HttpPostJson(url, timeout)、HttpPostJson(url, json)、HttpPost(url, json, timeout)、HttpPost(url, json, HttpReq)、HttpPost(url, json, HttpReq, timeout)
+// 返回 body, 错误信息
 func HttpPostJson(urlStr string, args ...any) ([]byte, error) {
 	l := len(args)
 	switch l {
@@ -224,9 +224,9 @@ func HttpPostJson(urlStr string, args ...any) ([]byte, error) {
 	return nil, errors.New("HttpPostJson params error")
 }
 
-// HttpPut 参数为请求地址（body io.Reader，HttpReq，超时时间）
-// HttpPut(url)、HttpPut(url, timeout)、HttpPut(url, body)、HttpPut(url, body, timeout)、HttpPut(url, body, httpReq)、HttpPut(url, body, httpReq, timeout)
-// 返回 body，错误信息
+// HttpPut 参数为请求地址 (body io.Reader, HttpReq, 超时时间)
+// HttpPut(url)、HttpPut(url, timeout)、HttpPut(url, body)、HttpPut(url, body, timeout)、HttpPut(url, body, HttpReq)、HttpPut(url, body, HttpReq, timeout)
+// 返回 body, 错误信息
 func HttpPut(urlStr string, args ...any) ([]byte, error) {
 	l := len(args)
 
@@ -266,9 +266,9 @@ func HttpPut(urlStr string, args ...any) ([]byte, error) {
 	return nil, errors.New("HttpPost params error")
 }
 
-// HttpPutForm 参数为请求地址（Form 数据 map[string]string，HttpReq，超时时间）
-// HttpPutForm(url)、HttpPutForm(url, timeout)、HttpPutForm(url, posts)、HttpPutForm(url, posts, timeout)、HttpPutForm(url, posts, httpReq)、HttpPutForm(url, posts, httpReq, timeout)
-// 返回 body，错误信息
+// HttpPutForm 参数为请求地址 (Form 数据 map[string]string, HttpReq, 超时时间)
+// HttpPutForm(url)、HttpPutForm(url, timeout)、HttpPutForm(url, posts)、HttpPutForm(url, posts, timeout)、HttpPutForm(url, posts, HttpReq)、HttpPutForm(url, posts, HttpReq, timeout)
+// 返回 body, 错误信息
 func HttpPutForm(urlStr string, args ...any) ([]byte, error) {
 	l := len(args)
 
@@ -308,9 +308,9 @@ func HttpPutForm(urlStr string, args ...any) ([]byte, error) {
 	return nil, errors.New("HttpPostFrom params error")
 }
 
-// HttpPutJson 参数为请求地址（Json 数据 string，HttpReq, 超时时间）
+// HttpPutJson 参数为请求地址 (Json 数据 string, HttpReq, 超时时间)
 // HttpPutJson(url)、HttpPutJson(url, timeout)、HttpPutJson(url, json)、HttpPutJson(url, json, timeout)、HttpPutJson(url, json, httpReq)、HttpPutJson(url, json, httpReq, timeout)
-// 返回 body，错误信息
+// 返回 body, 错误信息
 func HttpPutJson(urlStr string, args ...any) ([]byte, error) {
 	l := len(args)
 	switch l {
@@ -349,8 +349,8 @@ func HttpPutJson(urlStr string, args ...any) ([]byte, error) {
 	return nil, errors.New("HttpPostJson params error")
 }
 
-// HttpGetDo Http Get 请求，参数为请求地址，HttpReq，超时时间(毫秒)
-// 返回 body，错误信息
+// HttpGetDo Http Get 请求, 参数为请求地址, HttpReq, 超时时间(毫秒)
+// 返回 body, 错误信息
 func HttpGetDo(urlStr string, r *HttpReq, timeout int) ([]byte, error) {
 	resp, err := HttpGetResp(urlStr, r, timeout)
 	if err != nil {
@@ -360,8 +360,8 @@ func HttpGetDo(urlStr string, r *HttpReq, timeout int) ([]byte, error) {
 	}
 }
 
-// HttpDeleteDo Http Delete 请求，参数为请求地址，HttpReq，超时时间(毫秒)
-// 返回 body，错误信息
+// HttpDeleteDo Http Delete 请求, 参数为请求地址, HttpReq, 超时时间(毫秒)
+// 返回 body, 错误信息
 func HttpDeleteDo(urlStr string, r *HttpReq, timeout int) ([]byte, error) {
 	resp, err := HttpDeleteResp(urlStr, r, timeout)
 	if err != nil {
@@ -371,8 +371,8 @@ func HttpDeleteDo(urlStr string, r *HttpReq, timeout int) ([]byte, error) {
 	}
 }
 
-// HttpPostDo Http Post，参数为请求地址，body io.Reader，HttpReq，超时时间(毫秒)
-// 返回 body，错误信息
+// HttpPostDo Http Post, 参数为请求地址, body io.Reader, HttpReq, 超时时间(毫秒)
+// 返回 body, 错误信息
 func HttpPostDo(urlStr string, body io.Reader, r *HttpReq, timeout int) ([]byte, error) {
 	resp, err := HttpPostResp(urlStr, body, r, timeout)
 	if err != nil {
@@ -382,8 +382,8 @@ func HttpPostDo(urlStr string, body io.Reader, r *HttpReq, timeout int) ([]byte,
 	}
 }
 
-// HttpPostFormDo Http Post Form，参数为请求地址，Form 数据 map[string]string，HttpReq，超时时间(毫秒)
-// 返回 body，错误信息
+// HttpPostFormDo Http Post Form, 参数为请求地址, Form 数据 map[string]string, HttpReq, 超时时间(毫秒)
+// 返回 body, 错误信息
 func HttpPostFormDo(urlStr string, posts map[string]string, r *HttpReq, timeout int) ([]byte, error) {
 	resp, err := HttpPostFormResp(urlStr, posts, r, timeout)
 	if err != nil {
@@ -393,8 +393,8 @@ func HttpPostFormDo(urlStr string, posts map[string]string, r *HttpReq, timeout 
 	}
 }
 
-// HttpPostJsonDo Http Post Json 请求，参数为请求地址，Json 数据 string，HttpReq，超时时间(毫秒)
-// 返回 body，错误信息
+// HttpPostJsonDo Http Post Json 请求, 参数为请求地址, Json 数据 string, HttpReq, 超时时间(毫秒)
+// 返回 body, 错误信息
 func HttpPostJsonDo(urlStr string, json string, r *HttpReq, timeout int) ([]byte, error) {
 	resp, err := HttpPostJsonResp(urlStr, json, r, timeout)
 	if err != nil {
@@ -404,8 +404,8 @@ func HttpPostJsonDo(urlStr string, json string, r *HttpReq, timeout int) ([]byte
 	}
 }
 
-// HttpPutDo Http Put，参数为请求地址，body io.Reader，HttpReq，超时时间(毫秒)
-// 返回 body，错误信息
+// HttpPutDo Http Put, 参数为请求地址, body io.Reader, HttpReq, 超时时间(毫秒)
+// 返回 body, 错误信息
 func HttpPutDo(urlStr string, body io.Reader, r *HttpReq, timeout int) ([]byte, error) {
 	resp, err := HttpPutResp(urlStr, body, r, timeout)
 	if err != nil {
@@ -415,8 +415,8 @@ func HttpPutDo(urlStr string, body io.Reader, r *HttpReq, timeout int) ([]byte, 
 	}
 }
 
-// HttpPutFormDo Http Put Form，参数为请求地址，Form 数据 map[string]string，HttpReq，超时时间(毫秒)
-// 返回 body，错误信息
+// HttpPutFormDo Http Put Form, 参数为请求地址, Form 数据 map[string]string, HttpReq, 超时时间(毫秒)
+// 返回 body, 错误信息
 func HttpPutFormDo(urlStr string, posts map[string]string, r *HttpReq, timeout int) ([]byte, error) {
 	resp, err := HttpPutFormResp(urlStr, posts, r, timeout)
 	if err != nil {
@@ -426,8 +426,8 @@ func HttpPutFormDo(urlStr string, posts map[string]string, r *HttpReq, timeout i
 	}
 }
 
-// HttpPutJsonDo Http Put Json 请求，参数为请求地址，Json 数据 string，HttpReq，超时时间(毫秒)
-// 返回 body，错误信息
+// HttpPutJsonDo Http Put Json 请求, 参数为请求地址, Json 数据 string, HttpReq, 超时时间(毫秒)
+// 返回 body, 错误信息
 func HttpPutJsonDo(urlStr string, json string, r *HttpReq, timeout int) ([]byte, error) {
 	resp, err := HttpPutJsonResp(urlStr, json, r, timeout)
 	if err != nil {
@@ -437,8 +437,8 @@ func HttpPutJsonDo(urlStr string, json string, r *HttpReq, timeout int) ([]byte,
 	}
 }
 
-// HttpGetResp Http Get 请求，参数为请求地址，HttpReq，超时时间(毫秒)
-// 返回 HttpResp，错误信息
+// HttpGetResp Http Get 请求, 参数为请求地址, HttpReq, 超时时间(毫秒)
+// 返回 HttpResp, 错误信息
 func HttpGetResp(urlStr string, r *HttpReq, timeout int) (*HttpResp, error) {
 	req, err := http.NewRequest(http.MethodGet, urlStr, nil)
 	if err != nil {
@@ -448,8 +448,8 @@ func HttpGetResp(urlStr string, r *HttpReq, timeout int) (*HttpResp, error) {
 	return HttpDoResp(req, r, timeout)
 }
 
-// HttpDeleteResp Http Delete 请求，参数为请求地址，HttpReq，超时时间(毫秒)
-// 返回 HttpResp，错误信息
+// HttpDeleteResp Http Delete 请求, 参数为请求地址, HttpReq, 超时时间(毫秒)
+// 返回 HttpResp, 错误信息
 func HttpDeleteResp(urlStr string, r *HttpReq, timeout int) (*HttpResp, error) {
 	req, err := http.NewRequest(http.MethodDelete, urlStr, nil)
 	if err != nil {
@@ -459,8 +459,8 @@ func HttpDeleteResp(urlStr string, r *HttpReq, timeout int) (*HttpResp, error) {
 	return HttpDoResp(req, r, timeout)
 }
 
-// HttpPostResp Http Post，参数为请求地址，body io.Reader，HttpReq，超时时间(毫秒)
-// 返回 HttpResp，错误信息
+// HttpPostResp Http Post, 参数为请求地址, body io.Reader, HttpReq, 超时时间(毫秒)
+// 返回 HttpResp, 错误信息
 func HttpPostResp(urlStr string, body io.Reader, r *HttpReq, timeout int) (*HttpResp, error) {
 	req, err := http.NewRequest(http.MethodPost, urlStr, body)
 	if err != nil {
@@ -470,8 +470,8 @@ func HttpPostResp(urlStr string, body io.Reader, r *HttpReq, timeout int) (*Http
 	return HttpDoResp(req, r, timeout)
 }
 
-// HttpPostFormResp Http Post Form，参数为请求地址，Form 数据 map[string]string，HttpReq，超时时间(毫秒)
-// 返回 HttpResp，错误信息
+// HttpPostFormResp Http Post Form, 参数为请求地址, Form 数据 map[string]string, HttpReq, 超时时间(毫秒)
+// 返回 HttpResp, 错误信息
 func HttpPostFormResp(urlStr string, posts map[string]string, r *HttpReq, timeout int) (*HttpResp, error) {
 	data := url.Values{}
 	if posts != nil && len(posts) > 0 {
@@ -490,8 +490,8 @@ func HttpPostFormResp(urlStr string, posts map[string]string, r *HttpReq, timeou
 	return HttpDoResp(req, r, timeout)
 }
 
-// HttpPostJsonResp Http Post Json 请求，参数为请求地址，Json 数据 string，HttpReq，超时时间(毫秒)
-// 返回 HttpResp，错误信息
+// HttpPostJsonResp Http Post Json 请求, 参数为请求地址, Json 数据 string, HttpReq, 超时时间(毫秒)
+// 返回 HttpResp, 错误信息
 func HttpPostJsonResp(urlStr string, json string, r *HttpReq, timeout int) (*HttpResp, error) {
 	req, err := http.NewRequest(http.MethodPost, urlStr, strings.NewReader(json))
 	if err != nil {
@@ -503,8 +503,8 @@ func HttpPostJsonResp(urlStr string, json string, r *HttpReq, timeout int) (*Htt
 	return HttpDoResp(req, r, timeout)
 }
 
-// HttpPutResp Http Put，参数为请求地址，body io.Reader，HttpReq，超时时间(毫秒)
-// 返回 HttpResp，错误信息
+// HttpPutResp Http Put, 参数为请求地址, body io.Reader, HttpReq, 超时时间(毫秒)
+// 返回 HttpResp, 错误信息
 func HttpPutResp(urlStr string, body io.Reader, r *HttpReq, timeout int) (*HttpResp, error) {
 	req, err := http.NewRequest(http.MethodPut, urlStr, body)
 	if err != nil {
@@ -514,8 +514,8 @@ func HttpPutResp(urlStr string, body io.Reader, r *HttpReq, timeout int) (*HttpR
 	return HttpDoResp(req, r, timeout)
 }
 
-// HttpPutFormResp Http Put Form，参数为请求地址，Form 数据 map[string]string，HttpReq，超时时间(毫秒)
-// 返回 HttpResp，错误信息
+// HttpPutFormResp Http Put Form, 参数为请求地址, Form 数据 map[string]string, HttpReq, 超时时间(毫秒)
+// 返回 HttpResp, 错误信息
 func HttpPutFormResp(urlStr string, posts map[string]string, r *HttpReq, timeout int) (*HttpResp, error) {
 	data := url.Values{}
 	if posts != nil && len(posts) > 0 {
@@ -534,8 +534,8 @@ func HttpPutFormResp(urlStr string, posts map[string]string, r *HttpReq, timeout
 	return HttpDoResp(req, r, timeout)
 }
 
-// HttpPutJsonResp Http Put Json 请求，参数为请求地址，Json 数据 string，HttpReq，超时时间(毫秒)
-// 返回 HttpResp，错误信息
+// HttpPutJsonResp Http Put Json 请求, 参数为请求地址, Json 数据 string, HttpReq, 超时时间(毫秒)
+// 返回 HttpResp, 错误信息
 func HttpPutJsonResp(urlStr string, json string, r *HttpReq, timeout int) (*HttpResp, error) {
 	req, err := http.NewRequest(http.MethodPut, urlStr, strings.NewReader(json))
 	if err != nil {
@@ -547,8 +547,8 @@ func HttpPutJsonResp(urlStr string, json string, r *HttpReq, timeout int) (*Http
 	return HttpDoResp(req, r, timeout)
 }
 
-// HttpDo Http 请求，参数为 http.Request，HttpReq，超时时间(毫秒)
-// 返回 body，错误信息
+// HttpDo Http 请求, 参数为 http.Request, HttpReq, 超时时间(毫秒)
+// 返回 body, 错误信息
 func HttpDo(req *http.Request, r *HttpReq, timeout int) ([]byte, error) {
 	resp, err := HttpDoResp(req, r, timeout)
 	if err != nil {
@@ -558,8 +558,8 @@ func HttpDo(req *http.Request, r *HttpReq, timeout int) ([]byte, error) {
 	}
 }
 
-// HttpDoResp Http 请求，参数为 http.Request，HttpReq，超时时间(毫秒)
-// 返回 HttpResp，错误信息
+// HttpDoResp Http 请求, 参数为 http.Request, HttpReq, 超时时间(毫秒)
+// 返回 HttpResp, 错误信息
 func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 	if timeout == 0 {
 		timeout = HttpDefaultTimeOut
