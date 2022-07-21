@@ -11,7 +11,7 @@ func Similarity(a, b string) float64 {
 		return 1
 	}
 
-	lcs := float64(Lcs(a, b))
+	lcs := float64(LongestCommonSubString(a, b))
 	max := float64(Max(len1, len2))
 
 	return lcs / max
@@ -25,14 +25,8 @@ func SimilarityText(a, b string) float64 {
 	return Similarity(a, b)
 }
 
-// removeSign 将字符串的所有数据依次写成一行，去除无意义字符串(标点符号、符号、分隔符、其他)
-func removeSign(str string) string {
-	m := regexp.MustCompile(`[\pP\pS\pZ\pC]`)
-	return m.ReplaceAllString(str, "")
-}
-
-// Lcs 计算两个字符串最大公共子串长度
-func Lcs(x, y string) int {
+// LongestCommonSubString 计算两个字符串最大公共子串长度
+func LongestCommonSubString(x, y string) int {
 	rm := []rune(x)
 	rn := []rune(y)
 
@@ -60,4 +54,10 @@ func Lcs(x, y string) int {
 	}
 
 	return opt[0][0]
+}
+
+// removeSign 将字符串的所有数据依次写成一行，去除无意义字符串(标点符号、符号、分隔符、其他)
+func removeSign(str string) string {
+	m := regexp.MustCompile(`[\pP\pS\pZ\pC]`)
+	return m.ReplaceAllString(str, "")
 }
