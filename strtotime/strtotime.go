@@ -298,7 +298,7 @@ func processTzCorrection(tzOffset string, oldValue int) int {
 }
 
 func getUtcHour(input string) int {
-	re := regexp.MustCompile("[:]\\d{2}[zZ+-](\\d{2})")
+	re := regexp.MustCompile(":\\d{2}[zZ+-](\\d{2})")
 	match := re.FindStringSubmatch(input)
 	if len(match) == 2 {
 		hourMatch := match[1]

@@ -6,8 +6,8 @@ import (
 	"time"
 )
 
-//result holds all the integers tha make up the final Time object returned.
-// we use pointers for some properties because we need to verify if they'be been
+// result holds all the integers tha make up the final Time object returned.
+// we use pointers for some properties because we need to verify if they are being
 // initialized or not
 type result struct {
 	// date
@@ -169,7 +169,7 @@ func (r *result) toDate(re int64) time.Time {
 		} else {
 			var diff = *r.weekday - dow
 
-			//TODO: Fix this madness
+			// TODO: Fix this madness
 			if (r.rd < 0 && diff < 0) || (r.rd >= 0 && diff <= -r.weekdayBehavior) {
 				diff += 7
 			}
@@ -177,7 +177,7 @@ func (r *result) toDate(re int64) time.Time {
 			if *r.weekday >= 0 {
 				*r.d += diff
 			} else {
-				//TODO: Fix this madness
+				// TODO: Fix this madness
 				*r.d -= int(7 - (math.Abs(float64(*r.weekday)) - float64(dow)))
 			}
 

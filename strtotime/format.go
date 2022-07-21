@@ -66,7 +66,7 @@ func formats() []format {
 		name:  "yesterday",
 		callback: func(r *result, inputs ...string) error {
 			r.rd--
-			//HACK: Original code had call to r.resetTime()
+			// HACK: Original code had call to r.resetTime()
 			// Might have to do with timezone adjustment
 			return nil
 		},
@@ -709,7 +709,8 @@ func formats() []format {
 		},
 	}
 
-	pgydotd := format{ //also known as julian date format
+	pgydotd := format{
+		// also known as julian date format
 		regex: "^" + reYear4 + `\.?` + reDayOfYear,
 		name:  "pgydotd",
 		callback: func(r *result, inputs ...string) error {
@@ -1135,7 +1136,7 @@ func formats() []format {
 		callback: func(r *result, inputs ...string) error {
 			relValue := inputs[0]
 			relUnit := inputs[1]
-			//TODO: implement handling of 'this time-unit'
+			// TODO: implement handling of 'this time-unit'
 			amount, _ := lookupRelative(relValue)
 
 			switch strings.ToLower(relUnit) {
@@ -1178,7 +1179,7 @@ func formats() []format {
 				}
 				break
 			case "weekday", "weekdays":
-				//TODO: Implement
+				// TODO: Implement
 				break
 			}
 			return nil

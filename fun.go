@@ -48,7 +48,7 @@ type GenNumber interface {
 }
 
 // Timestamp 返回当前时间的 Unix 时间戳。
-// 默认返回秒级，支持 Timestamp(true) 返回毫秒级
+// 默认返回秒级, 支持 Timestamp(true) 返回毫秒级
 func Timestamp(millis ...any) int64 {
 	l := len(millis)
 	switch l {
@@ -90,7 +90,7 @@ func MemoryBytes() map[string]int64 {
 	return maps
 }
 
-// Memory 指定格式返回当前主要的内存指标信息，(ReadMemStats 会进行 stopTheWorld, 谨慎使用)
+// Memory 指定格式返回当前主要的内存指标信息, (ReadMemStats 会进行 stopTheWorld, 谨慎使用)
 func Memory(format string) map[string]int64 {
 	m := MemoryBytes()
 	for k, v := range m {
@@ -206,7 +206,7 @@ func ToInt(value any) int {
 	return 0
 }
 
-// ToLong ToInt64 别名，数字或字符串转 int64
+// ToLong ToInt64 别名, 数字或字符串转 int64
 func ToLong(value any) int64 {
 	return ToInt64(value)
 }
@@ -340,7 +340,7 @@ func Base64UrlDecode(str string) string {
 	return BytesToString(decode)
 }
 
-// BlankAll 判断 Trim 后的字符串集，是否全部为空白
+// BlankAll 判断 Trim 后的字符串集, 是否全部为空白
 func BlankAll(strs ...string) bool {
 	if len(strs) == 0 {
 		return true
@@ -355,7 +355,7 @@ func BlankAll(strs ...string) bool {
 	return true
 }
 
-// BlankAny 判断 Trim 后的字符串集，是否任意一个包含空白
+// BlankAny 判断 Trim 后的字符串集, 是否任意一个包含空白
 func BlankAny(strs ...string) bool {
 	if len(strs) == 0 {
 		return true
@@ -370,7 +370,7 @@ func BlankAny(strs ...string) bool {
 	return false
 }
 
-// Blank 判断 Trim 后的字符串，是否为空白
+// Blank 判断 Trim 后的字符串, 是否为空白
 func Blank(str string) bool {
 	t := strings.TrimSpace(str)
 
@@ -411,7 +411,7 @@ func EmptyAny(values ...any) bool {
 	return false
 }
 
-// Empty 判断是否为空，支持字符串、数值、数组、Slice、Map
+// Empty 判断是否为空, 支持字符串、数值、数组、Slice、Map
 func Empty(value any) bool {
 	if value == nil {
 		return true
@@ -496,7 +496,7 @@ func StrToTime(args ...any) int64 {
 	return 0
 }
 
-// SplitTrim 分割字符串为字符串切片，对分割后的值进行 Trim ，并自动忽略空值
+// SplitTrim 分割字符串为字符串切片, 对分割后的值进行 Trim , 并自动忽略空值
 func SplitTrim(str, sep string) []string {
 	if len(str) == 0 || len(sep) == 0 {
 		return []string{}
@@ -518,7 +518,7 @@ func SplitTrim(str, sep string) []string {
 	return slices
 }
 
-// SplitTrimToInts 分割字符串为 int 切片，对分割后的值进行 Trim ，并自动忽略空值
+// SplitTrimToInts 分割字符串为 int 切片, 对分割后的值进行 Trim , 并自动忽略空值
 func SplitTrimToInts(str, sep string) []int {
 	if len(str) == 0 || len(sep) == 0 {
 		return []int{}
@@ -587,7 +587,7 @@ func Contains(str, substr string) bool {
 	return strings.Contains(str, substr)
 }
 
-// ContainsCase 判断字符串是否包含指定的子串，不区分大小写
+// ContainsCase 判断字符串是否包含指定的子串, 不区分大小写
 func ContainsCase(str, substr string) bool {
 	return Contains(strings.ToLower(str), strings.ToLower(substr))
 }
@@ -711,7 +711,7 @@ func Wrap(str string, wrapStr string) string {
 	return sb.String()
 }
 
-// Unwrap 去除字符串包围，非递归
+// Unwrap 去除字符串包围, 非递归
 func Unwrap(str string, wrapStr string) string {
 	if str == "" || wrapStr == "" {
 		return str
@@ -805,17 +805,17 @@ func RandomInt64(min, max int64) int64 {
 	return randomNew.Int63n(max-min) + min
 }
 
-// RandomString 返回指定长度的随机字符串，包含字母和数字
+// RandomString 返回指定长度的随机字符串, 包含字母和数字
 func RandomString(length int) string {
 	return RandomPool(StringLetterAndNumber, length)
 }
 
-// RandomLetter 返回指定长度的随机字符串，仅包含字母
+// RandomLetter 返回指定长度的随机字符串, 仅包含字母
 func RandomLetter(length int) string {
 	return RandomPool(StringLetter, length)
 }
 
-// RandomNumber 返回指定长度的随机字符串，仅包含数字
+// RandomNumber 返回指定长度的随机字符串, 仅包含数字
 func RandomNumber(length int) string {
 	return RandomPool(StringNumber, length)
 }
@@ -964,7 +964,7 @@ func SliceIndex[T GenInteger | string](slice []T, v T) int {
 	return -1
 }
 
-// SliceLastIndex 对数值和字符串切片按照指定值进行查找，返回最后一个匹配的索引
+// SliceLastIndex 对数值和字符串切片按照指定值进行查找, 返回最后一个匹配的索引
 func SliceLastIndex[T GenInteger | string](slice []T, v T) int {
 	for i := len(slice) - 1; i >= 0; i-- {
 		if slice[i] == v {
@@ -1005,7 +1005,7 @@ func SliceRemoveBlank(slice []string) []string {
 	return res
 }
 
-// SliceTrim 对字符串切片进行 Trim，并自动忽略空值
+// SliceTrim 对字符串切片进行 Trim, 并自动忽略空值
 func SliceTrim(slice []string) []string {
 	if len(slice) == 0 {
 		return slice
@@ -1043,7 +1043,7 @@ func MapValues[K comparable, V any](m map[K]V) []V {
 	return values
 }
 
-// MapMerge 合并两个map，如果有相同的键，则后者会覆盖前者
+// MapMerge 合并两个map, 如果有相同的键, 则后者会覆盖前者
 func MapMerge[K comparable, V any](maps ...map[K]V) map[K]V {
 	res := make(map[K]V, 0)
 
