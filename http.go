@@ -18,17 +18,31 @@ const (
 )
 
 type HttpReq struct {
-	Transport http.RoundTripper
+	// UserAgent 优先于请求头 Headers 中的 User-Agent 字段
 	UserAgent string
-	Headers   map[string]string
+
+	// 请求头
+	Headers map[string]string
+
+	// http.Transport
+	Transport http.RoundTripper
 }
 
 type HttpResp struct {
-	Headers       *http.Header
-	Success       bool
-	StatusCode    int
-	Body          []byte
+	// 是否成功 (200-299)
+	Success bool
+
+	// Http 状态码
+	StatusCode int
+
+	// 响应体
+	Body []byte
+
+	// ContentLength (字节数)
 	ContentLength int64
+
+	// 响应头
+	Headers *http.Header
 }
 
 // HttpDefaultTransport 默认全局使用的 http.Transport
