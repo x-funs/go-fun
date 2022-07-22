@@ -1,6 +1,7 @@
 package fun
 
 import (
+	"bytes"
 	"crypto/md5"
 	"crypto/sha1"
 	"crypto/sha256"
@@ -11,6 +12,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"math"
 	"math/rand"
 	"net"
@@ -26,6 +28,7 @@ import (
 	"unsafe"
 
 	"github.com/x-funs/go-fun/strtotime"
+	"golang.org/x/net/html/charset"
 )
 
 var (
@@ -286,6 +289,14 @@ func ToInt64(value any) int64 {
 	}
 
 	return 0
+}
+
+// ToUtf8 指定字符集转 utf8
+func ToUtf8(b []byte, encode string) []byte {
+	byteReader := bytes.NewReader(b)
+	r, _ := charset.NewReaderLabel(encode, byteReader)
+	s, _ := ioutil.ReadAll(r)
+	return s
 }
 
 // Md5 返回字符串 Md5 值

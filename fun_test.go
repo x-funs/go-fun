@@ -100,6 +100,12 @@ func TestToUnit(t *testing.T) {
 	assert.Equal(t, uint8(0), ToUint8("-1"))
 }
 
+func TestToUtf8(t *testing.T) {
+	s := []byte{0xd7, 0xd4}
+	t.Log(string(s))
+	t.Log(string(ToUtf8(s, "gbk")))
+}
+
 func TestToBool(t *testing.T) {
 	assert.Equal(t, false, ToBool(""))
 	assert.Equal(t, true, ToBool("true"))
