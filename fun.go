@@ -292,7 +292,7 @@ func ToInt64(value any) int64 {
 	return 0
 }
 
-// ToUtf8 指定字符集转 utf8
+// ToUtf8 指定字符集转 utf-8
 func ToUtf8(origin []byte, encode string) ([]byte, error) {
 	e, err := ianaindex.MIME.Encoding(encode)
 	if err != nil {
