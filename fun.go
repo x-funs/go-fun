@@ -299,7 +299,7 @@ func ToUtf8(b []byte, encode string) ([]byte, error) {
 		return nil, err
 	}
 
-	r := transform.NewReader(bytes.NewBuffer(b), e.NewDecoder())
+	r := transform.NewReader(bytes.NewReader(b), e.NewDecoder())
 	s, err := ioutil.ReadAll(r)
 	if err != nil {
 		return nil, err
