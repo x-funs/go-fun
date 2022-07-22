@@ -28,7 +28,8 @@ import (
 	"unsafe"
 
 	"github.com/x-funs/go-fun/strtotime"
-	"golang.org/x/net/html/charset"
+	"golang.org/x/text/encoding/ianaindex"
+	"golang.org/x/text/transform"
 )
 
 var (
@@ -292,11 +293,18 @@ func ToInt64(value any) int64 {
 }
 
 // ToUtf8 指定字符集转 utf8
-func ToUtf8(b []byte, encode string) []byte {
-	byteReader := bytes.NewReader(b)
-	r, _ := charset.NewReaderLabel(encode, byteReader)
-	s, _ := ioutil.ReadAll(r)
-	return s
+func ToUtf8(b []byte, encode string) ([]byte, error) {
+	e, err := ianaindex.MIME.Encoding(encode)
+	if err != nil {
+		return nil, err
+	}
+
+	r := transform.NewReader(bytes.NewBuffer(b), e.NewDecoder())
+	s, err := ioutil.ReadAll(r)
+	if err != nil {
+		return nil, err
+	}
+	return s, nil
 }
 
 // Md5 返回字符串 Md5 值

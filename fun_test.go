@@ -103,7 +103,13 @@ func TestToUnit(t *testing.T) {
 func TestToUtf8(t *testing.T) {
 	s := []byte{0xd7, 0xd4}
 	t.Log(string(s))
-	t.Log(string(ToUtf8(s, "gbk")))
+
+	result, err := ToUtf8(s, "gbk")
+	if err != nil {
+		t.Log(err)
+	} else {
+		t.Log(string(result))
+	}
 }
 
 func TestToBool(t *testing.T) {
