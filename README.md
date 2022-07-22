@@ -34,6 +34,6 @@ func main() {
 
 	// send a simple http and get body
 	html, _ := fun.HttpGet("https://www.163.com")
-	fmt.Println(string(html))
+	fmt.Println(fun.String(html))
 }
 ```
