@@ -17,14 +17,14 @@ func TestHttpGet(t *testing.T) {
 	urlStr := TestUrl + "/get"
 
 	body, _ := HttpGet(urlStr)
-	t.Log(BytesToString(body))
+	t.Log(String(body))
 
 	body, _ = HttpGet(urlStr + "?query1=value1&query2=value2")
-	t.Log(BytesToString(body))
+	t.Log(String(body))
 
 	// 超时时间
 	body, _ = HttpGet(urlStr, 1000)
-	t.Log(BytesToString(body))
+	t.Log(String(body))
 
 	// Headers 与超时时间
 	r := &HttpReq{
@@ -34,11 +34,11 @@ func TestHttpGet(t *testing.T) {
 		},
 	}
 	body, _ = HttpGet(urlStr+"?query1=value1", r, 1000)
-	t.Log(BytesToString(body))
+	t.Log(String(body))
 
 	// 错误的 Headers
 	body, err := HttpGet(urlStr, "error header", 1000)
-	t.Log(BytesToString(body))
+	t.Log(String(body))
 	t.Log(err)
 
 }
@@ -51,11 +51,11 @@ func TestHttpPostForm(t *testing.T) {
 		"post1": "post1",
 	}
 	body, _ := HttpPostForm(urlStr, posts)
-	t.Log(BytesToString(body))
+	t.Log(String(body))
 
 	// Post 数据与超时时间
 	body, _ = HttpPostForm(urlStr, posts, 1000)
-	t.Log(BytesToString(body))
+	t.Log(String(body))
 
 	r := &HttpReq{
 		UserAgent: "test-ua",
@@ -64,7 +64,7 @@ func TestHttpPostForm(t *testing.T) {
 		},
 	}
 	body, _ = HttpPostForm(urlStr, posts, r, 1000)
-	t.Log(BytesToString(body))
+	t.Log(String(body))
 }
 
 func TestHttpPutForm(t *testing.T) {
@@ -75,11 +75,11 @@ func TestHttpPutForm(t *testing.T) {
 		"post1": "post1",
 	}
 	body, _ := HttpPutForm(urlStr, posts)
-	t.Log(BytesToString(body))
+	t.Log(String(body))
 
 	// Post 数据与超时时间
 	body, _ = HttpPutForm(urlStr, posts, 1000)
-	t.Log(BytesToString(body))
+	t.Log(String(body))
 
 	r := &HttpReq{
 		UserAgent: "test-ua",
@@ -88,24 +88,24 @@ func TestHttpPutForm(t *testing.T) {
 		},
 	}
 	body, _ = HttpPutForm(urlStr, posts, r, 1000)
-	t.Log(BytesToString(body))
+	t.Log(String(body))
 }
 
 func TestHttpPostJson(t *testing.T) {
 	urlStr := TestUrl + "/bindPostJson"
 
 	body, _ := HttpPostJson(urlStr)
-	t.Log(BytesToString(body))
+	t.Log(String(body))
 
 	body, _ = HttpPostJson(urlStr, 1000)
-	t.Log(BytesToString(body))
+	t.Log(String(body))
 
 	json := `{"username":"admin","email":"admin@admin.com", "joinTime":"2006-01-02 15:04:05", "isVip":true}`
 	body, _ = HttpPostJson(urlStr, json)
-	t.Log(BytesToString(body))
+	t.Log(String(body))
 
 	body, _ = HttpPostJson(urlStr, json, 1000)
-	t.Log(BytesToString(body))
+	t.Log(String(body))
 
 	r := &HttpReq{
 		UserAgent: "test-ua",
@@ -114,24 +114,24 @@ func TestHttpPostJson(t *testing.T) {
 		},
 	}
 	body, _ = HttpPostJson(urlStr, json, r, 1000)
-	t.Log(BytesToString(body))
+	t.Log(String(body))
 }
 
 func TestHttpPutJson(t *testing.T) {
 	urlStr := TestUrl + "/bindPutJson"
 
 	body, _ := HttpPutJson(urlStr)
-	t.Log(BytesToString(body))
+	t.Log(String(body))
 
 	body, _ = HttpPutJson(urlStr, 1000)
-	t.Log(BytesToString(body))
+	t.Log(String(body))
 
 	json := `{"username":"admin","email":"admin@admin.com", "joinTime":"2006-01-02 15:04:05", "isVip":true}`
 	body, _ = HttpPutJson(urlStr, json)
-	t.Log(BytesToString(body))
+	t.Log(String(body))
 
 	body, _ = HttpPutJson(urlStr, json, 1000)
-	t.Log(BytesToString(body))
+	t.Log(String(body))
 
 	r := &HttpReq{
 		UserAgent: "test-ua",
@@ -140,7 +140,7 @@ func TestHttpPutJson(t *testing.T) {
 		},
 	}
 	body, _ = HttpPutJson(urlStr, json, r, 1000)
-	t.Log(BytesToString(body))
+	t.Log(String(body))
 }
 
 func TestHttpPost(t *testing.T) {
@@ -159,7 +159,7 @@ func TestHttpPost(t *testing.T) {
 	}
 
 	body, err := HttpPost(urlStr, b, r, 1000)
-	t.Log(BytesToString(body))
+	t.Log(String(body))
 	t.Log(err)
 }
 
@@ -179,7 +179,7 @@ func TestHttpPut(t *testing.T) {
 	}
 
 	body, err := HttpPut(urlStr, b, r, 1000)
-	t.Log(BytesToString(body))
+	t.Log(String(body))
 	t.Log(err)
 }
 
@@ -194,11 +194,11 @@ func TestHttpDelete(t *testing.T) {
 		},
 	}
 	body, _ := HttpDelete(urlStr+"?query1=value1", r, 1000)
-	t.Log(BytesToString(body))
+	t.Log(String(body))
 
 	// 错误的 Headers
 	body, err := HttpDelete(urlStr, "error header", 1000)
-	t.Log(BytesToString(body))
+	t.Log(String(body))
 	t.Log(err)
 }
 
@@ -215,7 +215,7 @@ func TestHttpDo(t *testing.T) {
 		},
 	}
 	body, err := HttpDo(req, r, 1000)
-	t.Log(BytesToString(body))
+	t.Log(String(body))
 	t.Log(err)
 }
 
@@ -235,7 +235,7 @@ func TestHttpDoResp(t *testing.T) {
 	t.Log(resp.Success)
 	t.Log(resp.StatusCode)
 	t.Log(resp.ContentLength)
-	t.Log(BytesToString(resp.Body))
+	t.Log(String(resp.Body))
 	t.Log(err)
 }
 
@@ -253,7 +253,7 @@ func TestHttpGetWithProxy(t *testing.T) {
 	}
 
 	body, _ := HttpGet("http://test/ip.php", r)
-	t.Log(BytesToString(body))
+	t.Log(String(body))
 }
 
 func TestHttpSharedTransport(t *testing.T) {
@@ -275,7 +275,7 @@ func TestHttpSharedTransport(t *testing.T) {
 				Transport: transport,
 			}
 			body, _ := HttpGet(urlStr, r)
-			t.Log(BytesToString(body))
+			t.Log(String(body))
 
 			defer wg.Done()
 		}()
@@ -303,7 +303,7 @@ func TestHttpTransport(t *testing.T) {
 				Transport: transport,
 			}
 			body, _ := HttpGet(urlStr, r)
-			t.Log(BytesToString(body))
+			t.Log(String(body))
 
 			defer wg.Done()
 		}()

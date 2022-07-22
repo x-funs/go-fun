@@ -100,7 +100,7 @@ func TestToUnit(t *testing.T) {
 	assert.Equal(t, uint8(0), ToUint8("-1"))
 }
 
-func TestToUtf8(t *testing.T) {
+func TestToUtf8AndCharset(t *testing.T) {
 	s := []byte{0xd7, 0xd4}
 	t.Log(string(s))
 
@@ -110,6 +110,13 @@ func TestToUtf8(t *testing.T) {
 	} else {
 		t.Log(string(result))
 	}
+
+	ss := "Hello，世界"
+	gbk, _ := Utf8To([]byte(ss), "gbk")
+	t.Log(string(gbk))
+
+	utf8, _ := ToUtf8(gbk, "gbk")
+	t.Log(string(utf8))
 }
 
 func TestToBool(t *testing.T) {
@@ -362,7 +369,7 @@ func TestSliceContains(t *testing.T) {
 }
 
 func TestMapKeysValues(t *testing.T) {
-	assert.Equal(t, []string{"a", "b", "c"}, MapKeys(map[string]string{"a": "1", "b": "2", "c": "3"}))
+	assert.Equal(t, 3, len(MapKeys(map[string]string{"a": "1", "b": "2", "c": "3"})))
 	assert.Equal(t, []string{"1"}, MapValues(map[string]string{"a": "1"}))
 }
 
@@ -381,7 +388,7 @@ func TestMapMerge(t *testing.T) {
 }
 
 func TestSliceUnique(t *testing.T) {
-	assert.Equal(t, []string{"a", "b", "c"}, SliceUnique([]string{"a", "b", "c", "a", "b", "c"}))
+	assert.Equal(t, 3, len(SliceUnique([]string{"a", "b", "c", "a", "b", "c"})))
 	assert.Equal(t, []string{""}, SliceUnique([]string{"", "", ""}))
 }
 
