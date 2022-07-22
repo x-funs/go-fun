@@ -591,6 +591,11 @@ func IsNumber(str string) bool {
 	return true
 }
 
+// IsUtf8 判断是否为 UTF-8 编码
+func IsUtf8(p []byte) bool {
+	return utf8.Valid(p)
+}
+
 // IsLetter 判断字符串是否全部为字母
 func IsLetter(str string) bool {
 	if len(str) == 0 {
