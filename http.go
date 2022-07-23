@@ -82,7 +82,7 @@ func HttpGet(urlStr string, args ...any) ([]byte, error) {
 		}
 	}
 
-	return nil, errors.New("HttpGet() params error")
+	return nil, errors.New("HttpGet params error")
 }
 
 // HttpDelete 参数为请求地址 (HttpReq, 超时时间)
@@ -319,7 +319,7 @@ func HttpPutForm(urlStr string, args ...any) ([]byte, error) {
 		}
 	}
 
-	return nil, errors.New("HttpPostFrom params error")
+	return nil, errors.New("HttpPostForm params error")
 }
 
 // HttpPutJson 参数为请求地址 (Json 数据 string, HttpReq, 超时时间)
@@ -627,9 +627,12 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 	httpResp.StatusCode = resp.StatusCode
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
 		httpResp.Success = true
+	} else {
+		return httpResp, errors.New("http Status code error")
 	}
-	httpResp.Headers = &resp.Header
+
 	httpResp.ContentLength = resp.ContentLength
+	httpResp.Headers = &resp.Header
 
 	body, err := ioutil.ReadAll(resp.Body)
 	defer resp.Body.Close()
