@@ -631,11 +631,16 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 		return httpResp, errors.New("http Status code error")
 	}
 
-	httpResp.ContentLength = resp.ContentLength
 	httpResp.Headers = &resp.Header
 
+	httpResp.ContentLength = resp.ContentLength
+
 	body, err := ioutil.ReadAll(resp.Body)
-	defer resp.Body.Close()
+
+	defer func(Body io.ReadCloser) {
+		_ = Body.Close()
+	}(resp.Body)
+
 	if err != nil {
 		return httpResp, err
 	} else {
