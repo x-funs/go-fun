@@ -908,6 +908,12 @@ func RemoveAny(str string, removes ...string) string {
 	return str
 }
 
+// RemoveSign 将字符串的所有数据依次写成一行，去除无意义字符串(标点符号、符号、分隔符、其他)
+func RemoveSign(str string) string {
+	m := regexp.MustCompile(`[\pP\pS\pZ\pC]`)
+	return m.ReplaceAllString(str, "")
+}
+
 // SubString 字符串截取
 func SubString(str string, pos, length int) string {
 	runes := []rune(str)

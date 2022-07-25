@@ -1,7 +1,5 @@
 package fun
 
-import "regexp"
-
 // Similarity 计算两个原始字符串的相似度
 func Similarity(a, b string) float64 {
 	len1 := len([]rune(a))
@@ -19,8 +17,8 @@ func Similarity(a, b string) float64 {
 
 // SimilarityText 计算两个字符串移除特殊符号后的相似度
 func SimilarityText(a, b string) float64 {
-	a = removeSign(a)
-	b = removeSign(b)
+	a = RemoveSign(a)
+	b = RemoveSign(b)
 
 	return Similarity(a, b)
 }
@@ -54,10 +52,4 @@ func LongestCommonSubString(x, y string) int {
 	}
 
 	return opt[0][0]
-}
-
-// removeSign 将字符串的所有数据依次写成一行，去除无意义字符串(标点符号、符号、分隔符、其他)
-func removeSign(str string) string {
-	m := regexp.MustCompile(`[\pP\pS\pZ\pC]`)
-	return m.ReplaceAllString(str, "")
 }
