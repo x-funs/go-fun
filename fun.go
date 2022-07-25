@@ -908,9 +908,12 @@ func RemoveAny(str string, removes ...string) string {
 	return str
 }
 
-// RemoveSign 将字符串的所有数据依次写成一行，去除无意义字符串(标点符号、符号、分隔符、其他)
+// RemoveSign 将字符串的所有数据依次写成一行，去除无意义字符串(标点符号、符号)
 func RemoveSign(str string) string {
-	m := regexp.MustCompile(`[\pP\pS\pZ\pC]`)
+	str = strings.ReplaceAll(str, "\n", "")
+	str = strings.ReplaceAll(str, "\t", "")
+	str = strings.ReplaceAll(str, " ", "")
+	m := regexp.MustCompile(`[\pP\pS\pZ]`)
 	return m.ReplaceAllString(str, "")
 }
 

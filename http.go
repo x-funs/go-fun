@@ -82,7 +82,7 @@ func HttpGet(urlStr string, args ...any) ([]byte, error) {
 		}
 	}
 
-	return nil, errors.New("HttpGet params error")
+	return nil, errors.New("http get params error")
 }
 
 // HttpDelete 参数为请求地址 (HttpReq, 超时时间)
@@ -110,7 +110,7 @@ func HttpDelete(urlStr string, args ...any) ([]byte, error) {
 		}
 	}
 
-	return nil, errors.New("HttpDelete params error")
+	return nil, errors.New("http delete params error")
 }
 
 // HttpPost 参数为请求地址 (body io.Reader, HttpReq, 超时时间)
@@ -152,7 +152,7 @@ func HttpPost(urlStr string, args ...any) ([]byte, error) {
 		}
 	}
 
-	return nil, errors.New("HttpPost params error")
+	return nil, errors.New("http post params error")
 }
 
 // HttpPostForm 参数为请求地址 (Form 数据 map[string]string, HttpReq, 超时时间)
@@ -194,7 +194,7 @@ func HttpPostForm(urlStr string, args ...any) ([]byte, error) {
 		}
 	}
 
-	return nil, errors.New("HttpPostFrom params error")
+	return nil, errors.New("http post Form params error")
 }
 
 // HttpPostJson 参数为请求地址 (Json 数据 string, HttpReq, 超时时间)
@@ -235,7 +235,7 @@ func HttpPostJson(urlStr string, args ...any) ([]byte, error) {
 		}
 	}
 
-	return nil, errors.New("HttpPostJson params error")
+	return nil, errors.New("http post json params error")
 }
 
 // HttpPut 参数为请求地址 (body io.Reader, HttpReq, 超时时间)
@@ -277,7 +277,7 @@ func HttpPut(urlStr string, args ...any) ([]byte, error) {
 		}
 	}
 
-	return nil, errors.New("HttpPost params error")
+	return nil, errors.New("http post params error")
 }
 
 // HttpPutForm 参数为请求地址 (Form 数据 map[string]string, HttpReq, 超时时间)
@@ -319,7 +319,7 @@ func HttpPutForm(urlStr string, args ...any) ([]byte, error) {
 		}
 	}
 
-	return nil, errors.New("HttpPostForm params error")
+	return nil, errors.New("http post form params error")
 }
 
 // HttpPutJson 参数为请求地址 (Json 数据 string, HttpReq, 超时时间)
@@ -360,7 +360,7 @@ func HttpPutJson(urlStr string, args ...any) ([]byte, error) {
 		}
 	}
 
-	return nil, errors.New("HttpPostJson params error")
+	return nil, errors.New("http post json params error")
 }
 
 // HttpGetDo Http Get 请求, 参数为请求地址, HttpReq, 超时时间(毫秒)
