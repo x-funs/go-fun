@@ -667,6 +667,7 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 	default:
 		reader = resp.Body
 	}
+	defer reader.Close()
 	if r != nil && r.MaxContentLength > 0 {
 		if resp.ContentLength != -1 {
 			if resp.ContentLength > r.MaxContentLength {
@@ -682,7 +683,6 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 	} else {
 		body, err = ioutil.ReadAll(reader)
 	}
-	defer reader.Close()
 
 	if err != nil {
 		return httpResp, err
