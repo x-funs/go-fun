@@ -13,6 +13,15 @@ const (
 	TestUrl = "http://localhost:8080"
 )
 
+func TestHttpGetPublic(t *testing.T) {
+	var urlStr string
+
+	urlStr = "http://www.163.com"
+
+	body, _ := HttpGet(urlStr)
+	t.Log(String(body))
+}
+
 func TestHttpGet(t *testing.T) {
 	urlStr := TestUrl + "/get"
 
@@ -220,7 +229,10 @@ func TestHttpDo(t *testing.T) {
 }
 
 func TestHttpDoResp(t *testing.T) {
-	urlStr := TestUrl + "/get?query1=value1&query2=value2"
+	var urlStr string
+
+	// urlStr = TestUrl + "/get?query1=value1&query2=value2"
+	urlStr = TestUrl + "/api/ping"
 
 	req, err := http.NewRequest(http.MethodGet, urlStr, nil)
 
@@ -228,13 +240,15 @@ func TestHttpDoResp(t *testing.T) {
 	r := &HttpReq{
 		UserAgent: "test-ua",
 		Headers: map[string]string{
-			"X-Header": "test-header",
+			"X-Header":        "test-header",
+			"Accept-Encoding": "gzip, deflate",
 		},
 	}
 	resp, err := HttpDoResp(req, r, 1000)
 	t.Log(resp.Success)
 	t.Log(resp.StatusCode)
 	t.Log(resp.ContentLength)
+	t.Log(resp.Headers)
 	t.Log(String(resp.Body))
 	t.Log(err)
 }
