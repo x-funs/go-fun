@@ -1,6 +1,7 @@
 package fun
 
 import (
+	"compress/gzip"
 	"crypto/tls"
 	"errors"
 	"io"
@@ -13,8 +14,9 @@ import (
 )
 
 const (
-	HttpDefaultTimeOut   = 10000
-	HttpDefaultUserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+	HttpDefaultTimeOut        = 10000
+	HttpDefaultUserAgent      = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+	HttpDefaultAcceptEncoding = "gzip, deflate"
 )
 
 type HttpReq struct {
@@ -22,6 +24,8 @@ type HttpReq struct {
 	UserAgent string
 
 	// 请求头
+	// http.Transport 默认会进行 gzip 的处理，所以你获取不到 Content-Length
+	// 如果你设置了 Accept-Encoding, 你需要自己处理 body 的 gzip
 	Headers map[string]string
 
 	// http.Transport
@@ -603,8 +607,12 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 		if _, exist := headers["User-Agent"]; !exist {
 			headers["User-Agent"] = HttpDefaultUserAgent
 		}
+		if _, exist := headers["Accept-Encoding"]; !exist {
+			headers["Accept-Encoding"] = HttpDefaultAcceptEncoding
+		}
 	} else {
 		headers["User-Agent"] = HttpDefaultUserAgent
+		headers["Accept-Encoding"] = HttpDefaultAcceptEncoding
 	}
 	for k, v := range headers {
 		req.Header.Set(k, v)
@@ -621,6 +629,11 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 
 	// Do
 	resp, err := client.Do(req)
+	defer func(Body io.ReadCloser) {
+		_ = Body.Close()
+	}(resp.Body)
+
+	// 请求失败
 	if err != nil {
 		return httpResp, err
 	}
@@ -636,11 +649,16 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 
 	httpResp.ContentLength = resp.ContentLength
 
-	body, err := ioutil.ReadAll(resp.Body)
+	var reader io.ReadCloser
+	switch resp.Header.Get("Content-Encoding") {
+	case "gzip":
+		reader, err = gzip.NewReader(resp.Body)
+	default:
+		reader = resp.Body
+	}
+	defer reader.Close()
 
-	defer func(Body io.ReadCloser) {
-		_ = Body.Close()
-	}(resp.Body)
+	body, err := ioutil.ReadAll(reader)
 
 	if err != nil {
 		return httpResp, err

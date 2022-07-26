@@ -231,8 +231,8 @@ func TestHttpDo(t *testing.T) {
 func TestHttpDoResp(t *testing.T) {
 	var urlStr string
 
-	// urlStr = TestUrl + "/get?query1=value1&query2=value2"
-	urlStr = TestUrl + "/api/ping"
+	urlStr = TestUrl + "/get?query1=value1&query2=value2"
+	// urlStr = TestUrl + "/api/ping"
 
 	req, err := http.NewRequest(http.MethodGet, urlStr, nil)
 
@@ -241,7 +241,7 @@ func TestHttpDoResp(t *testing.T) {
 		UserAgent: "test-ua",
 		Headers: map[string]string{
 			"X-Header":        "test-header",
-			"Accept-Encoding": "gzip, deflate",
+			"Accept-Encoding": "gzip",
 		},
 	}
 	resp, err := HttpDoResp(req, r, 1000)
