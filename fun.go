@@ -913,7 +913,7 @@ func RemoveSign(str string) string {
 	str = strings.ReplaceAll(str, "\n", "")
 	str = strings.ReplaceAll(str, "\t", "")
 	str = strings.ReplaceAll(str, " ", "")
-	m := regexp.MustCompile(`[\pP\pS\pZ]`)
+	m := regexp.MustCompile(`[\pP\pS]`)
 	return m.ReplaceAllString(str, "")
 }
 

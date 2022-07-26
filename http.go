@@ -13,9 +13,8 @@ import (
 )
 
 const (
-	HttpDefaultTimeOut        = 10000
-	HttpDefaultUserAgent      = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
-	HttpDefaultAcceptEncoding = "gzip, deflate"
+	HttpDefaultTimeOut   = 10000
+	HttpDefaultUserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
 )
 
 type HttpReq struct {
@@ -593,9 +592,6 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 			Transport: HttpDefaultTransport,
 		}
 	}
-
-	// 默认请求头
-	req.Header.Set("Accept-Encoding", HttpDefaultAcceptEncoding)
 
 	// 处理请求头
 	headers := make(map[string]string)
