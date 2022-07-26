@@ -24,9 +24,16 @@ type HttpReq struct {
 	UserAgent string
 
 	// 请求头
-	// http.Transport 默认会进行 gzip 的处理，所以你获取不到 Content-Length
-	// 如果你设置了 Accept-Encoding, 你需要自己处理 body 的 gzip
 	Headers map[string]string
+
+	// 限制最大返回大小
+	MaxContentLength int64
+
+	// 最大跳转次数
+	MaxRedirects int
+
+	// 限制允许访问 ContentType 列表, 前缀匹配
+	AllowedContentTypes []string
 
 	// http.Transport
 	Transport http.RoundTripper
@@ -642,9 +649,17 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 	}
 
 	httpResp.Headers = &resp.Header
-
 	httpResp.ContentLength = resp.ContentLength
 
+	// ContentType 限制
+	if _, err := allowContentTypes(r, httpResp.Headers); err != nil {
+		return httpResp, err
+	}
+
+	// ContentLength 限制，限制 Body 读取
+	// http.Transport 默认发送 Accept-Encoding=gzip，并在响应时自动处理, 所以会自动移除 Content-Encoding、Content-Length
+	// 因此需要默认发送 Accept-Encoding , 手动处理返回数据
+	var body []byte
 	var reader io.ReadCloser
 	switch resp.Header.Get("Content-Encoding") {
 	case "gzip":
@@ -652,7 +667,21 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 	default:
 		reader = resp.Body
 	}
-	body, err := ioutil.ReadAll(reader)
+	if r != nil && r.MaxContentLength > 0 {
+		if resp.ContentLength != -1 {
+			if resp.ContentLength > r.MaxContentLength {
+				httpResp.Success = false
+				return httpResp, errors.New("contentLength > maxContentLength ")
+			}
+			body, err = ioutil.ReadAll(reader)
+		} else {
+			// 读取到最大长度
+			httpResp.Success = false
+			body, err = ioutil.ReadAll(io.LimitReader(reader, r.MaxContentLength))
+		}
+	} else {
+		body, err = ioutil.ReadAll(reader)
+	}
 	defer reader.Close()
 
 	if err != nil {
@@ -662,4 +691,30 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 	}
 
 	return httpResp, nil
+}
+
+func allowContentTypes(r *HttpReq, headers *http.Header) (bool, error) {
+	if r == nil {
+		return true, nil
+	}
+
+	if r.AllowedContentTypes != nil && len(r.AllowedContentTypes) > 0 {
+		valid := false
+
+		ct := strings.TrimSpace(strings.ToLower(headers.Get("Content-Type")))
+		for _, t := range r.AllowedContentTypes {
+			if strings.HasPrefix(ct, t) {
+				valid = true
+				break
+			}
+		}
+
+		if valid {
+			return valid, nil
+		} else {
+			return valid, errors.New("content-type AllowedContentTypes invalid")
+		}
+	}
+
+	return true, nil
 }

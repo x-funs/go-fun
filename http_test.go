@@ -231,8 +231,8 @@ func TestHttpDo(t *testing.T) {
 func TestHttpDoResp(t *testing.T) {
 	var urlStr string
 
-	urlStr = TestUrl + "/get?query1=value1&query2=value2"
-	// urlStr = TestUrl + "/api/ping"
+	// urlStr = TestUrl + "/get?query1=value1&query2=value2"
+	urlStr = TestUrl + "/api/ping"
 
 	req, err := http.NewRequest(http.MethodGet, urlStr, nil)
 
@@ -240,8 +240,8 @@ func TestHttpDoResp(t *testing.T) {
 	r := &HttpReq{
 		UserAgent: "test-ua",
 		Headers: map[string]string{
-			"X-Header":        "test-header",
-			"Accept-Encoding": "gzip",
+			"X-Header": "test-header",
+			// "Accept-Encoding": "gzip",
 		},
 	}
 	resp, err := HttpDoResp(req, r, 1000)
@@ -324,4 +324,25 @@ func TestHttpTransport(t *testing.T) {
 	}
 
 	wg.Wait()
+}
+
+func TestHttpGetContentLength(t *testing.T) {
+	var urlStr string
+
+	// urlStr = "https://mirrors.163.com/mysql/Downloads/MySQL-8.0/mysql-8.0.27-macos11-x86_64.tar"
+	// urlStr = "http://www.163.com"
+	urlStr = "https://www.sohu.com"
+
+	req := &HttpReq{
+		MaxContentLength: 10000,
+		Headers:          map[string]string{
+			// "Accept-Encoding": "gzip",
+		},
+	}
+	resp, err := HttpGetResp(urlStr, req, 10000)
+
+	t.Log(err)
+	t.Log(resp.ContentLength)
+	t.Log(resp.Headers)
+	t.Log(String(resp.Body))
 }
