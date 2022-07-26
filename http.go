@@ -629,14 +629,10 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 
 	// Do
 	resp, err := client.Do(req)
-	defer func(Body io.ReadCloser) {
-		_ = Body.Close()
-	}(resp.Body)
-
-	// 请求失败
 	if err != nil {
 		return httpResp, err
 	}
+	defer resp.Body.Close()
 
 	httpResp.StatusCode = resp.StatusCode
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
@@ -656,9 +652,8 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 	default:
 		reader = resp.Body
 	}
-	defer reader.Close()
-
 	body, err := ioutil.ReadAll(reader)
+	defer reader.Close()
 
 	if err != nil {
 		return httpResp, err
