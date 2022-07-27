@@ -365,3 +365,22 @@ func TestHttpGetContentType(t *testing.T) {
 	t.Log(resp.Headers)
 	t.Log(String(resp.Body))
 }
+
+func TestHttpGetRedirect(t *testing.T) {
+	var urlStr string
+
+	// http 默认会 301 跳转到 https
+	urlStr = "http://www.163.com"
+
+	req := &HttpReq{
+		MaxRedirect: 1,
+	}
+	resp, err := HttpGetResp(urlStr, req, 10000)
+
+	t.Log(err)
+	t.Log(resp.Success)
+	t.Log(resp.StatusCode)
+	t.Log(resp.ContentLength)
+	t.Log(resp.Headers)
+	t.Log(String(resp.Body))
+}

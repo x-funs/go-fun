@@ -33,6 +33,12 @@ type HttpReq struct {
 	// 限制允许访问 ContentType 列表, 前缀匹配
 	AllowedContentTypes []string
 
+	// 最大 Redirect 次数，0 则采用默认的跳转策略 (10 次)
+	MaxRedirect int
+
+	// 禁止跳转
+	DisableRedirect bool
+
 	// http.Transport
 	Transport http.RoundTripper
 }
@@ -599,6 +605,20 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 		client = &http.Client{
 			Timeout:   time.Duration(timeout) * time.Millisecond,
 			Transport: HttpDefaultTransport,
+		}
+	}
+
+	// Redirect 策略
+	if r == nil || r.DisableRedirect {
+		client.CheckRedirect = func(req *http.Request, via []*http.Request) error {
+			return http.ErrUseLastResponse
+		}
+	} else if r.MaxRedirect > 0 && r.MaxRedirect < 10 {
+		client.CheckRedirect = func(req *http.Request, via []*http.Request) error {
+			if len(via) > r.MaxRedirect {
+				return http.ErrUseLastResponse
+			}
+			return nil
 		}
 	}
 
