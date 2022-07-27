@@ -644,7 +644,7 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
 		httpResp.Success = true
 	} else {
-		return httpResp, errors.New("http Status code error")
+		return httpResp, errors.New("error with http Status code")
 	}
 
 	httpResp.Headers = &resp.Header
@@ -659,7 +659,7 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 	case "gzip":
 		reader, err = gzip.NewReader(resp.Body)
 		if err != nil {
-			return httpResp, errors.New("gzip NewReader error")
+			return httpResp, errors.New("error with gzip NewReader error")
 		}
 	case "deflate":
 		reader = flate.NewReader(resp.Body)
@@ -677,7 +677,7 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 	if r != nil && r.MaxContentLength > 0 {
 		if resp.ContentLength != -1 {
 			if resp.ContentLength > r.MaxContentLength {
-				return httpResp, errors.New("contentLength > maxContentLength ")
+				return httpResp, errors.New("error with ContentLength > MaxContentLength ")
 			}
 			body, err = ioutil.ReadAll(reader)
 		} else {
@@ -698,7 +698,7 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 	return httpResp, nil
 }
 
-// allowContentTypes 判断 Content-Type 是否允许
+// allowContentTypes 判断 Content-Type 是否在允许列表中
 func allowContentTypes(r *HttpReq, headers *http.Header) (bool, error) {
 	if r == nil {
 		return true, nil
@@ -718,7 +718,7 @@ func allowContentTypes(r *HttpReq, headers *http.Header) (bool, error) {
 		if valid {
 			return valid, nil
 		} else {
-			return valid, errors.New("content-type AllowedContentTypes invalid")
+			return valid, errors.New("error with AllowedContentTypes invalid")
 		}
 	}
 

@@ -318,9 +318,10 @@ func TestHttpTransport(t *testing.T) {
 func TestHttpGetPublic(t *testing.T) {
 	var urlStr string
 
-	urlStr = "http://www.163.com"
+	// urlStr = "http://www.163.com"
 	// urlStr = "http://www.qq.com"
 
+	// 默认不会进行编码探测和转换, gbk 会输出乱码
 	resp, err := HttpGetResp(urlStr, nil, 10000)
 
 	t.Log(err)
@@ -333,12 +334,28 @@ func TestHttpGetPublic(t *testing.T) {
 func TestHttpGetMaxContentLength(t *testing.T) {
 	var urlStr string
 
-	// urlStr = "https://mirrors.163.com/mysql/Downloads/MySQL-8.0/mysql-8.0.27-macos11-x86_64.tar"
-	urlStr = "https://www.163.com"
-	// urlStr = "http://localhost:8080/test/"
+	// urlStr = "https://www.163.com"
+	urlStr = "https://mirrors.163.com/mysql/Downloads/MySQL-8.0/mysql-8.0.27-macos11-x86_64.tar"
 
 	req := &HttpReq{
-		// MaxContentLength: 10000,
+		MaxContentLength: 10000,
+	}
+	resp, err := HttpGetResp(urlStr, req, 10000)
+
+	t.Log(err)
+	t.Log(resp.Success)
+	t.Log(resp.ContentLength)
+	t.Log(resp.Headers)
+	t.Log(String(resp.Body))
+}
+
+func TestHttpGetContentType(t *testing.T) {
+	var urlStr string
+
+	urlStr = "https://mirrors.163.com/mysql/Downloads/MySQL-8.0/mysql-8.0.27-macos11-x86_64.tar"
+
+	req := &HttpReq{
+		AllowedContentTypes: []string{"text/html"},
 	}
 	resp, err := HttpGetResp(urlStr, req, 10000)
 
