@@ -33,7 +33,7 @@ type HttpReq struct {
 	// 限制允许访问 ContentType 列表, 前缀匹配
 	AllowedContentTypes []string
 
-	// 最大 Redirect 次数，0 则采用默认的跳转策略 (10 次)
+	// 最大 Redirect 次数, 范围 [0,10), 否则采用默认的跳转策略 (最大 10 次)
 	MaxRedirect int
 
 	// 禁止跳转

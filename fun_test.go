@@ -52,7 +52,7 @@ func TestDate(t *testing.T) {
 	assert.NotEmpty(t, Date(timeStamp))
 	assert.NotEmpty(t, Date(DatetimePattern, timeStamp))
 
-	// 无效的参数，返回空
+	// 无效的参数, 返回空
 	assert.Empty(t, Date(123, ""))
 	assert.Empty(t, Date("", ""))
 	assert.Empty(t, Date("", "", ""))

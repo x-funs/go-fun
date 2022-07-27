@@ -40,7 +40,7 @@ func TestTimeMarshal(t *testing.T) {
 	p1json, _ := json.Marshal(p1)
 	t.Log(string(p1json))
 
-	// 反序列化时候必须得给 RFC3339 格式，否则解析不了
+	// 反序列化时候必须得给 RFC3339 格式, 否则解析不了
 	var p2 person
 	jsonStr := `{"name":"Bob","birthday":"1991-02-03","joinTime":"2021-02-03 01:02:03"}`
 	json.Unmarshal([]byte(jsonStr), &p2)
@@ -77,7 +77,7 @@ func TestAliasTimeFormatMarshal(t *testing.T) {
 	birthday, _ := time.ParseInLocation("2006-01-02", "1991-02-03", time.Local)
 	joinTime, _ := time.ParseInLocation("2006-01-02 15:04:05", "2021-02-03 01:02:03", time.Local)
 
-	// 自定义时间序列化格式，如果不定义则使用 RFC3339
+	// 自定义时间序列化格式, 如果不定义则使用 RFC3339
 	b1 := body{
 		Name: "Alice",
 		Birthday: DateTimeLayout{
@@ -93,14 +93,14 @@ func TestAliasTimeFormatMarshal(t *testing.T) {
 	b1json, _ := json.Marshal(b1)
 	t.Log(string(b1json))
 
-	// 反序列化自动识别格式，但无法自动赋值 Layout
+	// 反序列化自动识别格式, 但无法自动赋值 Layout
 	var b2 body
 	jsonStr := `{"name":"Alice","birthday":"1991-02-03","joinTime":"2021/02/03 01:02:03"}`
 	json.Unmarshal([]byte(jsonStr), &b2)
 	t.Log(b2)
 	t.Log(b2.Birthday.Time.IsZero())
 
-	// 此时 Layout 空，再次序列化使用默认的 RFC3339 格式
+	// 此时 Layout 空, 再次序列化使用默认的 RFC3339 格式
 	b2json1, _ := json.Marshal(b2)
 	t.Log(string(b2json1))
 

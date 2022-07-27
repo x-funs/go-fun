@@ -908,7 +908,7 @@ func RemoveAny(str string, removes ...string) string {
 	return str
 }
 
-// RemoveSign 将字符串的所有数据依次写成一行，去除无意义字符串(标点符号、符号)
+// RemoveSign 将字符串的所有数据依次写成一行, 去除无意义字符串(标点符号、符号)
 func RemoveSign(str string) string {
 	str = strings.ReplaceAll(str, "\n", "")
 	str = strings.ReplaceAll(str, "\t", "")
