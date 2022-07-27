@@ -58,8 +58,8 @@ type HttpResp struct {
 var HttpDefaultTransport = &http.Transport{
 	DialContext:           (&net.Dialer{Timeout: time.Second}).DialContext,
 	ForceAttemptHTTP2:     true,
-	MaxIdleConns:          200,
-	MaxIdleConnsPerHost:   5,
+	MaxIdleConns:          150,
+	MaxIdleConnsPerHost:   3,
 	IdleConnTimeout:       60 * time.Second,
 	TLSHandshakeTimeout:   10 * time.Second,
 	ExpectContinueTimeout: 1 * time.Second,

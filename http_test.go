@@ -320,7 +320,7 @@ func TestHttpGetContentLength(t *testing.T) {
 	var urlStr string
 
 	// urlStr = "https://mirrors.163.com/mysql/Downloads/MySQL-8.0/mysql-8.0.27-macos11-x86_64.tar"
-	urlStr = "http://www.163.com"
+	urlStr = "https://www.163.com"
 
 	req := &HttpReq{
 		MaxContentLength: 10000,
