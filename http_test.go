@@ -222,8 +222,7 @@ func TestHttpDo(t *testing.T) {
 func TestHttpDoResp(t *testing.T) {
 	var urlStr string
 
-	// urlStr = TestUrl + "/get?query1=value1&query2=value2"
-	urlStr = TestUrl + "/api/ping"
+	urlStr = TestUrl + "/get?query1=value1&query2=value2"
 
 	req, err := http.NewRequest(http.MethodGet, urlStr, nil)
 
@@ -316,17 +315,30 @@ func TestHttpTransport(t *testing.T) {
 	wg.Wait()
 }
 
-func TestHttpGetContentLength(t *testing.T) {
+func TestHttpGetPublic(t *testing.T) {
+	var urlStr string
+
+	urlStr = "http://www.163.com"
+	// urlStr = "http://www.qq.com"
+
+	resp, err := HttpGetResp(urlStr, nil, 10000)
+
+	t.Log(err)
+	t.Log(resp.Success)
+	t.Log(resp.StatusCode)
+	t.Log(resp.Headers)
+	t.Log(String(resp.Body))
+}
+
+func TestHttpGetMaxContentLength(t *testing.T) {
 	var urlStr string
 
 	// urlStr = "https://mirrors.163.com/mysql/Downloads/MySQL-8.0/mysql-8.0.27-macos11-x86_64.tar"
 	urlStr = "https://www.163.com"
+	// urlStr = "http://localhost:8080/test/"
 
 	req := &HttpReq{
-		MaxContentLength: 10000,
-		Headers:          map[string]string{
-			// "Accept-Encoding": "gzip",
-		},
+		// MaxContentLength: 10000,
 	}
 	resp, err := HttpGetResp(urlStr, req, 10000)
 

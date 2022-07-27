@@ -38,7 +38,7 @@ type HttpReq struct {
 }
 
 type HttpResp struct {
-	// 是否成功 (200-299)
+	// 是否成功 (200-299), 成功仍可能返回 err
 	Success bool
 
 	// Http 状态码
@@ -659,7 +659,6 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 	case "gzip":
 		reader, err = gzip.NewReader(resp.Body)
 		if err != nil {
-			httpResp.Success = false
 			return httpResp, errors.New("gzip NewReader error")
 		}
 	case "deflate":
@@ -671,7 +670,6 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 
 	// ContentType 限制
 	if _, err := allowContentTypes(r, httpResp.Headers); err != nil {
-		httpResp.Success = false
 		return httpResp, err
 	}
 
@@ -679,13 +677,11 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 	if r != nil && r.MaxContentLength > 0 {
 		if resp.ContentLength != -1 {
 			if resp.ContentLength > r.MaxContentLength {
-				httpResp.Success = false
 				return httpResp, errors.New("contentLength > maxContentLength ")
 			}
 			body, err = ioutil.ReadAll(reader)
 		} else {
 			// 只读取到最大长度
-			httpResp.Success = false
 			body, err = ioutil.ReadAll(io.LimitReader(reader, r.MaxContentLength))
 		}
 	} else {
