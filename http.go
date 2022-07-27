@@ -701,15 +701,16 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 			}
 			body, err = ioutil.ReadAll(reader)
 		} else {
-			// 只读取到最大长度
-			body, err = ioutil.ReadAll(io.LimitReader(reader, r.MaxContentLength))
+			// 只读取到最大长度, 就立即返回, 并返回错误
+			body, _ = ioutil.ReadAll(io.LimitReader(reader, r.MaxContentLength))
+			httpResp.Body = body
+			return httpResp, errors.New("error with truncate body ContentLength > MaxContentLength")
 		}
 	} else {
 		body, err = ioutil.ReadAll(reader)
 	}
 
 	if err != nil {
-		httpResp.Success = false
 		return httpResp, err
 	} else {
 		httpResp.Body = body
