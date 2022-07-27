@@ -13,15 +13,6 @@ const (
 	TestUrl = "http://localhost:8080"
 )
 
-func TestHttpGetPublic(t *testing.T) {
-	var urlStr string
-
-	urlStr = "http://www.163.com"
-
-	body, _ := HttpGet(urlStr)
-	t.Log(String(body))
-}
-
 func TestHttpGet(t *testing.T) {
 	urlStr := TestUrl + "/get"
 
@@ -247,7 +238,6 @@ func TestHttpDoResp(t *testing.T) {
 	resp, err := HttpDoResp(req, r, 1000)
 	t.Log(resp.Success)
 	t.Log(resp.StatusCode)
-	t.Log(resp.ContentLength)
 	t.Log(resp.Headers)
 	t.Log(String(resp.Body))
 	t.Log(err)
@@ -330,8 +320,7 @@ func TestHttpGetContentLength(t *testing.T) {
 	var urlStr string
 
 	// urlStr = "https://mirrors.163.com/mysql/Downloads/MySQL-8.0/mysql-8.0.27-macos11-x86_64.tar"
-	// urlStr = "http://www.163.com"
-	urlStr = "https://www.sohu.com"
+	urlStr = "http://www.163.com"
 
 	req := &HttpReq{
 		MaxContentLength: 10000,
@@ -342,6 +331,7 @@ func TestHttpGetContentLength(t *testing.T) {
 	resp, err := HttpGetResp(urlStr, req, 10000)
 
 	t.Log(err)
+	t.Log(resp.Success)
 	t.Log(resp.ContentLength)
 	t.Log(resp.Headers)
 	t.Log(String(resp.Body))

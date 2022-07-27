@@ -1,6 +1,7 @@
 package fun
 
 import (
+	"compress/flate"
 	"compress/gzip"
 	"crypto/tls"
 	"errors"
@@ -28,9 +29,6 @@ type HttpReq struct {
 
 	// 限制最大返回大小
 	MaxContentLength int64
-
-	// 最大跳转次数
-	MaxRedirects int
 
 	// 限制允许访问 ContentType 列表, 前缀匹配
 	AllowedContentTypes []string
@@ -641,6 +639,7 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 	}
 	defer resp.Body.Close()
 
+	// 响应
 	httpResp.StatusCode = resp.StatusCode
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
 		httpResp.Success = true
@@ -656,18 +655,26 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 		return httpResp, err
 	}
 
-	// ContentLength 限制，限制 Body 读取
-	// http.Transport 默认发送 Accept-Encoding=gzip，并在响应时自动处理, 所以会自动移除 Content-Encoding、Content-Length
-	// 因此需要默认发送 Accept-Encoding , 手动处理返回数据
+	// http.Transport 定义了当请求头不包含 Accept-Encoding 或为空时, 默认会发送 Accept-Encoding=gzip
+	// 它会自动判断服务端是否是gzip 然后在接受响应时自动 uncompress, 并会自动移除响应头中的 Content-Encoding、Content-Length
+	// 为了获取 Content-Length, 我们需要手动设置不为空的 Accept-Encoding (默认是 HttpDefaultAcceptEncoding), 并且手动 uncompress
 	var body []byte
 	var reader io.ReadCloser
-	switch resp.Header.Get("Content-Encoding") {
+	switch strings.ToLower(resp.Header.Get("Content-Encoding")) {
 	case "gzip":
 		reader, err = gzip.NewReader(resp.Body)
+		if err != nil {
+			httpResp.Success = false
+			return httpResp, errors.New("gzip NewReader error")
+		}
+	case "deflate":
+		reader = flate.NewReader(resp.Body)
 	default:
 		reader = resp.Body
 	}
 	defer reader.Close()
+
+	// ContentLength 限制
 	if r != nil && r.MaxContentLength > 0 {
 		if resp.ContentLength != -1 {
 			if resp.ContentLength > r.MaxContentLength {
@@ -676,7 +683,7 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 			}
 			body, err = ioutil.ReadAll(reader)
 		} else {
-			// 读取到最大长度
+			// 只读取到最大长度
 			httpResp.Success = false
 			body, err = ioutil.ReadAll(io.LimitReader(reader, r.MaxContentLength))
 		}
@@ -693,6 +700,7 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 	return httpResp, nil
 }
 
+// allowContentTypes 判断 Content-Type 是否允许
 func allowContentTypes(r *HttpReq, headers *http.Header) (bool, error) {
 	if r == nil {
 		return true, nil
