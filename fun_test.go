@@ -466,11 +466,16 @@ func TestSimilarity(t *testing.T) {
 	t.Log(Similarity("ABCDEF", "CD"))
 	t.Log(Similarity("ABCDEFGHIG", "CEGML"))
 	t.Log(Similarity("ABCDEFGHIG", "GIH"))
-	t.Log(Similarity("我是中国人我说中国话", "中国人米说"))
+	t.Log(Similarity("我是中国人我说中国话", "我米说"))
 
 	t.Log(Similarity("国家统计局上半年GDP同比增长5", "上半年GDP同比增长"))
 }
 
 func TestSimilarityText(t *testing.T) {
 	t.Log(SimilarityText("国家统计局：上半年GDP同比增长5%", "上半年GDP同比增长"))
+}
+
+func TestRemoveSign(t *testing.T) {
+	text := ",.!，，D_NAME。！；‘’”“《》**dfs#%^&()-+我1431221     中国123漢字\n\n\nかどうかのjavaを<決定>$¥"
+	fmt.Println(RemoveSign(text))
 }
