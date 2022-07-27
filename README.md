@@ -32,7 +32,7 @@ func main() {
 	// return slice unique
 	fmt.Println(fun.SliceUnique([]string{"a", "b", "c", "a", "b", "c"}))
 
-	// send a simple http and get body
+	// send a simple http and get html body
 	html, _ := fun.HttpGet("https://www.163.com")
 	fmt.Println(fun.String(html))
 }
