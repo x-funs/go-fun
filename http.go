@@ -650,11 +650,6 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 	httpResp.Headers = &resp.Header
 	httpResp.ContentLength = resp.ContentLength
 
-	// ContentType 限制
-	if _, err := allowContentTypes(r, httpResp.Headers); err != nil {
-		return httpResp, err
-	}
-
 	// http.Transport 定义了当请求头不包含 Accept-Encoding 或为空时, 默认会发送 Accept-Encoding=gzip
 	// 它会自动判断服务端是否是gzip 然后在接受响应时自动 uncompress, 并会自动移除响应头中的 Content-Encoding、Content-Length
 	// 为了获取 Content-Length, 我们需要手动设置不为空的 Accept-Encoding (默认是 HttpDefaultAcceptEncoding), 并且手动 uncompress
@@ -674,6 +669,12 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 	}
 	defer reader.Close()
 
+	// ContentType 限制
+	if _, err := allowContentTypes(r, httpResp.Headers); err != nil {
+		httpResp.Success = false
+		return httpResp, err
+	}
+
 	// ContentLength 限制
 	if r != nil && r.MaxContentLength > 0 {
 		if resp.ContentLength != -1 {
@@ -692,6 +693,7 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 	}
 
 	if err != nil {
+		httpResp.Success = false
 		return httpResp, err
 	} else {
 		httpResp.Body = body
