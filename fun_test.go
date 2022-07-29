@@ -493,3 +493,10 @@ func TestIsUrl(t *testing.T) {
 	assert.Equal(t, false, IsAbsoluteUrl("baidu.com"))
 	assert.Equal(t, false, IsAbsoluteUrl("baidu"))
 }
+
+func TestHasPrefixSuffix(t *testing.T) {
+	assert.Equal(t, true, HasPrefix("Abc", "ab", true))
+	assert.Equal(t, true, HasPrefix("Abc", "ab", true))
+	assert.Equal(t, false, HasPrefix("Abc", "ab", false))
+	assert.Equal(t, true, HasSuffix("Abc", "BC", true))
+}
