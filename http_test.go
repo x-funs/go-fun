@@ -271,7 +271,7 @@ func TestHttpSharedTransport(t *testing.T) {
 	var wg sync.WaitGroup
 
 	// 使用了共享的 Transport
-	for i := 0; i < 30; i++ {
+	for i := 0; i < 5; i++ {
 		wg.Add(1)
 		go func() {
 			r := &HttpReq{
@@ -293,7 +293,7 @@ func TestHttpTransport(t *testing.T) {
 	var wg sync.WaitGroup
 
 	// 使用了不同的 Transport
-	for i := 0; i < 30; i++ {
+	for i := 0; i < 5; i++ {
 		wg.Add(1)
 		go func() {
 			transport := &http.Transport{
