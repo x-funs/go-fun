@@ -498,23 +498,15 @@ func Long2Ip(long uint32) string {
 	return ip.String()
 }
 
-// HasPrefix 判断字符串是否以指定前缀开头, 是否忽略大小写
-func HasPrefix(str, prefix string, ignoreCase bool) bool {
-	if ignoreCase {
-		return strings.HasPrefix(strings.ToLower(str), strings.ToLower(prefix))
-	} else {
-		return strings.HasPrefix(str, prefix)
-	}
+// HasPrefixCase 判断字符串是否以指定前缀开头, 忽略大小写
+func HasPrefixCase(str, prefix string) bool {
+	return strings.HasPrefix(strings.ToLower(str), strings.ToLower(prefix))
 }
 
-// HasSuffix 判断字符串是否以指定后缀结尾, 是否忽略大小写
-func HasSuffix(str, prefix string, ignoreCase bool) bool {
-	if ignoreCase {
-		return strings.HasSuffix(strings.ToLower(str), strings.ToLower(prefix))
-	} else {
-		return strings.HasSuffix(str, prefix)
-	}
-}
+// HasSuffixCase 判断字符串是否以指定后缀结尾, 忽略大小写
+func HasSuffixCase(str, prefix string) bool {
+	return strings.HasSuffix(strings.ToLower(str), strings.ToLower(prefix))
+}s
 
 // StrToTime 日期时间字符串转时间戳
 // 支持 StrToTime()、StrToTime(string)、StrToTime(string, int64)

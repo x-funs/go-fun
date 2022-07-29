@@ -495,8 +495,8 @@ func TestIsUrl(t *testing.T) {
 }
 
 func TestHasPrefixSuffix(t *testing.T) {
-	assert.Equal(t, true, HasPrefix("Abc", "ab", true))
-	assert.Equal(t, true, HasPrefix("Abc", "ab", true))
-	assert.Equal(t, false, HasPrefix("Abc", "ab", false))
-	assert.Equal(t, true, HasSuffix("Abc", "BC", true))
+	assert.Equal(t, true, HasPrefixCase("Abc", "ab"))
+	assert.Equal(t, true, HasPrefixCase("Abc", "ab"))
+	assert.Equal(t, false, HasPrefixCase("Abc", "ab"))
+	assert.Equal(t, true, HasSuffixCase("Abc", "BC"))
 }
