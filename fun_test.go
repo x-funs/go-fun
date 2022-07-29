@@ -446,6 +446,8 @@ func TestIsASCII(t *testing.T) {
 func TestMaxMin(t *testing.T) {
 	assert.Equal(t, 2, Max(1, 2))
 	assert.Equal(t, 1, Min(1, 2))
+	assert.Equal(t, int64(1), MinInt64(1, 2))
+	assert.Equal(t, int64(2), MaxInt64(1, 2))
 }
 
 func TestIsDir(t *testing.T) {
@@ -499,4 +501,8 @@ func TestHasPrefixSuffix(t *testing.T) {
 	assert.Equal(t, true, HasPrefixCase("Abc", "ab"))
 	assert.Equal(t, false, HasPrefixCase("Abc", "ab"))
 	assert.Equal(t, true, HasSuffixCase("Abc", "BC"))
+}
+
+func TestIsUtf8(t *testing.T) {
+	assert.Equal(t, true, IsUtf8(Bytes("中文")))
 }

@@ -506,7 +506,7 @@ func HasPrefixCase(str, prefix string) bool {
 // HasSuffixCase 判断字符串是否以指定后缀结尾, 忽略大小写
 func HasSuffixCase(str, prefix string) bool {
 	return strings.HasSuffix(strings.ToLower(str), strings.ToLower(prefix))
-}s
+}
 
 // StrToTime 日期时间字符串转时间戳
 // 支持 StrToTime()、StrToTime(string)、StrToTime(string, int64)
