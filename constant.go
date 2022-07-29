@@ -36,6 +36,7 @@ const (
 	RegexLetterNumber string = "^[a-zA-Z0-9]+$"
 	RegexNumber       string = "^[0-9]+$"
 	RegexChinese      string = "^[\u4e00-\u9fa5]+$"
+	RegexUrl          string = "(https://|http://|//)(([^:\\n\\r]+):([^@\\n\\r]+)@)?([\\w-]+\\.)+[\\w-]+(:\\d+)*(/[\\w- ./:?%&=#]*)?"
 )
 
 const (

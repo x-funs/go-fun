@@ -479,3 +479,17 @@ func TestRemoveSign(t *testing.T) {
 	text := ",.!，，D_NAME。！；‘’”“《》**dfs#%^&()-+		我1431221     中国123漢字\n\n\nかどうかのjavaを<決定>$¥"
 	fmt.Println(RemoveSign(text))
 }
+
+func TestIsUrl(t *testing.T) {
+	assert.Equal(t, true, IsAbsoluteUrl("http://www.baidu.com"))
+	assert.Equal(t, true, IsAbsoluteUrl("https://www.baidu.com"))
+	assert.Equal(t, true, IsAbsoluteUrl("https://www.baidu.com/a/b.html"))
+	assert.Equal(t, true, IsAbsoluteUrl("https://www.baidu.com:8080"))
+	assert.Equal(t, true, IsAbsoluteUrl("https://www.baidu.com:8080/a/b.html"))
+	assert.Equal(t, true, IsAbsoluteUrl("http://regex101.com/r/kL2gL2/1"))
+	assert.Equal(t, true, IsAbsoluteUrl("//www.BAIDU.com/a/b.html"))
+	assert.Equal(t, false, IsAbsoluteUrl("www.baidu.com"))
+	assert.Equal(t, false, IsAbsoluteUrl("www.baidu"))
+	assert.Equal(t, false, IsAbsoluteUrl("baidu.com"))
+	assert.Equal(t, false, IsAbsoluteUrl("baidu"))
+}

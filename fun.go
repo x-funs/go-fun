@@ -621,6 +621,15 @@ func IsASCII(s string) bool {
 	return true
 }
 
+// IsAbsoluteUrl 验证 URL 是否绝对地址且合法
+func IsAbsoluteUrl(urlStr string) bool {
+	if !Blank(urlStr) {
+		return Matches(urlStr, RegexUrl)
+	}
+
+	return false
+}
+
 // Contains 判断字符串是否包含指定的子串
 func Contains(str, substr string) bool {
 	return strings.Contains(str, substr)
