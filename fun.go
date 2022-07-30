@@ -677,7 +677,7 @@ func SnakeToCamel(str string, bigCamel bool) string {
 		return ""
 	}
 
-	if !Contains(str, "_") {
+	if !Contains(str, UNDERSCORE) {
 		return str
 	}
 
@@ -929,9 +929,9 @@ func RemoveAny(str string, removes ...string) string {
 
 // RemoveSign 将字符串的所有数据依次写成一行, 去除无意义字符串(标点符号、符号)
 func RemoveSign(str string) string {
-	str = strings.ReplaceAll(str, "\n", "")
-	str = strings.ReplaceAll(str, "\t", "")
-	str = strings.ReplaceAll(str, " ", "")
+	str = strings.ReplaceAll(str, LF, "")
+	str = strings.ReplaceAll(str, TAB, "")
+	str = strings.ReplaceAll(str, SPACE, "")
 	m := regexp.MustCompile(`[\pP\pS]`)
 	return m.ReplaceAllString(str, "")
 }

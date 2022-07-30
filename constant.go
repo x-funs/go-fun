@@ -1,6 +1,19 @@
 package fun
 
 const (
+	EMPTY      = ""
+	SPACE      = " "
+	DOT        = "."
+	SLASH      = "/"
+	UNDERSCORE = "_"
+	COLON      = ":"
+	DASH       = "-"
+	LF         = "\n"
+	CRLF       = "\r\n"
+	TAB        = "\t"
+)
+
+const (
 	DatePattern               = "2006-01-02"
 	DatePatternSlash          = "2006/01/02"
 	DatePatternZh             = "2006年01月02日"
