@@ -507,3 +507,21 @@ func TestHasPrefixSuffix(t *testing.T) {
 func TestIsUtf8(t *testing.T) {
 	assert.Equal(t, true, IsUtf8(Bytes("中文")))
 }
+
+func TestRemoveLines(t *testing.T) {
+	assert.Equal(t, "acb", RemoveLines("a\n\nc\nb"))
+}
+
+func TestUrlParse(t *testing.T) {
+	urlStrs := []string{
+		"baidu.com",
+		"www.baidu.com",
+		"http://www.baidu.com",
+		"abc",
+		"javascript:;",
+	}
+
+	for _, urlStr := range urlStrs {
+		t.Log(UrlParse(urlStr))
+	}
+}

@@ -16,6 +16,7 @@ import (
 	"math"
 	"math/rand"
 	"net"
+	"net/url"
 	"os"
 	"reflect"
 	"regexp"
@@ -1223,4 +1224,22 @@ func MinInt64(a, b int64) int64 {
 		return a
 	}
 	return b
+}
+
+// UrlParse url.Parse 在没有 scheme 时不会出错
+func UrlParse(rawURL string) (*url.URL, error) {
+	if !Blank(rawURL) {
+		u, err := url.Parse(rawURL)
+		if err == nil {
+			if u.Hostname() != "" {
+				return u, nil
+			} else {
+				return nil, errors.New("url hostname is empty")
+			}
+		} else {
+			return nil, errors.New("url parse error")
+		}
+	}
+
+	return nil, errors.New("url is blank")
 }
