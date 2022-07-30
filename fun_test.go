@@ -525,3 +525,9 @@ func TestUrlParse(t *testing.T) {
 		t.Log(UrlParse(urlStr))
 	}
 }
+
+func BenchmarkUrlParse(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		UrlParse("http://www.baidu.com")
+	}
+}
