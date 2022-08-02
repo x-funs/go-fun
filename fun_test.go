@@ -353,6 +353,7 @@ func TestSubString(t *testing.T) {
 	assert.Equal(t, "bcde", SubString("abcdefg", 1, 4))
 	assert.Equal(t, "abcdefg", SubString("abcdefg", 0, 100))
 	assert.Equal(t, "abcdefg", SubString("abcdefg", 0, -1))
+	assert.Equal(t, "hello，测试中文", SubString("hello，测试中文", 4, 2))
 }
 
 func TestWrap(t *testing.T) {
@@ -529,5 +530,11 @@ func TestUrlParse(t *testing.T) {
 func BenchmarkUrlParse(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		UrlParse("http://www.baidu.com")
+	}
+}
+
+func BenchmarkIsAbsoluteUrl(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		IsAbsoluteUrl("https://www.163.com/news/article/HDOJULFE000189FH.html?clickfrom=w_yw")
 	}
 }

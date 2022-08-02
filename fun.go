@@ -635,7 +635,16 @@ func IsASCII(s string) bool {
 // IsAbsoluteUrl 验证 URL 是否绝对地址且合法
 func IsAbsoluteUrl(urlStr string) bool {
 	if !Blank(urlStr) {
-		return Matches(urlStr, RegexUrl)
+		return RegexUrlPattern.MatchString(urlStr)
+	}
+
+	return false
+}
+
+// IsEmail 验证 Email 是否合法
+func IsEmail(str string) bool {
+	if !Blank(str) {
+		return RegexEmailPattern.MatchString(str)
 	}
 
 	return false

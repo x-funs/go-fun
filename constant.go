@@ -1,7 +1,6 @@
 package fun
 
 const (
-	EMPTY      = ""
 	SPACE      = " "
 	DOT        = "."
 	SLASH      = "/"
