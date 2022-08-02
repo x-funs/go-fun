@@ -353,7 +353,7 @@ func TestSubString(t *testing.T) {
 	assert.Equal(t, "bcde", SubString("abcdefg", 1, 4))
 	assert.Equal(t, "abcdefg", SubString("abcdefg", 0, 100))
 	assert.Equal(t, "abcdefg", SubString("abcdefg", 0, -1))
-	assert.Equal(t, "hello，测试中文", SubString("hello，测试中文", 4, 2))
+	assert.Equal(t, "试he", SubString("测试hello中文", 1, 3))
 }
 
 func TestWrap(t *testing.T) {
@@ -483,20 +483,6 @@ func TestRemoveSign(t *testing.T) {
 	fmt.Println(RemoveSign(text))
 }
 
-func TestIsUrl(t *testing.T) {
-	assert.Equal(t, true, IsAbsoluteUrl("http://www.baidu.com"))
-	assert.Equal(t, true, IsAbsoluteUrl("https://www.baidu.com"))
-	assert.Equal(t, true, IsAbsoluteUrl("https://www.baidu.com/a/b.html"))
-	assert.Equal(t, true, IsAbsoluteUrl("https://www.baidu.com:8080"))
-	assert.Equal(t, true, IsAbsoluteUrl("https://www.baidu.com:8080/a/b.html"))
-	assert.Equal(t, true, IsAbsoluteUrl("http://regex101.com/r/kL2gL2/1"))
-	assert.Equal(t, true, IsAbsoluteUrl("//www.BAIDU.com/a/b.html"))
-	assert.Equal(t, false, IsAbsoluteUrl("www.baidu.com"))
-	assert.Equal(t, false, IsAbsoluteUrl("www.baidu"))
-	assert.Equal(t, false, IsAbsoluteUrl("baidu.com"))
-	assert.Equal(t, false, IsAbsoluteUrl("baidu"))
-}
-
 func TestHasPrefixSuffix(t *testing.T) {
 	// assert.Equal(t, true, HasPrefixCase("Abc", "ab"))
 	assert.Equal(t, true, HasPrefixCase("http://d.house.163.com/{cityCode}/", "http"))
@@ -520,6 +506,7 @@ func TestUrlParse(t *testing.T) {
 		"http://www.baidu.com",
 		"abc",
 		"javascript:;",
+		"http://xf.house.163.com/{cityCode}/calculator/4.html#163-3-FDJS",
 	}
 
 	for _, urlStr := range urlStrs {
@@ -530,11 +517,5 @@ func TestUrlParse(t *testing.T) {
 func BenchmarkUrlParse(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		UrlParse("http://www.baidu.com")
-	}
-}
-
-func BenchmarkIsAbsoluteUrl(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		IsAbsoluteUrl("https://www.163.com/news/article/HDOJULFE000189FH.html?clickfrom=w_yw")
 	}
 }

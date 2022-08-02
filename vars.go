@@ -3,6 +3,6 @@ package fun
 import "regexp"
 
 var (
-	RegexUrlPattern   = regexp.MustCompile(RegexUrl)
-	RegexEmailPattern = regexp.MustCompile(RegexEmail)
+	RegexEmailPattern    = regexp.MustCompile(RegexEmail)
+	RegexDateTimePattern = regexp.MustCompile(RegexDateTime)
 )

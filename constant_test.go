@@ -49,11 +49,10 @@ func TestRegexDateTime(t *testing.T) {
 		"2014-6-8 5:6:2",
 		"2014-6-8",
 		"2014-6-8 5:6",
-		"2019_10_16 22:30",
 	}
 
 	for _, datatime := range datatimes {
-		if !Matches(datatime, RegexDateTime) {
+		if !RegexDateTimePattern.MatchString(datatime) {
 			t.Errorf("%s is not match", datatime)
 		}
 	}
