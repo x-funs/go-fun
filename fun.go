@@ -52,6 +52,15 @@ type GenNumber interface {
 	GenInteger | GenFloat
 }
 
+// StringSet 字符串集合
+type StringSet map[string]bool
+
+// IntSet 整型集合
+type IntSet map[int]bool
+
+// Int64Set 长整型集合
+type Int64Set map[int64]bool
+
 // Timestamp 返回当前时间的 Unix 时间戳。
 // 默认返回秒级, 支持 Timestamp(true) 返回毫秒级
 func Timestamp(millis ...any) int64 {
