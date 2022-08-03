@@ -479,7 +479,7 @@ func TestSimilarityText(t *testing.T) {
 }
 
 func TestRemoveSign(t *testing.T) {
-	text := ",.!，，D_NAME。！；‘’”“《》**dfs#%^&()-+		我1431221     中国123漢字\n\n\nかどうかのjavaを<決定>$¥"
+	text := ",.!，，D_NAME。！；‘’”“\n《》\r\n**dfs#%^&()-+		我1431221     中国 123漢字\n\n\nかどうかのjavaを<決定>$¥"
 	fmt.Println(RemoveSign(text))
 }
 

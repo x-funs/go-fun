@@ -939,18 +939,14 @@ func RemoveAny(str string, removes ...string) string {
 
 // RemoveSign 将字符串的所有数据依次写成一行, 去除无意义字符串(标点符号、符号)
 func RemoveSign(str string) string {
-	str = strings.ReplaceAll(str, LF, "")
-	str = strings.ReplaceAll(str, CRLF, "")
-	str = strings.ReplaceAll(str, TAB, "")
-	str = strings.ReplaceAll(str, SPACE, "")
+	str = strings.NewReplacer(LF, "", CRLF, "", TAB, "", SPACE, "").Replace(str)
 	m := regexp.MustCompile(`[\pP\pS]`)
 	return m.ReplaceAllString(str, "")
 }
 
 // RemoveLines 移除换行
 func RemoveLines(str string) string {
-	str = strings.ReplaceAll(str, LF, "")
-	str = strings.ReplaceAll(str, CRLF, "")
+	str = strings.NewReplacer(LF, "", CRLF, "").Replace(str)
 	return str
 }
 
