@@ -52,8 +52,10 @@ func TestRegexDateTime(t *testing.T) {
 	}
 
 	for _, datatime := range datatimes {
-		if !RegexDateTimePattern.MatchString(datatime) {
-			t.Errorf("%s is not match", datatime)
+		if RegexDateTimePattern.MatchString(datatime) {
+			t.Log(datatime)
+		} else {
+			t.Error(datatime)
 		}
 	}
 }

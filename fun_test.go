@@ -266,6 +266,8 @@ func TestSplitTrim(t *testing.T) {
 	assert.Equal(t, []string{"a", "b", "c"}, SplitTrim("  a ,  , b ,		c", ","))
 
 	assert.Equal(t, []int{2, 3, 5}, SplitTrimToInts("2,,3,5", ","))
+
+	assert.Equal(t, []string{}, SplitTrim("abc", "/"))
 }
 
 func TestIsNumber(t *testing.T) {

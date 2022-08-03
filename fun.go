@@ -556,8 +556,9 @@ func SplitTrim(str, sep string) []string {
 		return []string{}
 	}
 
+	// 如果没找到 sep, strings.Split 返回包含 str 长度1的切片
 	ss := strings.Split(str, sep)
-	if len(ss) == 0 {
+	if len(ss) <= 1 {
 		return []string{}
 	}
 
@@ -578,8 +579,9 @@ func SplitTrimToInts(str, sep string) []int {
 		return []int{}
 	}
 
+	// 如果没找到 sep, strings.Split 返回包含 str 长度1的切片
 	ss := strings.Split(str, sep)
-	if len(ss) == 0 {
+	if len(ss) <= 1 {
 		return []int{}
 	}
 
