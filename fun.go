@@ -941,14 +941,36 @@ func RemoveAny(str string, removes ...string) string {
 
 // RemoveSign 将字符串的所有数据依次写成一行, 去除无意义字符串(标点符号、符号)
 func RemoveSign(str string) string {
-	str = strings.NewReplacer(LF, "", CRLF, "", TAB, "", SPACE, "").Replace(str)
+	if strings.Contains(str, LF) {
+		str = strings.ReplaceAll(str, LF, "")
+	}
+
+	if strings.Contains(str, CRLF) {
+		str = strings.ReplaceAll(str, CRLF, "")
+	}
+
+	if strings.Contains(str, TAB) {
+		str = strings.ReplaceAll(str, TAB, "")
+	}
+
+	if strings.Contains(str, SPACE) {
+		str = strings.ReplaceAll(str, SPACE, "")
+	}
+
 	m := regexp.MustCompile(`[\pP\pS]`)
 	return m.ReplaceAllString(str, "")
 }
 
-// RemoveLines 移除换行
+// RemoveLines 移除换行符, 换行符包括 \n \r\n, strings.NewReplacer 性能很差
 func RemoveLines(str string) string {
-	str = strings.NewReplacer(LF, "", CRLF, "").Replace(str)
+	if strings.Contains(str, LF) {
+		str = strings.ReplaceAll(str, LF, "")
+	}
+
+	if strings.Contains(str, CRLF) {
+		str = strings.ReplaceAll(str, CRLF, "")
+	}
+
 	return str
 }
 

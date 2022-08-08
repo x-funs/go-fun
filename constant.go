@@ -9,6 +9,7 @@ const (
 	DASH       = "-"
 	LF         = "\n"
 	CRLF       = "\r\n"
+	CR         = "\r"
 	TAB        = "\t"
 )
 

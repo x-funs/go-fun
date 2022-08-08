@@ -501,6 +501,12 @@ func TestRemoveLines(t *testing.T) {
 	assert.Equal(t, "acb", RemoveLines("a\n\nc\nb"))
 }
 
+func BenchmarkRemoveLines(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		RemoveLines("https://www.163.com/news/article/HE8G1HQ8000189FH.html")
+	}
+}
+
 func TestUrlParse(t *testing.T) {
 	urlStrs := []string{
 		"baidu.com",
