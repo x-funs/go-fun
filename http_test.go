@@ -334,11 +334,11 @@ func TestHttpGetPublic(t *testing.T) {
 func TestHttpGetMaxContentLength(t *testing.T) {
 	var urlStr string
 
-	// urlStr = "https://www.163.com"
-	urlStr = "https://mirrors.163.com/mysql/Downloads/MySQL-8.0/mysql-8.0.27-macos11-x86_64.tar"
+	urlStr = "http://suosi.com.cn"
+	// urlStr = "https://mirrors.163.com/mysql/Downloads/MySQL-8.0/mysql-8.0.27-macos11-x86_64.tar"
 
 	req := &HttpReq{
-		MaxContentLength: 10000,
+		MaxContentLength: 1000000,
 	}
 	resp, err := HttpGetResp(urlStr, req, 10000)
 

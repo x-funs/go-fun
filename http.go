@@ -699,9 +699,14 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 			}
 			body, err = ioutil.ReadAll(reader)
 		} else {
-			// 只读取到最大长度, 就立即返回
+			// 只读取到最大长度, 就立即返回, 根据读取到的数据判断是否返回错误
 			body, err = ioutil.ReadAll(io.LimitReader(reader, r.MaxContentLength))
-			httpResp.Body = body
+			bodyLen := int64(len(body))
+			if bodyLen < r.MaxContentLength {
+				httpResp.Body = body
+			} else {
+				return httpResp, errors.New("ErrorContentLength")
+			}
 		}
 	} else {
 		body, err = ioutil.ReadAll(reader)
