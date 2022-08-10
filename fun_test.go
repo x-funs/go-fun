@@ -2,6 +2,7 @@ package fun
 
 import (
 	"fmt"
+	"net/url"
 	"testing"
 	"time"
 
@@ -524,6 +525,18 @@ func TestUrlParse(t *testing.T) {
 
 func BenchmarkUrlParse(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		UrlParse("http://www.baidu.com")
+		_, _ = url.Parse("http://www.baidu.com")
+	}
+}
+
+func BenchmarkString(b *testing.B) {
+	resp, _ := HttpGetResp("https://www.qq.com", nil, 10000)
+
+	body := resp.Body
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		_ = String(body)
 	}
 }
