@@ -286,6 +286,11 @@ func TestIsLetter(t *testing.T) {
 	assert.Equal(t, false, IsLetter("123"))
 }
 
+func TestIsEmail(t *testing.T) {
+	assert.Equal(t, false, IsEmail(""))
+	assert.Equal(t, true, IsEmail("aaa@aa.aa"))
+}
+
 func TestContains(t *testing.T) {
 	assert.Equal(t, true, Contains("", ""))
 	assert.Equal(t, true, Contains("hello", "el"))

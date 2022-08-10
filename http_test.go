@@ -319,7 +319,7 @@ func TestHttpGetPublic(t *testing.T) {
 	var urlStr string
 
 	// urlStr = "http://www.163.com"
-	// urlStr = "http://www.qq.com"
+	urlStr = "http://www.qq.com"
 
 	// 默认不会进行编码探测和转换, gbk 会输出乱码
 	resp, err := HttpGetResp(urlStr, nil, 10000)
