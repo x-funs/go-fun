@@ -33,7 +33,7 @@ type HttpReq struct {
 	// 限制允许访问 ContentType 列表, 前缀匹配
 	AllowedContentTypes []string
 
-	// 最大 Redirect 次数, 范围 [0,10), 否则采用默认的跳转策略 (最大 10 次)
+	// 最大 Redirect 次数, 范围 [0,10), 否则采用默认的跳转策略 (最大限制 10 次)
 	MaxRedirect int
 
 	// 禁止跳转
@@ -58,6 +58,9 @@ type HttpResp struct {
 
 	// 响应头
 	Headers *http.Header
+
+	// 最后请求
+	RequestURL *url.URL
 }
 
 // HttpDefaultTransport 默认全局使用的 http.Transport
@@ -669,6 +672,7 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 
 	httpResp.Headers = &resp.Header
 	httpResp.ContentLength = resp.ContentLength
+	httpResp.RequestURL = resp.Request.URL
 
 	// http.Transport 定义了当请求头不包含 Accept-Encoding 或为空时, 默认会发送 Accept-Encoding=gzip
 	// 它会自动判断服务端是否是gzip 然后在接受响应时自动 uncompress, 并会自动移除响应头中的 Content-Encoding、Content-Length

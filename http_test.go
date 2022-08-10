@@ -369,11 +369,11 @@ func TestHttpGetContentType(t *testing.T) {
 func TestHttpGetRedirect(t *testing.T) {
 	var urlStr string
 
-	// http 默认会 301 跳转到 https
-	urlStr = "http://www.163.com"
+	// http 默认会 30x 跳转到 https
+	urlStr = "http://www.sohu.com"
 
 	req := &HttpReq{
-		MaxRedirect: 1,
+		MaxRedirect: 2,
 	}
 	resp, err := HttpGetResp(urlStr, req, 10000)
 
@@ -382,5 +382,6 @@ func TestHttpGetRedirect(t *testing.T) {
 	t.Log(resp.StatusCode)
 	t.Log(resp.ContentLength)
 	t.Log(resp.Headers)
+	t.Log(resp.RequestURL)
 	t.Log(String(resp.Body))
 }
