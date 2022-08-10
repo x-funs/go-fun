@@ -50,6 +50,9 @@ type HttpResp struct {
 	// Http 状态码
 	StatusCode int
 
+	// 错误位置
+	ErrorPos string
+
 	// 响应体
 	Body []byte
 
@@ -647,17 +650,12 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 	}
 
 	// HttpResp
-	httpResp := &HttpResp{
-		Success:       false,
-		StatusCode:    0,
-		Body:          nil,
-		ContentLength: 0,
-		Headers:       nil,
-	}
+	httpResp := &HttpResp{}
 
 	// Do
 	resp, err := client.Do(req)
 	if err != nil {
+		httpResp.ErrorPos = "Do"
 		return httpResp, err
 	}
 	defer resp.Body.Close()
@@ -667,6 +665,7 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
 		httpResp.Success = true
 	} else {
+		httpResp.ErrorPos = "StatusCode"
 		return httpResp, errors.New("error with http Status code")
 	}
 
@@ -683,6 +682,7 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 	case "gzip":
 		reader, err = gzip.NewReader(resp.Body)
 		if err != nil {
+			httpResp.ErrorPos = "Gzip"
 			return httpResp, errors.New("error with gzip NewReader error")
 		}
 	case "deflate":
@@ -694,6 +694,7 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 
 	// ContentType 限制
 	if _, err := allowContentTypes(r, httpResp.Headers); err != nil {
+		httpResp.ErrorPos = "ContentType"
 		return httpResp, err
 	}
 
@@ -701,6 +702,7 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 	if r != nil && r.MaxContentLength > 0 {
 		if resp.ContentLength != -1 {
 			if resp.ContentLength > r.MaxContentLength {
+				httpResp.ErrorPos = "ContentLength"
 				return httpResp, errors.New("error with ContentLength > MaxContentLength ")
 			}
 			body, err = ioutil.ReadAll(reader)
@@ -708,6 +710,7 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 			// 只读取到最大长度, 就立即返回, 并返回错误
 			body, _ = ioutil.ReadAll(io.LimitReader(reader, r.MaxContentLength))
 			httpResp.Body = body
+			httpResp.ErrorPos = "ContentLength"
 			return httpResp, errors.New("error with truncate body ContentLength > MaxContentLength")
 		}
 	} else {
@@ -715,6 +718,7 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 	}
 
 	if err != nil {
+		httpResp.ErrorPos = "Body"
 		return httpResp, err
 	} else {
 		httpResp.Body = body
