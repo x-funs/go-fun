@@ -310,6 +310,10 @@ func ToUtf8(origin []byte, encode string) ([]byte, error) {
 		return nil, err
 	}
 
+	if e == nil {
+		return nil, errors.New("unsupported encoding")
+	}
+
 	r := transform.NewReader(bytes.NewReader(origin), e.NewDecoder())
 	s, err := ioutil.ReadAll(r)
 	if err != nil {
