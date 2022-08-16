@@ -1276,7 +1276,10 @@ func UrlParse(rawURL string) (*url.URL, error) {
 
 // Template 模板渲染
 func Template(tpl string, data any) (string, error) {
-	t := template.Must(template.New("").Parse(tpl))
+	t, err := template.New("").Parse(tpl)
+	if err != nil {
+		return "", err
+	}
 
 	buf := new(bytes.Buffer)
 	if err := t.Execute(buf, data); err != nil {
