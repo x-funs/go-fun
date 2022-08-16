@@ -12,6 +12,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"html/template"
 	"io/ioutil"
 	"math"
 	"math/rand"
@@ -1267,4 +1268,16 @@ func UrlParse(rawURL string) (*url.URL, error) {
 	} else {
 		return nil, errors.New("url parse error")
 	}
+}
+
+// Template 模板渲染
+func Template(tpl string, data any) (string, error) {
+	t := template.Must(template.New("").Parse(tpl))
+
+	buf := new(bytes.Buffer)
+	if err := t.Execute(buf, data); err != nil {
+		return "", err
+	}
+
+	return String(buf.Bytes()), nil
 }

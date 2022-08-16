@@ -528,6 +528,20 @@ func TestUrlParse(t *testing.T) {
 	}
 }
 
+func TestTemplate(t *testing.T) {
+	tpl := `{
+  "name": {{ .name }},
+  "age": {{ .age }}
+}`
+
+	data := map[string]string{
+		"name": "张三",
+		"age":  "18",
+	}
+
+	t.Log(Template(tpl, data))
+}
+
 func BenchmarkUrlParse(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, _ = url.Parse("http://www.baidu.com")
