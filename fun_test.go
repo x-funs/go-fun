@@ -535,7 +535,7 @@ func TestTemplate(t *testing.T) {
 }`
 
 	data := map[string]string{
-		"name": "张三",
+		"name": `"张三"`,
 		"age":  "18",
 	}
 

@@ -12,7 +12,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"html/template"
 	"io/ioutil"
 	"math"
 	"math/rand"
@@ -24,6 +23,7 @@ import (
 	"runtime"
 	"strconv"
 	"strings"
+	"text/template"
 	"time"
 	"unicode"
 	"unicode/utf8"
@@ -1276,10 +1276,7 @@ func UrlParse(rawURL string) (*url.URL, error) {
 
 // Template 模板渲染
 func Template(tpl string, data any) (string, error) {
-	t, err := template.New("").Parse(tpl)
-	if err != nil {
-		return "", err
-	}
+	t := template.Must(template.New("").Parse(tpl))
 
 	buf := new(bytes.Buffer)
 	if err := t.Execute(buf, data); err != nil {
