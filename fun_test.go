@@ -543,8 +543,8 @@ func TestTemplate(t *testing.T) {
 }
 
 func TestNormaliseSpace(t *testing.T) {
-	str := "中   国\n世   	界\n\n\n\n\n, hello      world     "
-	t.Log(NormaliseSpace(str))
+	t.Log(NormaliseSpace("中   国\n世   	界\n\n\n\n\n, hello      world     "))
+	t.Log(NormaliseSpace("\n  \n\n\n\n\n    "))
 }
 
 func BenchmarkUrlParse(b *testing.B) {
