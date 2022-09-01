@@ -1286,7 +1286,7 @@ func Template(tpl string, data any) (string, error) {
 	return String(buf.Bytes()), nil
 }
 
-// NormaliseSpace 规范化此字符串中的空格；多个空格合并为一个空格，所有空白字符（例如换行符、制表符）都转换为一个简单的空格。
+// NormaliseSpace 规范化此字符串中的空格, 多个空格合并为一个空格, 所有空白字符例如换行符、制表符, 都转换为一个简单的空格。
 func NormaliseSpace(str string) string {
 	str = strings.TrimSpace(str)
 
