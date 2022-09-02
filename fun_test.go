@@ -547,6 +547,10 @@ func TestNormaliseSpace(t *testing.T) {
 	t.Log(NormaliseSpace("\n  \n\n\n\n\n    "))
 }
 
+func TestNormaliseLine(t *testing.T) {
+	t.Log(NormaliseLine("中   国\n世   	界\n\n\n\n\n, hello      world     "))
+}
+
 func BenchmarkUrlParse(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, _ = url.Parse("http://www.baidu.com")
