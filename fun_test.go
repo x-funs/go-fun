@@ -30,6 +30,9 @@ func TestMd5(t *testing.T) {
 	assert.Equal(t, "d41d8cd98f00b204e9800998ecf8427e", Md5(""))
 	assert.Equal(t, "df10ef8509dc176d733d59549e7dbfaf", Md5("123456abc"))
 	assert.Equal(t, "21232f297a57a5a743894a0e4a801fc3", Md5("admin"))
+	assert.Equal(t, "e10adc3949ba59abbe56e057f20f883e", Md5("123456"))
+	assert.Equal(t, "49ba59abbe56e057", Md5Bit16("123456"))
+	assert.Equal(t, "a32b4da32d9a67a5", Md5Bit16("df"))
 }
 
 func TestSha(t *testing.T) {

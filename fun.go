@@ -343,6 +343,12 @@ func Md5(str string) string {
 	return hex.EncodeToString(hexStr[:])
 }
 
+// Md5Bit16 返回 16位 字符串 Md5 值
+func Md5Bit16(str string) string {
+	s := Md5(str)
+	return SubString(s, 8, 16)
+}
+
 // Sha1 返回字符串 Sha1 值
 func Sha1(str string) string {
 	hexStr := sha1.Sum(Bytes(str))
