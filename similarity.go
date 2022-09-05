@@ -5,7 +5,7 @@ func Similarity(a, b string) float64 {
 	len1 := len([]rune(a))
 	len2 := len([]rune(b))
 
-	if len1 == 0 || len2 == 0 {
+	if len1 == 0 && len2 == 0 {
 		return 1
 	}
 
