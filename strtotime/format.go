@@ -1427,7 +1427,7 @@ func formats() []format {
 
 	zhHMSformat := format{
 		// 匹配中文时分秒
-		regex: "^t?" + reHour24 + "时" + reMinute + "分" + reSecond + "(秒)?",
+		regex: "^" + reHour24 + "时" + reMinute + "分" + reSecond + "?(秒)?",
 		name:  "zhHMS",
 		callback: func(r *result, inputs ...string) error {
 
@@ -1441,9 +1441,12 @@ func formats() []format {
 				return err
 			}
 
-			second, err := strconv.Atoi(inputs[2])
-			if err != nil {
-				return err
+			second := 0
+			if inputs[2] != "" {
+				second, err = strconv.Atoi(inputs[2])
+				if err != nil {
+					return err
+				}
 			}
 
 			err = r.time(hour, minute, second, 0)
