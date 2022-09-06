@@ -659,6 +659,28 @@ func formats() []format {
 		},
 	}
 
+	datePointed := format{
+		regex: "^" + reYear4 + "\\." + reMonth + "\\." + reDay + "\\.?",
+		name:  "datePointed",
+		callback: func(r *result, inputs ...string) error {
+			year, err := strconv.Atoi(inputs[0])
+			if err != nil {
+				return err
+			}
+
+			month, err := strconv.Atoi(inputs[1])
+			if err != nil {
+				return err
+			}
+
+			day, err := strconv.Atoi(inputs[2])
+			if err != nil {
+				return err
+			}
+			return r.ymd(year, month-1, day)
+		},
+	}
+
 	timeLong24 := format{
 		regex: "^t?" + reHour24 + "[:.]" + reMinute + "[:.]" + reSecond,
 		name:  "timelong24",
@@ -1455,6 +1477,7 @@ func formats() []format {
 		dateTextual,
 		pointedDate4,
 		pointedDate2,
+		datePointed,
 		timeLong24,
 		dateNoColon,
 		pgydotd,

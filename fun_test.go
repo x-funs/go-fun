@@ -151,6 +151,12 @@ func TestBlank(t *testing.T) {
 	assert.False(t, BlankAll("", "  ", "		", "123"))
 }
 
+func TestStrTotimeParse(t *testing.T) {
+	t.Log(Date(StrToTime("2022年9月1日")))
+	t.Log(Date(StrToTime("2020.11.19")))
+	// t.Log(Date(StrToTime("2015年04月06 16:03")))
+}
+
 func TestStrToTime(t *testing.T) {
 
 	date := "2015-04-06 16:03:03"
@@ -177,7 +183,7 @@ func TestStrToTime(t *testing.T) {
 	assert.Equal(t, StrToTime(date), StrToTime("2015-04-06 16:03:03"))
 	assert.Equal(t, StrToTime(date), StrToTime("2015年04月06日 16:03:03"))
 	assert.Equal(t, StrToTime(date), StrToTime("2015年04月06 16:03:03"))
-	assert.Equal(t, StrToTime(date), StrToTime("2015年04月06日 16时03分03秒"))
+	assert.Equal(t, StrToTime(date), StrToTime("2015年04月06日16时03分03秒"))
 	assert.Equal(t, StrToTime(date), StrToTime("2015年04月06 16时03分03"))
 	assert.Equal(t, StrToTime(date), StrToTime("2015/04/06 16:03:03"))
 	assert.Equal(t, StrToTime(date), StrToTime("2015-4-6 16:3:3"))
