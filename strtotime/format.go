@@ -1427,7 +1427,7 @@ func formats() []format {
 
 	zhHMSformat := format{
 		// 匹配中文时分秒
-		regex: "^" + reHour24 + "时" + reMinute + "分" + reSecond + "?(秒)?",
+		regex: "^" + reHour24 + "[时|点]" + reMinute + "分" + reSecond + "?(秒)?",
 		name:  "zhHMS",
 		callback: func(r *result, inputs ...string) error {
 
