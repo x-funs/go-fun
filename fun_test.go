@@ -155,9 +155,9 @@ func TestStrTotimeParse(t *testing.T) {
 	// t.Log(Date(StrToTime("2022年9月1日")))
 	// t.Log(Date(StrToTime("2020.11.19")))
 	// t.Log(Date(StrToTime("20.11.19")))
-	t.Log(Date(StrToTime("2022-09-01T16:07")))
+	// t.Log(Date(StrToTime("2022年8月14日0时30分")))
 	// t.Log(Date(StrToTime("2015年03月17日  04时00分")))
-	// t.Log(Date(StrToTime("2022-09-02T 00:15:03+08:00")))
+	t.Log(Date(StrToTime("2022-06-21T19:51:40+08:00")))
 }
 
 func TestStrToTime(t *testing.T) {
