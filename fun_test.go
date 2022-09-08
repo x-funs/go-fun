@@ -152,12 +152,19 @@ func TestBlank(t *testing.T) {
 }
 
 func TestStrTotimeParse(t *testing.T) {
-	// t.Log(Date(StrToTime("2022年9月1日")))
-	// t.Log(Date(StrToTime("2020.11.19")))
-	// t.Log(Date(StrToTime("20.11.19")))
-	// t.Log(Date(StrToTime("2022年8月14日0时30分")))
-	// t.Log(Date(StrToTime("2015年03月17日  04时00分")))
-	t.Log(Date(StrToTime("2022-06-21T19:51:40+08:00")))
+	dateStrs := []string{
+		// "30 August 2022",
+		// "02 Sep 2022",
+		// "02 Sep 2022 11:40",
+		// "02 Sep 2022 11:40:53am",
+		// "02 Sep 2022 11:40:53am",
+		// "02 Sep 2022 11:40 pm",
+		// "02 Sep 2022 11:40:53am",
+		"September 2 2022",
+	}
+	for _, dateStr := range dateStrs {
+		t.Log(Date(StrToTime(dateStr)))
+	}
 }
 
 func TestStrToTime(t *testing.T) {
