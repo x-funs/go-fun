@@ -158,9 +158,11 @@ func TestStrTotimeParse(t *testing.T) {
 		// "02 Sep 2022 11:40",
 		// "02 Sep 2022 11:40:53am",
 		// "02 Sep 2022 11:40:53am",
-		// "02 Sep 2022 11:40 pm",
+		"02 Sep 2022 11:40 aM",
 		// "02 Sep 2022 11:40:53am",
-		"September 2 2022",
+		"Sep 02 2022 11:40:00 aM",
+		"Sep 02 2022 11:40 aM",
+		"Sep 02 2022 11:40",
 	}
 	for _, dateStr := range dateStrs {
 		t.Log(Date(StrToTime(dateStr)))

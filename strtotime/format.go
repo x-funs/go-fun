@@ -184,7 +184,7 @@ func formats() []format {
 	}
 
 	mssqltime := format{
-		regex: "^" + reHour24 + ":" + reMinutelz + ":" + reSecondlz + "[:.]([0-9]+)" + reMeridian + "?",
+		regex: "(?i)^" + reHour24 + ":" + reMinutelz + ":" + reSecondlz + "[:.]([0-9]+)" + reMeridian + "?",
 		name:  "mssqltime",
 		callback: func(r *result, inputs ...string) error {
 
@@ -218,7 +218,7 @@ func formats() []format {
 	}
 
 	timeLong12 := format{
-		regex: "^" + reHour12 + "[:.]" + reMinute + "[:.]" + reSecondlz + reSpaceOpt + reMeridian,
+		regex: "(?i)^" + reHour12 + "[:.]" + reMinute + "[:.]" + reSecondlz + reSpaceOpt + reMeridian,
 		name:  "timeLong12",
 		callback: func(r *result, inputs ...string) error {
 
@@ -244,7 +244,7 @@ func formats() []format {
 	}
 
 	timeShort12 := format{
-		regex: "^" + reHour12 + "[:.]" + reMinutelz + reSpaceOpt + reMeridian,
+		regex: "(?i)^" + reHour12 + "[:.]" + reMinutelz + reSpaceOpt + reMeridian,
 		name:  "timeShort12",
 		callback: func(r *result, inputs ...string) error {
 
@@ -265,7 +265,7 @@ func formats() []format {
 	}
 
 	timeTiny12 := format{
-		regex: "^" + reHour12 + reSpaceOpt + reMeridian,
+		regex: "(?i)^" + reHour12 + reSpaceOpt + reMeridian,
 		name:  "timeTiny12",
 		callback: func(r *result, inputs ...string) error {
 
