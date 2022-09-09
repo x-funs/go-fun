@@ -747,3 +747,17 @@ func allowContentTypes(r *HttpReq, headers *http.Header) (bool, error) {
 
 	return true, nil
 }
+
+// UrlParse url.Parse 在没有 scheme 时不会出错
+func UrlParse(rawURL string) (*url.URL, error) {
+	u, err := url.Parse(rawURL)
+	if err == nil {
+		if u.Hostname() != "" {
+			return u, nil
+		} else {
+			return nil, errors.New("url hostname is empty")
+		}
+	} else {
+		return nil, errors.New("url parse error")
+	}
+}
