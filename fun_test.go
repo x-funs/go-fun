@@ -151,18 +151,18 @@ func TestBlank(t *testing.T) {
 	assert.False(t, BlankAll("", "  ", "		", "123"))
 }
 
-func TestStrTotimeParse(t *testing.T) {
+func TestStrTotimeEn(t *testing.T) {
 	dateStrs := []string{
-		// "30 August 2022",
-		// "02 Sep 2022",
-		// "02 Sep 2022 11:40",
-		// "02 Sep 2022 11:40:53am",
-		// "02 Sep 2022 11:40:53am",
+		"30 August 2022",
+		"02 Sep 2022",
+		"02 Sep 2022 11:40",
+		"02 Sep 2022 11:40:53am",
+		"02 Sep 2022 11:40:53am",
 		"02 Sep 2022 11:40 aM",
-		// "02 Sep 2022 11:40:53am",
 		"Sep 02 2022 11:40:00 aM",
 		"Sep 02 2022 11:40 aM",
 		"Sep 02 2022 11:40",
+		"20220601",
 	}
 	for _, dateStr := range dateStrs {
 		t.Log(Date(StrToTime(dateStr)))
