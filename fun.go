@@ -21,15 +21,6 @@ type GenNumber interface {
 	GenInteger | GenFloat
 }
 
-// StringSet 字符串集合
-type StringSet map[string]bool
-
-// IntSet 整型集合
-type IntSet map[int]bool
-
-// Int64Set 长整型集合
-type Int64Set map[int64]bool
-
 // MemoryBytes 返回当前主要的内存指标信息 (ReadMemStats 会 stopTheWorld, 谨慎非频繁使用)
 func MemoryBytes() map[string]int64 {
 	var m runtime.MemStats
