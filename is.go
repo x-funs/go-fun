@@ -27,6 +27,22 @@ func IsUtf8(p []byte) bool {
 	return utf8.Valid(p)
 }
 
+// IsASCIILetter 判断字符串是否全部为ASCII的字母
+func IsASCIILetter(str string) bool {
+	if len(str) == 0 {
+		return false
+	}
+
+	runeList := []rune(str)
+	for _, r := range runeList {
+		if !((65 <= r && r <= 90) || (97 <= r && r <= 122)) {
+			return false
+		}
+	}
+
+	return true
+}
+
 // IsLetter 判断字符串是否全部为字母
 func IsLetter(str string) bool {
 	if len(str) == 0 {
