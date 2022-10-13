@@ -110,6 +110,10 @@ func (t *Tire) FindAll(text string, opt Opt) map[string]int {
 			word.WriteRune(char)
 
 			if curNode.isEnd() {
+				if opt.HasGroup && j < length-1 && !t.isSeparator(charList[j+1]) {
+					break
+				}
+
 				foundWordList = append(foundWordList, word.String())
 
 				if opt.Limit > 0 && len(foundWordList) >= opt.Limit {
