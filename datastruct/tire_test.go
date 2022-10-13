@@ -2,7 +2,11 @@ package datastruct
 
 import (
 	"fmt"
+	"io/ioutil"
+	"strings"
 	"testing"
+
+	"github.com/x-funs/go-fun"
 )
 
 func TestTire_FindAll(t *testing.T) {
@@ -17,6 +21,17 @@ func TestTire_FindAll(t *testing.T) {
 func BenchmarkTire_FindAll(b *testing.B) {
 	tire := new(Tire)
 	tire.Add("挖土豆").Add("土豆").Add("上海").Add("上海帮忙").Add("to").Add("to box")
+
+	wordPath := "./word.txt"
+	if fun.IsExist(wordPath) {
+		buf, _ := ioutil.ReadFile(wordPath)
+		for _, word := range strings.Split(fun.String(buf), fun.LF) {
+			if word != "" {
+				tire.Add(word)
+			}
+		}
+	}
+
 	text := "去上海帮忙挖土豆，土豆地瓜哪里挖，一挖一麻袋。to box, into box"
 
 	b.StartTimer()
@@ -24,4 +39,5 @@ func BenchmarkTire_FindAll(b *testing.B) {
 		tire.FindAll(text, Opt{Limit: -1, Greed: true, Density: true})
 	}
 	b.StopTimer()
+	b.ReportAllocs()
 }

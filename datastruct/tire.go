@@ -1,20 +1,15 @@
 package datastruct
 
-import (
-	"strings"
-
-	"github.com/x-funs/go-fun"
-)
-
 type Tire struct {
-	data map[string]*Tire
+	data map[rune]*Tire
 	end  bool
 }
 
 type Opt struct {
-	Limit   int  // 限制, 匹配到多少个不一样的词语后结束匹配
-	Greed   bool // 贪婪, 尽可能的多匹配词语. 如关键词定义 ["上海", "上海游玩"], 对于句子 "他到上海游玩". true 则匹配 ["上海", "上海游玩"], false 则只会匹配 ["上海"]
-	Density bool // 密度, 匹配出词中词. 如关键词定义 ["到上海", "上海"], 对于句子 "他到上海游玩". true 则匹配 ["到上海", "上海"], false 则只会匹配 ["到上海"]
+	Limit    int  // 限制, 匹配到多少个不一样的词语后结束匹配
+	Greed    bool // 贪婪, 尽可能的多匹配词语. 如关键词定义 ["上海", "上海游玩"], 对于句子 "他到上海游玩". true 则匹配 ["上海", "上海游玩"], false 则只会匹配 ["上海"]
+	Density  bool // 密度, 匹配出词中词. 如关键词定义 ["到上海", "上海"], 对于句子 "他到上海游玩". true 则匹配 ["到上海", "上海"], false 则只会匹配 ["到上海"]
+	HasGroup bool // 是否有词组, 建议当文章有英文开启, 否则会影响匹配的效率
 }
 
 // Add 添加词语
@@ -26,7 +21,7 @@ func (t *Tire) Add(word string) *Tire {
 	var child *Tire = nil
 	var current = t
 
-	charList := strings.Split(word, "")
+	charList := []rune(word)
 	length := len(charList)
 	for i := 0; i < length; i++ {
 		char := charList[i]
@@ -46,7 +41,7 @@ func (t *Tire) Add(word string) *Tire {
 }
 
 // 获取子节点
-func (t *Tire) getChild(char string) *Tire {
+func (t *Tire) getChild(char rune) *Tire {
 	tire, ok := t.data[char]
 	if ok {
 		return tire
@@ -55,9 +50,9 @@ func (t *Tire) getChild(char string) *Tire {
 }
 
 // 添加子节点
-func (t *Tire) addChild(char string, child *Tire) {
+func (t *Tire) addChild(char rune, child *Tire) {
 	if t.data == nil {
-		t.data = make(map[string]*Tire, 0)
+		t.data = make(map[rune]*Tire, 0)
 	}
 	t.data[char] = child
 }
@@ -75,9 +70,10 @@ func (t *Tire) isEnd() bool {
 // Contains 是否包含词语
 func (t *Tire) Contains(text string) bool {
 	word := t.FindAll(text, Opt{
-		Limit:   1,
-		Greed:   false,
-		Density: false,
+		Limit:    1,
+		Greed:    false,
+		Density:  false,
+		HasGroup: true,
 	})
 	return len(word) != 0
 }
@@ -85,13 +81,13 @@ func (t *Tire) Contains(text string) bool {
 // FindAll 匹配全部, 返回(匹配词 => 出现次数)的映射
 func (t *Tire) FindAll(text string, opt Opt) map[string]int {
 	var foundWordMap = make(map[string]int, 0)
+	var curNode *Tire
 
-	word := ""
-	curNode := t
-	charList := strings.Split(text, "")
+	var word []rune
+	charList := []rune(text)
 	length := len(charList)
 	for i := 0; i < length; i++ {
-		word = ""
+		word = []rune{}
 		curNode = t
 		for j := i; j < length; j++ {
 			char := charList[j]
@@ -103,17 +99,18 @@ func (t *Tire) FindAll(text string, opt Opt) map[string]int {
 
 			// 关键词是否是全量字母
 			// 若关键词是全量字母且在它之前的字符是字母, 则该词无需被记录
-			if !fun.IsASCIILetter(char) && i > 0 && fun.IsASCIILetter(charList[i-1]) {
+			if opt.HasGroup && t.isSeparator(char) && i > 0 && !t.isSeparator(charList[i-1]) {
 				break
 			}
 
-			word += char
+			word = append(word, char)
 
 			if curNode.isEnd() {
-				if _, ok := foundWordMap[word]; !ok {
-					foundWordMap[word] = 1
+				wordStr := string(word)
+				if _, ok := foundWordMap[wordStr]; !ok {
+					foundWordMap[wordStr] = 1
 				} else {
-					foundWordMap[word] += 1
+					foundWordMap[wordStr] += 1
 				}
 
 				if opt.Limit > 0 && len(foundWordMap) >= opt.Limit {
@@ -133,4 +130,9 @@ func (t *Tire) FindAll(text string, opt Opt) map[string]int {
 	}
 
 	return foundWordMap
+}
+
+// 是否是分隔符, 目前取 ASCII 中的标点符号
+func (t *Tire) isSeparator(char rune) bool {
+	return char < 65 || (char > 90 && char < 97) || char > 122 && char < 127
 }
