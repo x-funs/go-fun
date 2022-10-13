@@ -1,4 +1,4 @@
-package datastruct
+package tree
 
 import (
 	"fmt"
@@ -11,16 +11,16 @@ import (
 
 func TestTire_FindAll(t *testing.T) {
 	tire := new(Tire)
-	tire.Add("挖土豆").Add("土豆").Add("上海").Add("上海帮忙").Add("to").Add("to box")
+	tire.Add("挖土豆").Add("土豆").Add("上海").Add("上海帮忙").Add("to").Add("to box").Add("watch")
 
-	text := "去上海帮忙挖土豆，土豆地瓜哪里挖，一挖一麻袋。to box, into box"
-	all := tire.FindAll(text, Opt{Limit: -1, Greed: true, Density: true})
+	text := "去上海帮忙挖土豆，土豆地瓜哪里挖，一挖一麻袋。to box, into box, watching tv"
+	all := tire.FindAll(text, Opt{Limit: -1, Greed: true, Density: true, HasGroup: true})
 	fmt.Printf("%+v\n", all)
 }
 
 func BenchmarkTire_FindAll(b *testing.B) {
 	tire := new(Tire)
-	tire.Add("挖土豆").Add("土豆").Add("上海").Add("上海帮忙").Add("to").Add("to box")
+	tire.Add("挖土豆").Add("土豆").Add("上海").Add("上海帮忙").Add("to").Add("to box").Add("watch")
 
 	wordPath := "./word.txt"
 	if fun.IsExist(wordPath) {
@@ -32,7 +32,7 @@ func BenchmarkTire_FindAll(b *testing.B) {
 		}
 	}
 
-	text := "去上海帮忙挖土豆，土豆地瓜哪里挖，一挖一麻袋。to box, into box"
+	text := "去上海帮忙挖土豆，土豆地瓜哪里挖，一挖一麻袋。to box, into box, watching tv"
 
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {

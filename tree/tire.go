@@ -1,4 +1,8 @@
-package datastruct
+package tree
+
+import (
+	"bytes"
+)
 
 type Tire struct {
 	data map[rune]*Tire
@@ -80,14 +84,14 @@ func (t *Tire) Contains(text string) bool {
 
 // FindAll 匹配全部, 返回(匹配词 => 出现次数)的映射
 func (t *Tire) FindAll(text string, opt Opt) map[string]int {
-	var foundWordMap = make(map[string]int, 0)
+	var foundWordList = make([]string, 0)
 	var curNode *Tire
 
-	var word []rune
+	var word bytes.Buffer
 	charList := []rune(text)
 	length := len(charList)
 	for i := 0; i < length; i++ {
-		word = []rune{}
+		word.Reset()
 		curNode = t
 		for j := i; j < length; j++ {
 			char := charList[j]
@@ -103,18 +107,13 @@ func (t *Tire) FindAll(text string, opt Opt) map[string]int {
 				break
 			}
 
-			word = append(word, char)
+			word.WriteRune(char)
 
 			if curNode.isEnd() {
-				wordStr := string(word)
-				if _, ok := foundWordMap[wordStr]; !ok {
-					foundWordMap[wordStr] = 1
-				} else {
-					foundWordMap[wordStr] += 1
-				}
+				foundWordList = append(foundWordList, word.String())
 
-				if opt.Limit > 0 && len(foundWordMap) >= opt.Limit {
-					return foundWordMap
+				if opt.Limit > 0 && len(foundWordList) >= opt.Limit {
+					return t.statFoundWord(foundWordList)
 				}
 
 				if !opt.Density {
@@ -129,10 +128,24 @@ func (t *Tire) FindAll(text string, opt Opt) map[string]int {
 		}
 	}
 
-	return foundWordMap
+	return t.statFoundWord(foundWordList)
 }
 
 // 是否是分隔符, 目前取 ASCII 中的标点符号
 func (t *Tire) isSeparator(char rune) bool {
-	return char < 65 || (char > 90 && char < 97) || char > 122 && char < 127
+	return char < 65 || (char > 90 && char < 97) || char > 122
+}
+
+// 词数统计
+func (t *Tire) statFoundWord(list []string) map[string]int {
+	foundWordMap := make(map[string]int, 0)
+	for _, word := range list {
+		wordStr := word
+		if _, ok := foundWordMap[wordStr]; !ok {
+			foundWordMap[wordStr] = 1
+		} else {
+			foundWordMap[wordStr] += 1
+		}
+	}
+	return foundWordMap
 }
