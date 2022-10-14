@@ -328,8 +328,8 @@ func TestIsLetter(t *testing.T) {
 	assert.Equal(t, true, IsLetter("abc"))
 	assert.Equal(t, false, IsLetter("abc123"))
 	assert.Equal(t, false, IsLetter("123"))
-	assert.Equal(t, false, IsLetter("上"))
-	assert.Equal(t, false, IsLetter("海"))
+	assert.Equal(t, true, IsLetter("上"))
+	assert.Equal(t, true, IsLetter("海"))
 }
 
 func BenchmarkIsLetter(b *testing.B) {
