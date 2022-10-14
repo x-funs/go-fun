@@ -27,6 +27,7 @@ func NewTire() *tire {
 	}
 }
 
+// AddAll 批量添加词语
 func (t *tire) AddAll(words []string) *tire {
 	if len(words) > 0 {
 		for _, word := range words {
