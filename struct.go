@@ -2,16 +2,16 @@ package fun
 
 import "reflect"
 
-// CopyStruct 复制 struct 对象
-func CopyStruct(src, dst any) {
+// StructCopy 复制 struct 对象
+func StructCopy(src, dst any) {
 	if src == nil || dst == nil {
 		return
 	}
-	copyStruct(reflect.ValueOf(src), reflect.ValueOf(dst))
+	structCopy(reflect.ValueOf(src), reflect.ValueOf(dst))
 }
 
-// copyStruct 复制 struct 对象
-func copyStruct(src, dst reflect.Value) {
+// structCopy 复制 struct 对象
+func structCopy(src, dst reflect.Value) {
 	st := src.Type()
 	dt := dst.Type()
 	if st.Kind() == reflect.Ptr {
@@ -35,7 +35,7 @@ func copyStruct(src, dst reflect.Value) {
 				field.Set(src.Field(i))
 			}
 		} else {
-			copyStruct(src.Field(i).Addr(), dst)
+			structCopy(src.Field(i).Addr(), dst)
 		}
 	}
 }

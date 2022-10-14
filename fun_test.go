@@ -668,14 +668,14 @@ func TestCopyStruct(t *testing.T) {
 
 	b := &bStruct{}
 
-	CopyStruct(a, b)
+	StructCopy(a, b)
 
 	fmt.Printf("%+v\n", b)
 
 	bb := &bStruct{
 		Name: "test-bb",
 	}
-	CopyStruct(a, bb)
+	StructCopy(a, bb)
 
 	fmt.Printf("%+v\n", bb)
 
