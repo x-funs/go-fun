@@ -680,3 +680,8 @@ func TestCopyStruct(t *testing.T) {
 	fmt.Printf("%+v\n", bb)
 
 }
+
+func TestCommand(t *testing.T) {
+	result, _ := Command("ls", []string{"-l"}, "/")
+	fmt.Println(String(result))
+}

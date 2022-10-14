@@ -1,6 +1,9 @@
 package fun
 
 import (
+	"bytes"
+	"fmt"
+	"os/exec"
 	"reflect"
 	"runtime"
 	"unsafe"
@@ -141,40 +144,23 @@ func String(b []byte) string {
 	return *(*string)(unsafe.Pointer(&b))
 }
 
-// CopyStruct 复制 struct 对象
-func CopyStruct(src, dst any) {
-	if src == nil || dst == nil {
-		return
-	}
-	copyStruct(reflect.ValueOf(src), reflect.ValueOf(dst))
-}
+// Command 执行系统命令
+func Command(bin string, argv []string, baseDir string) ([]byte, error) {
+	cmd := exec.Command(bin, argv...)
 
-// copyStruct 复制 struct 对象
-func copyStruct(src, dst reflect.Value) {
-	st := src.Type()
-	dt := dst.Type()
-	if st.Kind() == reflect.Ptr {
-		src = src.Elem()
-		st = st.Elem()
-	}
-	if dt.Kind() == reflect.Ptr {
-		dst = dst.Elem()
-		dt = dt.Elem()
+	if baseDir != "" {
+		cmd.Dir = baseDir
 	}
 
-	// Only struct are supported
-	if st.Kind() != reflect.Struct || dt.Kind() != reflect.Struct {
-		return
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	cmd.Stdout = &stdout
+	cmd.Stderr = &stderr
+
+	err := cmd.Run()
+
+	if err != nil {
+		return stdout.Bytes(), fmt.Errorf("%s: %s", err, stderr.Bytes())
 	}
-	var field reflect.Value
-	for i := 0; i < st.NumField(); i++ {
-		if !st.Field(i).Anonymous {
-			field = dst.FieldByName(st.Field(i).Name)
-			if field.IsValid() && field.CanSet() {
-				field.Set(src.Field(i))
-			}
-		} else {
-			copyStruct(src.Field(i).Addr(), dst)
-		}
-	}
+	return stdout.Bytes(), nil
 }
