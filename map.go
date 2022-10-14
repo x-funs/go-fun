@@ -22,7 +22,7 @@ func MapValues[K comparable, V any](m map[K]V) []V {
 	return values
 }
 
-// MapMerge 合并两个map, 如果有相同的键, 则后者会覆盖前者
+// MapMerge 合并多个map, 如果有相同的键, 则后者会覆盖前者
 func MapMerge[K comparable, V any](maps ...map[K]V) map[K]V {
 	res := make(map[K]V, 0)
 

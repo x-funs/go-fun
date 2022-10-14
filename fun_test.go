@@ -9,6 +9,29 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+type aStruct struct {
+	Name    string
+	Age     int
+	State   bool
+	Ps      *string
+	CStruct cStruct
+}
+
+type bStruct struct {
+	Name    string
+	Age     int
+	State   bool
+	Float   float64
+	Ps      *string
+	PStr    *string
+	CStruct cStruct
+}
+
+type cStruct struct {
+	School string
+	Grade  int
+}
+
 func TestMemory(t *testing.T) {
 	fmt.Println(MemoryBytes())
 	fmt.Println(Memory(SizeKB))
@@ -443,7 +466,10 @@ func TestMapMerge(t *testing.T) {
 		"b": 4,
 		"c": 3,
 	}
-	assert.Equal(t, map[string]int{"a": 1, "b": 4, "c": 3, "d": 4}, MapMerge(m1, m2))
+	m3 := map[string]int{
+		"d": 6,
+	}
+	assert.Equal(t, map[string]int{"a": 1, "b": 4, "c": 3, "d": 6}, MapMerge(m1, m2, m3))
 }
 
 func TestSliceUnique(t *testing.T) {
@@ -627,4 +653,30 @@ func TestLcs(t *testing.T) {
 	t.Log(LongestCommonSubString("ABCDEFGHIG", "CEGML"))
 	t.Log(LongestCommonSubString("ABCDEFGHIG", "GIH"))
 	t.Log(LongestCommonSubString("我是中国人我说中国话", "中国人米说"))
+}
+
+func TestCopyStruct(t *testing.T) {
+	str := "s"
+	a := &aStruct{
+		Name:    "test-a",
+		Age:     12,
+		State:   true,
+		CStruct: cStruct{School: "ac", Grade: 1},
+	}
+	a.Ps = &str
+	fmt.Printf("%+v\n", a)
+
+	b := &bStruct{}
+
+	CopyStruct(a, b)
+
+	fmt.Printf("%+v\n", b)
+
+	bb := &bStruct{
+		Name: "test-bb",
+	}
+	CopyStruct(a, bb)
+
+	fmt.Printf("%+v\n", bb)
+
 }

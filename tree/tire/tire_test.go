@@ -26,7 +26,6 @@ var (
 func TestTireContains(t *testing.T) {
 	tireTree := NewTire()
 	tireTree.AddAll(keywords)
-	fmt.Printf("%+v", tireTree)
 
 	contains := tireTree.Contains(textZh, false)
 	t.Log(contains)
