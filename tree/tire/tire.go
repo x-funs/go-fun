@@ -1,28 +1,49 @@
-package tree
+// Package tire TireTree 实现
+package tire
 
-import (
-	"bytes"
-)
+import "bytes"
 
-type Tire struct {
-	data map[rune]*Tire
+type tire struct {
+	data map[rune]*tire
 	end  bool
 }
 
-type Opt struct {
-	Limit     int  // 限制, 匹配到多少个词语后结束匹配
-	Greed     bool // 贪婪, 尽可能的多匹配词语. 如关键词定义 ["上海", "上海游玩"], 对于句子 "他到上海游玩". true 则匹配 ["上海", "上海游玩"], false 则只会匹配 ["上海"]
-	Density   bool // 密度, 匹配出词中词. 如关键词定义 ["到上海", "上海"], 对于句子 "他到上海游玩". true 则匹配 ["到上海", "上海"], false 则只会匹配 ["到上海"]
-	WordGroup bool // 是否是单词语系, 是否类似英语使用空格分割开来的语言
+type Option struct {
+	// 匹配次数限制, -1 不限制
+	Limit int
+	// 贪婪模式, 尽可能的多匹配词语. 如关键词定义 ["上海", "上海游玩"], 对于句子 "他到上海游玩". true 则匹配 ["上海", "上海游玩"], false 则只会匹配 ["上海"]
+	Greed bool
+	// 密度, 匹配出词中词. 如关键词定义 ["到上海", "上海"], 对于句子 "他到上海游玩". true 则匹配 ["到上海", "上海"], false 则只会匹配 ["到上海"]
+	Density bool
+	// 是否是单词语系
+	WordMode bool
+}
+
+// NewTire new TireTree
+func NewTire() *tire {
+	return &tire{
+		data: nil,
+		end:  false,
+	}
+}
+
+func (t *tire) AddAll(words []string) *tire {
+	if len(words) > 0 {
+		for _, word := range words {
+			t.Add(word)
+		}
+	}
+
+	return t
 }
 
 // Add 添加词语
-func (t *Tire) Add(word string) *Tire {
+func (t *tire) Add(word string) *tire {
 	if word == "" {
 		return t
 	}
 
-	var child *Tire = nil
+	var child *tire = nil
 	var current = t
 
 	charList := []rune(word)
@@ -32,7 +53,7 @@ func (t *Tire) Add(word string) *Tire {
 		child = current.getChild(char)
 		if child == nil {
 			// 无子类，新建一个子节点后存放下一个字符
-			child = new(Tire)
+			child = NewTire()
 			current.addChild(char, child)
 		}
 
@@ -44,48 +65,32 @@ func (t *Tire) Add(word string) *Tire {
 	return t
 }
 
-// 获取子节点
-func (t *Tire) getChild(char rune) *Tire {
-	tire, ok := t.data[char]
-	if ok {
-		return tire
-	}
-	return nil
-}
-
-// 添加子节点
-func (t *Tire) addChild(char rune, child *Tire) {
-	if t.data == nil {
-		t.data = make(map[rune]*Tire, 0)
-	}
-	t.data[char] = child
-}
-
-// 设置结束
-func (t *Tire) setEnd() {
-	t.end = true
-}
-
-// 是否结束
-func (t *Tire) isEnd() bool {
-	return t.end
-}
-
-// Contains 是否包含词语
-func (t *Tire) Contains(text string) bool {
-	word := t.FindAll(text, Opt{
-		Limit:     1,
-		Greed:     false,
-		Density:   false,
-		WordGroup: true,
+// Contains 是否包含
+func (t *tire) Contains(text string, wordMode bool) bool {
+	word := t.FindWithOptions(text, Option{
+		Limit:    1,
+		Greed:    false,
+		Density:  false,
+		WordMode: wordMode,
 	})
 	return len(word) != 0
 }
 
-// FindAll 匹配全部, 返回(匹配词 => 出现次数)的映射
-func (t *Tire) FindAll(text string, opt Opt) map[string]int {
+// Find 包含词语列表
+func (t *tire) Find(text string, wordMode bool) map[string]int {
+	word := t.FindWithOptions(text, Option{
+		Limit:    -1,
+		Greed:    false,
+		Density:  false,
+		WordMode: wordMode,
+	})
+	return word
+}
+
+// FindWithOptions 包含词语列表, 并统计次数
+func (t *tire) FindWithOptions(text string, opt Option) map[string]int {
 	var foundWordList = make([]string, 0)
-	var curNode *Tire
+	var curNode *tire
 
 	var word bytes.Buffer
 	charList := []rune(text)
@@ -103,14 +108,14 @@ func (t *Tire) FindAll(text string, opt Opt) map[string]int {
 
 			// 关键词是否是全量字母
 			// 若关键词是全量字母且在它之前的字符是字母, 则该词无需被记录
-			if opt.WordGroup && t.isSeparator(char) && i > 0 && !t.isSeparator(charList[i-1]) {
+			if opt.WordMode && t.isSeparator(char) && i > 0 && !t.isSeparator(charList[i-1]) {
 				break
 			}
 
 			word.WriteRune(char)
 
 			if curNode.isEnd() {
-				if opt.WordGroup && j < length-1 && !t.isSeparator(charList[j+1]) {
+				if opt.WordMode && j < length-1 && !t.isSeparator(charList[j+1]) {
 					break
 				}
 
@@ -135,8 +140,35 @@ func (t *Tire) FindAll(text string, opt Opt) map[string]int {
 	return t.statFoundWord(foundWordList)
 }
 
+// 获取子节点
+func (t *tire) getChild(char rune) *tire {
+	tire, ok := t.data[char]
+	if ok {
+		return tire
+	}
+	return nil
+}
+
+// 添加子节点
+func (t *tire) addChild(char rune, child *tire) {
+	if t.data == nil {
+		t.data = make(map[rune]*tire, 0)
+	}
+	t.data[char] = child
+}
+
+// 设置结束
+func (t *tire) setEnd() {
+	t.end = true
+}
+
+// 是否结束
+func (t *tire) isEnd() bool {
+	return t.end
+}
+
 // 是否是分隔符
-func (t *Tire) isSeparator(c rune) bool {
+func (t *tire) isSeparator(c rune) bool {
 	// 32( ), 33(!), 34("), 35(#), 37(%), 38(&), 39('), 40((), 41()), 42(*), 42(*), 44(,), 45(-), 46(.), 47(/), 58(:)
 	// 59(;), 60(<), 61(=), 62(>), 64(@), 91([), 93(]), 96(`), 123({), 124(|), 125(}), 126(~), 183(·), 8216( ‘)
 	// 8217(’), 8220(“), 8221(”), 8230(…), 12289(、), 12290(。), 12298(《), 12299(》), 12304(【), 12305(】), 65281(！)
@@ -145,7 +177,7 @@ func (t *Tire) isSeparator(c rune) bool {
 }
 
 // 词数统计
-func (t *Tire) statFoundWord(list []string) map[string]int {
+func (t *tire) statFoundWord(list []string) map[string]int {
 	foundWordMap := make(map[string]int, 0)
 	for _, word := range list {
 		wordStr := word
