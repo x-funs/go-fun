@@ -15,6 +15,7 @@ type aStruct struct {
 	State   bool
 	Ps      *string
 	CStruct cStruct
+	Wrap    string
 }
 
 type bStruct struct {
@@ -25,11 +26,16 @@ type bStruct struct {
 	Ps      *string
 	PStr    *string
 	CStruct cStruct
+	wrapStruct
 }
 
 type cStruct struct {
 	School string
 	Grade  int
+}
+
+type wrapStruct struct {
+	Wrap string
 }
 
 func TestMemory(t *testing.T) {
@@ -664,6 +670,7 @@ func TestCopyStruct(t *testing.T) {
 		CStruct: cStruct{School: "ac", Grade: 1},
 	}
 	a.Ps = &str
+	a.Wrap = "123"
 	fmt.Printf("%+v\n", a)
 
 	b := &bStruct{}
@@ -675,6 +682,7 @@ func TestCopyStruct(t *testing.T) {
 	bb := &bStruct{
 		Name: "test-bb",
 	}
+	bb.Wrap = "234"
 	StructCopy(a, bb)
 
 	fmt.Printf("%+v\n", bb)
