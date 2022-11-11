@@ -318,7 +318,9 @@ func TestSplitTrim(t *testing.T) {
 
 	assert.Equal(t, []int{2, 3, 5}, SplitTrimToInts("2,,3,5", ","))
 
-	assert.Equal(t, []string{""}, SplitTrim("", "/"))
+	assert.Equal(t, []string{}, SplitTrim("", "/"))
+	assert.Equal(t, []string{}, SplitTrim("/", "/"))
+	assert.Equal(t, []string{"index"}, SplitTrim("/index", "/"))
 	assert.Equal(t, []string{"abc"}, SplitTrim("abc", "/"))
 }
 

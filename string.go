@@ -91,7 +91,7 @@ func SplitTrimToInts(str, sep string) []int {
 		return []int{}
 	}
 
-	// 如果没找到 sep, strings.Split 返回包含 str 长度1的切片
+	// 如果没找到 sep, strings.Split 返回包含 int(str) 长度 1 的切片
 	ss := strings.Split(str, sep)
 	if len(ss) <= 1 {
 		s := ToInt(str)
