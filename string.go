@@ -68,10 +68,10 @@ func SplitTrim(str, sep string) []string {
 		return []string{}
 	}
 
-	// 如果没找到 sep, strings.Split 返回包含 str 长度1的切片
+	// 如果没找到 sep, strings.Split 返回包含 str 长度 1 的切片
 	ss := strings.Split(str, sep)
 	if len(ss) <= 1 {
-		return []string{}
+		return []string{str}
 	}
 
 	slices := make([]string, 0, len(ss))
@@ -94,7 +94,8 @@ func SplitTrimToInts(str, sep string) []int {
 	// 如果没找到 sep, strings.Split 返回包含 str 长度1的切片
 	ss := strings.Split(str, sep)
 	if len(ss) <= 1 {
-		return []int{}
+		s := ToInt(str)
+		return []int{s}
 	}
 
 	slices := make([]int, 0, len(ss))
