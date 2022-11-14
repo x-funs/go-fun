@@ -385,3 +385,30 @@ func TestHttpGetRedirect(t *testing.T) {
 	t.Log(resp.RequestURL)
 	t.Log(String(resp.Body))
 }
+
+func TestUrlParse(t *testing.T) {
+	urlStrs := []string{
+		"baidu.com",
+		"www.baidu.com",
+		"http://www.baidu.com",
+		"abc",
+		"javascript:;",
+		"http://xf.house.163.com/{cityCode}/calculator/4.html#163-3-FDJS",
+	}
+
+	for _, urlStr := range urlStrs {
+		t.Log(UrlParse(urlStr))
+	}
+}
+
+func BenchmarkString(b *testing.B) {
+	resp, _ := HttpGetResp("https://www.qq.com", nil, 10000)
+
+	body := resp.Body
+
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		_ = String(body)
+	}
+}
