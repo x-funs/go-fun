@@ -36,7 +36,9 @@ func main() {
 	html, _ := fun.HttpGet("https://www.163.com")
 	fmt.Println(fun.String(html))
 }
+```
 
+## Hash
 
 func Base64Decode(str string) string
 Base64Decode 返回 Base64 值对应的字符串
@@ -49,6 +51,7 @@ Base64UrlDecode 返回 Url Safe Base64 值对应的字符串
 
 func Base64UrlEncode(str string) string
 Base64UrlEncode 返回字符串 Url Safe Base64 值
+*fun
 
 func Blank(str string) bool
 Blank 判断 Trim 后的字符串, 是否为空白
@@ -62,12 +65,16 @@ BlankAny 判断 Trim 后的字符串集, 是否任意一个包含空白
 func Bytes(s string) []byte
 Bytes 更高效的字符串转字节数组
 
+## string
+
 func CamelToSnake(str string) string
 CamelToSnake 驼峰转蛇形
 
+## fun
 func Command(bin string, argv []string, baseDir string) ([]byte, error)
 Command 执行系统命令
 
+## string
 func Contains(str, substr string) bool
 Contains 判断字符串是否包含指定的子串
 
@@ -76,6 +83,7 @@ ContainsAny 判断字符串是否包含任意一个指定的多个子串
 
 func ContainsCase(str, substr string) bool
 ContainsCase 判断字符串是否包含指定的子串, 不区分大小写
+## datetime
 
 func Date(layouts ...any) string
 Date 返回格式化后的日期时间字符串。 支持 Date()、Date(unixstamp)、Date(layout)、Date(layout,
@@ -173,7 +181,7 @@ HttpPutJsonDo Http Put Json 请求, 参数为请求地址, Json 数据 string, H
 
 func IntsToStrings(slice []int) []string
 IntsToStrings int 切片转换为字符串切片
-
+## is
 func Ip2Long(ipStr string) uint32
 Ip2Long 字符串 IP 转整型
 
@@ -203,6 +211,7 @@ IsUtf8 判断是否为 UTF-8 编码
 
 func Long2Ip(long uint32) string
 Long2Ip 整型转字符串 IP
+## similarity
 
 func LongestCommonSubString(x, y string) int
 LongestCommonSubString 计算两个字符串最大公共子串长度
@@ -218,7 +227,7 @@ MapValues 返回map的值切片
 
 func Matches(str, pattern string) bool
 Matches 判断字符串是否匹配指定的正则表达式
-
+## math
 func Max(a, b int) int
 Max 取 int 最大值
 
@@ -242,7 +251,7 @@ Min 取 int 最小值
 
 func MinInt64(a, b int64) int64
 MinInt64 取 int64 最小值
-
+## string
 func NormaliseLine(str string) string
 NormaliseLine 规范化此字符串中的换行, 多个换行合并为一个换行
 
@@ -257,7 +266,7 @@ PadLeft 左侧填充字符串到指定长度
 
 func PadRight(str string, padStr string, padLen int) string
 PadRight 右侧填充字符串到指定长度
-
+## random
 func Random() int
 Random 返回随机数 `[0, MaxInt)`
 
@@ -317,6 +326,7 @@ Similarity 计算两个原始字符串的相似度
 
 func SimilarityText(a, b string) float64
 SimilarityText 计算两个字符串移除特殊符号后的相似度
+## slice
 
 func SliceContains[T GenInteger | string](slice []T, v T) bool
 SliceContains 判断整型和字符串是否在切片中
@@ -372,7 +382,7 @@ Template 模板渲染
 
 func Timestamp(millis ...any) int64
 Timestamp 返回当前时间的 Unix 时间戳。 默认返回秒级, 支持 Timestamp(true) 返回毫秒级
-
+## to
 func ToBool(str string) bool
 ToBool 字符串转 bool 类型
 
@@ -402,10 +412,11 @@ ToUtf8 指定字符集转 utf-8
 
 func Unwrap(str string, wrapStr string) string
 Unwrap 去除字符串包围, 非递归
+## http
 
 func UrlParse(rawURL string) (*url.URL, error)
 UrlParse url.Parse 在没有 scheme 时不会出错
-
+## to
 func Utf8To(utf8 []byte, encode string) ([]byte, error)
 Utf8To utf-8 转指定字符集
 
@@ -413,6 +424,7 @@ func Wrap(str string, wrapStr string) string
 Wrap 使用字符串包围原字符串
 
 
+## http
 
 func HttpDeleteResp(urlStr string, r *HttpReq, timeout int) (*HttpResp, error)
 HttpDeleteResp Http Delete 请求, 参数为请求地址, HttpReq, 超时时间(毫秒) 返回 HttpResp, 错误信息
@@ -446,4 +458,3 @@ HttpPutJsonResp Http Put Json 请求, 参数为请求地址, Json 数据 string,
 func HttpPutResp(urlStr string, body io.Reader, r *HttpReq, timeout int) (*HttpResp, error)
 HttpPutResp Http Put, 参数为请求地址, body io.Reader, HttpReq, 超时时间(毫秒) 返回
 HttpResp, 错误信息
-```
