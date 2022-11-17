@@ -14,6 +14,7 @@ func TestPad(t *testing.T) {
 	assert.Equal(t, "0101012345", PadLeft("12345", "01", 10))
 	assert.Equal(t, "1234500000", PadRight("12345", "0", 10))
 	assert.Equal(t, "0012345000", PadBoth("12345", "0", 10))
+	assert.Equal(t, "12345678901", PadBoth("12345678901", "0", 10))
 }
 
 func TestBlank(t *testing.T) {

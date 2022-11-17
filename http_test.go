@@ -386,6 +386,26 @@ func TestHttpGetRedirect(t *testing.T) {
 	t.Log(String(resp.Body))
 }
 
+func TestHttpReGetRedirect(t *testing.T) {
+	var urlStr string
+
+	// http 默认会 30x 跳转到 https
+	urlStr = "http://www.qq.com"
+
+	req := &HttpReq{
+		MaxRedirect: 2,
+	}
+	resp, err := HttpGetResp(urlStr, req, 10000)
+
+	t.Log(err)
+	t.Log(resp.Success)
+	t.Log(resp.StatusCode)
+	t.Log(resp.ContentLength)
+	t.Log(resp.Headers)
+	t.Log(resp.RequestURL)
+	t.Log(String(resp.Body))
+}
+
 func TestUrlParse(t *testing.T) {
 	urlStrs := []string{
 		"baidu.com",
