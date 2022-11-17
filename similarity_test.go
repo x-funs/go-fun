@@ -28,3 +28,8 @@ func TestLcs(t *testing.T) {
 func TestSimilarityText(t *testing.T) {
 	t.Log(SimilarityText("国家统计局：上半年GDP同比增长5%", "上半年GDP同比增长"))
 }
+
+func TestReSimilarityText(t *testing.T) {
+	t.Log(SimilarityText("人民日报仲音：算大账 看优势", "算大账 看优势"))
+	t.Log(SimilarityText("人民日报仲音：算大账 看优势", " 看优势"))
+}
