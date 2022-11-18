@@ -32,7 +32,7 @@ func StringsToInts(slice []string) []int {
 }
 
 // SliceContains 判断整型和字符串是否在切片中
-func SliceContains[T GenInteger | string](slice []T, v T) bool {
+func SliceContains[T comparable](slice []T, v T) bool {
 	if len(slice) == 0 {
 		return false
 	}
@@ -46,7 +46,7 @@ func SliceContains[T GenInteger | string](slice []T, v T) bool {
 }
 
 // SliceUnique 对数值和字符串切片进行去重
-func SliceUnique[T GenInteger | string](slice []T) []T {
+func SliceUnique[T comparable](slice []T) []T {
 	if len(slice) == 0 {
 		return slice
 	}
@@ -64,7 +64,7 @@ func SliceUnique[T GenInteger | string](slice []T) []T {
 }
 
 // SliceSplit 对数值和字符串切片按照指定长度进行分割
-func SliceSplit[T GenInteger | string](slice []T, size int) [][]T {
+func SliceSplit[T comparable](slice []T, size int) [][]T {
 	var res [][]T
 
 	if len(slice) == 0 || size <= 0 {
@@ -97,7 +97,7 @@ func SliceSplit[T GenInteger | string](slice []T, size int) [][]T {
 }
 
 // SliceIndex 对数值和字符串切片按照指定值进行查找
-func SliceIndex[T GenInteger | string](slice []T, v T) int {
+func SliceIndex[T comparable](slice []T, v T) int {
 	for i, s := range slice {
 		if s == v {
 			return i
@@ -107,7 +107,7 @@ func SliceIndex[T GenInteger | string](slice []T, v T) int {
 }
 
 // SliceLastIndex 对数值和字符串切片按照指定值进行查找, 返回最后一个匹配的索引
-func SliceLastIndex[T GenInteger | string](slice []T, v T) int {
+func SliceLastIndex[T comparable](slice []T, v T) int {
 	for i := len(slice) - 1; i >= 0; i-- {
 		if slice[i] == v {
 			return i
@@ -117,7 +117,7 @@ func SliceLastIndex[T GenInteger | string](slice []T, v T) int {
 }
 
 // SliceRemove 移除数值和字符串切片中的指定值
-func SliceRemove[T GenInteger | string](slice []T, v T) []T {
+func SliceRemove[T comparable](slice []T, v T) []T {
 	if len(slice) == 0 {
 		return slice
 	}
