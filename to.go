@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net"
 	"strconv"
 
@@ -157,7 +157,7 @@ func ToUtf8(origin []byte, encode string) ([]byte, error) {
 	}
 
 	r := transform.NewReader(bytes.NewReader(origin), e.NewDecoder())
-	s, err := ioutil.ReadAll(r)
+	s, err := io.ReadAll(r)
 	if err != nil {
 		return nil, err
 	}
@@ -172,7 +172,7 @@ func Utf8To(utf8 []byte, encode string) ([]byte, error) {
 	}
 
 	r := transform.NewReader(bytes.NewReader(utf8), e.NewEncoder())
-	s, err := ioutil.ReadAll(r)
+	s, err := io.ReadAll(r)
 	if err != nil {
 		return nil, err
 	}
