@@ -190,6 +190,12 @@ func (r *result) toDate(re int64) time.Time {
 	*r.m += r.rm
 	*r.d += r.rd
 
+	// 月份如果大于 11, 需要加年份
+	if *r.m > 11 {
+		*r.y += (*r.m + 1) / 12
+		*r.m %= 12
+	}
+
 	*r.h += r.rh
 	*r.i += r.ri
 	*r.s += r.rs

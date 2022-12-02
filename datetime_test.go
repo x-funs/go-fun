@@ -66,6 +66,13 @@ func TestStrToTime(t *testing.T) {
 	date := "2015-04-06 16:03:03"
 	timeStamp := StrToTime(date)
 
+	// 极限值
+	assert.Equal(t, "2023-01-31 23:59:59", Date(StrToTime("+1 month", StrToTime("2022-12-31 23:59:59"))))
+	assert.Equal(t, "2023-01-01 23:59:59", Date(StrToTime("+1 day", StrToTime("2022-12-31 23:59:59"))))
+	assert.Equal(t, "2023-01-01 00:59:59", Date(StrToTime("+1 hour", StrToTime("2022-12-31 23:59:59"))))
+	assert.Equal(t, "2023-01-01 00:00:59", Date(StrToTime("+1 minute", StrToTime("2022-12-31 23:59:59"))))
+	assert.Equal(t, "2023-01-01 00:00:00", Date(StrToTime("+1 second", StrToTime("2022-12-31 23:59:59"))))
+
 	assert.Equal(t, Timestamp(), StrToTime())
 	assert.Equal(t, int64(0), StrToTime(""))
 	assert.Equal(t, Timestamp(), StrToTime("now"))
