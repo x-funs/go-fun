@@ -16,6 +16,7 @@ const (
 const (
 	DatePattern               = "2006-01-02"
 	DatePatternSlash          = "2006/01/02"
+	DatePatternUnderscore     = "2006_01_02"
 	DatePatternZh             = "2006年01月02日"
 	DatetimePattern           = "2006-01-02 15:04:05"
 	DatetimeMilliPattern      = "2006-01-02 15:04:05.999"
