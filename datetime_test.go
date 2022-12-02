@@ -2,6 +2,7 @@ package fun
 
 import (
 	"fmt"
+	"math"
 	"testing"
 	"time"
 
@@ -67,6 +68,9 @@ func TestStrToTime(t *testing.T) {
 	timeStamp := StrToTime(date)
 
 	// 极限值
+	assert.Equal(t, "2013-01-01 23:59:59", Date(StrToTime("-119 month", StrToTime("2022-12-01 23:59:59"))))
+	assert.Equal(t, "2012-12-01 23:59:59", Date(StrToTime("-120 month", StrToTime("2022-12-01 23:59:59"))))
+	assert.Equal(t, "2012-11-01 23:59:59", Date(StrToTime("-121 month", StrToTime("2022-12-01 23:59:59"))))
 	assert.Equal(t, "2024-01-31 23:59:59", Date(StrToTime("+13 month", StrToTime("2022-12-31 23:59:59"))))
 	assert.Equal(t, "2023-01-31 23:59:59", Date(StrToTime("+1 month", StrToTime("2022-12-31 23:59:59"))))
 	assert.Equal(t, "2023-01-01 23:59:59", Date(StrToTime("+1 day", StrToTime("2022-12-31 23:59:59"))))

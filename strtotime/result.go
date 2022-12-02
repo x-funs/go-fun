@@ -194,6 +194,9 @@ func (r *result) toDate(re int64) time.Time {
 	if *r.m > 11 {
 		*r.y += (*r.m + 1) / 12
 		*r.m %= 12
+	} else if *r.m < 0 {
+		*r.y += int(math.Floor(float64(*r.m) / 12.0))
+		*r.m = ((*r.m % 12) + 12) % 12
 	}
 
 	*r.h += r.rh
