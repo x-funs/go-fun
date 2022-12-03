@@ -2,7 +2,6 @@ package fun
 
 import (
 	"fmt"
-	"math"
 	"testing"
 	"time"
 
