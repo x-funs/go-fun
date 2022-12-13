@@ -414,3 +414,39 @@ func Template(tpl string, data any) (string, error) {
 
 	return String(buf.Bytes()), nil
 }
+
+// StrBefore 截取在字符首次出现时的位置之前的子字符串
+func StrBefore(s, char string) string {
+	if s == "" || char == "" {
+		return s
+	}
+	i := strings.Index(s, char)
+	return s[0:i]
+}
+
+// StrBeforeLast 截取在字符最后出现时的位置之前的子字符串
+func StrBeforeLast(s, char string) string {
+	if s == "" || char == "" {
+		return s
+	}
+	i := strings.LastIndex(s, char)
+	return s[0:i]
+}
+
+// StrAfter 截取在字符首次出现时的位置之后的子字符串
+func StrAfter(s, char string) string {
+	if s == "" || char == "" {
+		return s
+	}
+	i := strings.Index(s, char)
+	return s[i+len(char):]
+}
+
+// StrAfterLast 截取在字符最后出现时的位置之后的子字符串
+func StrAfterLast(s, char string) string {
+	if s == "" || char == "" {
+		return s
+	}
+	i := strings.LastIndex(s, char)
+	return s[i+len(char):]
+}
