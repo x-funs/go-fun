@@ -19,6 +19,24 @@ func TestPad(t *testing.T) {
 	assert.Equal(t, "0001230000", PadBoth("123", "0", 10))
 }
 
+func BenchmarkPadLeft(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		PadLeft("12345", " ", 3)
+	}
+}
+
+func BenchmarkPadRight(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		PadRight("12345", "0", 10)
+	}
+}
+
+func BenchmarkPadBoth(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		PadBoth("12345678901", "0", 10)
+	}
+}
+
 func TestBlank(t *testing.T) {
 	assert.True(t, Blank(""))
 	assert.True(t, Blank("  "))
@@ -27,6 +45,24 @@ func TestBlank(t *testing.T) {
 	assert.True(t, BlankAny("a", "b", "		", "123"))
 	assert.True(t, BlankAll("", "  ", "		"))
 	assert.False(t, BlankAll("", "  ", "		", "123"))
+}
+
+func BenchmarkBlank(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		Blank("	       ")
+	}
+}
+
+func BenchmarkBlankAny(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		BlankAny("a", "b", "		", "123")
+	}
+}
+
+func BenchmarkBlankAll(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		BlankAll("", "  ", "		", "123")
+	}
 }
 
 func TestSplitTrim(t *testing.T) {
@@ -43,6 +79,18 @@ func TestSplitTrim(t *testing.T) {
 	assert.Equal(t, []string{"abc"}, SplitTrim("abc", "/"))
 }
 
+func BenchmarkSplitTrim(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		SplitTrim("a b c", " ")
+	}
+}
+
+func BenchmarkSplitTrimToInts(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		SplitTrimToInts("2,,3,5", ",")
+	}
+}
+
 func TestContains(t *testing.T) {
 	assert.Equal(t, true, Contains("", ""))
 	assert.Equal(t, true, Contains("hello", "el"))
@@ -56,9 +104,33 @@ func TestContains(t *testing.T) {
 
 }
 
+func BenchmarkContains(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		Contains("hello", "el")
+	}
+}
+
+func BenchmarkContainsCase(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		ContainsCase("HELLO", "el")
+	}
+}
+
+func BenchmarkContainsAny(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		ContainsAny("hello", "aa", "el")
+	}
+}
+
 func TestReverse(t *testing.T) {
 	assert.Equal(t, "", Reverse(""))
 	assert.Equal(t, "olleh", Reverse("hello"))
+}
+
+func BenchmarkReverse(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		Reverse("hello")
+	}
 }
 
 func TestCamel(t *testing.T) {
@@ -77,6 +149,18 @@ func TestCamel(t *testing.T) {
 	assert.Equal(t, "test_abc_de", CamelToSnake("testAbcDe"))
 }
 
+func BenchmarkSnakeToCamel(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		SnakeToCamel("test_aBC_DE", true)
+	}
+}
+
+func BenchmarkCamelToSnake(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		CamelToSnake("TestAbcDe")
+	}
+}
+
 func TestRemove(t *testing.T) {
 	assert.Equal(t, "ac", Remove("abc", "b"))
 	assert.Equal(t, "a", RemoveAny("abc", "b", "c"))
@@ -84,6 +168,51 @@ func TestRemove(t *testing.T) {
 	assert.Equal(t, "abcdefg", RemovePrefix("abcdefg", "b"))
 	assert.Equal(t, "cdefg", RemovePrefix("abcdefg", "ab"))
 	assert.Equal(t, "abcd", RemoveSuffix("abcdefg", "efg"))
+}
+
+func TestRemoveLines(t *testing.T) {
+	assert.Equal(t, "acb", RemoveLines("a\n\nc\nb"))
+}
+
+func BenchmarkRemoveLines(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		RemoveLines("a\n\nc\nb")
+	}
+}
+
+func TestRemoveSign(t *testing.T) {
+	text := ",.!，，D_NAME。！；‘’”“\n《》\r\n**dfs#%^&()-+		我1431221     中国 123漢字\n\n\nかどうかのjavaを<決定>$¥"
+	fmt.Println(RemoveSign(text))
+}
+
+func BenchmarkRemove(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		Remove("abc", "b")
+	}
+}
+
+func BenchmarkRemovePrefix(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		RemovePrefix("abcdefg", "ab")
+	}
+}
+
+func BenchmarkRemoveSuffix(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		RemoveSuffix("abcdefg", "efg")
+	}
+}
+
+func BenchmarkRemoveAny(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		RemoveAny("abc", "b", "c")
+	}
+}
+
+func BenchmarkRemoveSign(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		RemoveSign(",.!，，D_NAME。！；‘’”“\n《》\r\n**dfs#%^&()-+		我1431221     中国 123漢字\n\n\nかどうかのjavaを<決定>$¥")
+	}
 }
 
 func TestSubString(t *testing.T) {
@@ -94,19 +223,27 @@ func TestSubString(t *testing.T) {
 	assert.Equal(t, "试he", SubString("测试hello中文", 1, 3))
 }
 
+func BenchmarkSubString(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		SubString("abcdefg", 0, 100)
+	}
+}
+
 func TestWrap(t *testing.T) {
 	assert.Equal(t, "`abcdefg`", Wrap("abcdefg", "`"))
 	assert.Equal(t, "abcdefg", Unwrap("`abcdefg`", "`"))
 	assert.Equal(t, "`abcdefg`", Unwrap("``abcdefg``", "`"))
 }
 
-func TestRemoveLines(t *testing.T) {
-	assert.Equal(t, "acb", RemoveLines("a\n\nc\nb"))
+func BenchmarkWrap(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		Wrap("abcdefg", "`")
+	}
 }
 
-func BenchmarkRemoveLines(b *testing.B) {
+func BenchmarkUnwrap(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		RemoveLines("https://www.163.com/news/article/HE8G1HQ8000189FH.html")
+		Unwrap("`abcdefg`", "`")
 	}
 }
 
@@ -115,13 +252,20 @@ func TestNormaliseSpace(t *testing.T) {
 	t.Log(NormaliseSpace("\n  \n\n\n\n\n    "))
 }
 
+func BenchmarkNormaliseSpace(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		NormaliseSpace("中   国\n世   	界\n\n\n\n\n, hello      world     ")
+	}
+}
+
 func TestNormaliseLine(t *testing.T) {
 	t.Log(NormaliseLine("中   国\n世   	界\n\n\n\n\n, hello      world     "))
 }
 
-func TestRemoveSign(t *testing.T) {
-	text := ",.!，，D_NAME。！；‘’”“\n《》\r\n**dfs#%^&()-+		我1431221     中国 123漢字\n\n\nかどうかのjavaを<決定>$¥"
-	fmt.Println(RemoveSign(text))
+func BenchmarkNormaliseLine(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		NormaliseLine("中   国\n世   	界\n\n\n\n\n, hello      world     ")
+	}
 }
 
 func TestHasPrefixSuffix(t *testing.T) {
@@ -130,6 +274,18 @@ func TestHasPrefixSuffix(t *testing.T) {
 	assert.Equal(t, true, HasPrefixCase("Abc", "ab"))
 	assert.Equal(t, false, HasPrefixCase("Abc", "bc"))
 	assert.Equal(t, true, HasSuffixCase("Abc", "BC"))
+}
+
+func BenchmarkPrefixCase(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		HasPrefixCase("http://d.house.163.com/{cityCode}/", "http")
+	}
+}
+
+func BenchmarkSuffixCase(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		HasSuffixCase("this is a jpg.jpg", ".jpg")
+	}
 }
 
 func TestTemplate(t *testing.T) {
@@ -144,4 +300,26 @@ func TestTemplate(t *testing.T) {
 	}
 
 	t.Log(Template(tpl, data))
+}
+
+func BenchmarkTemplate(b *testing.B) {
+	tpl := `{
+  "name": {{ .name }},
+  "age": {{ .age }}
+}`
+
+	data := map[string]string{
+		"name": `"张三"`,
+		"age":  "18",
+	}
+	for i := 0; i < b.N; i++ {
+		_, _ = Template(tpl, data)
+	}
+}
+
+func TestBeforeAfter(t *testing.T) {
+	assert.Equal(t, "http", StrBefore("http://admin:123123@127.0.0.1:27017", ":"))
+	assert.Equal(t, "github.com", StrAfter("https://github.com", "://"))
+	assert.Equal(t, "video.mp4", StrBeforeLast("video.mp4.bak", "."))
+	assert.Equal(t, "bak", StrAfterLast("video.mp4.bak", "."))
 }

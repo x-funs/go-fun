@@ -5,6 +5,23 @@ import (
 	"testing"
 )
 
+func BenchmarkCopyStruct(b *testing.B) {
+	str := "123123"
+	a := &aStruct{
+		Name:    "test-a",
+		Age:     12,
+		State:   true,
+		CStruct: cStruct{School: "ac", Grade: 1},
+		Ps:      &str,
+		Wrap:    "123",
+	}
+	bs := &bStruct{}
+
+	for i := 0; i < b.N; i++ {
+		StructCopy(a, bs)
+	}
+}
+
 func TestCopyStruct(t *testing.T) {
 	str := "s"
 	a := &aStruct{
