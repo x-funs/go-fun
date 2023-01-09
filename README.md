@@ -40,7 +40,7 @@ func main() {
 
 ## 函数说明
 
-### 时间
+### 时间相关方法
 
 #### `Timestamp(millis ...any) int64`
 
@@ -88,7 +88,7 @@ fmt.Println(StrToTime("+1 day", 1673225645))
 // 1673312045(某一时间戳一天后的时间戳)
 ```
 
-### 辅助
+### 辅助相关方法
 
 #### `Empty(value any) bool`
 
@@ -139,7 +139,7 @@ fmt.Println(fun.Empty(true))
 #### `Command(bin string, argv []string, baseDir string) ([]byte, error)`
 - 执行系统命令
 
-### 哈希
+### 哈希相关方法
 
 #### `Md5(str string) string`
 
@@ -177,7 +177,7 @@ fun.Md5("123456")
 #### `Base64UrlDecode(str string) string`
 - 返回 Url Safe Base64 值对应的字符串
 
-### 判断
+### 判断相关方法
 
 #### `IsNumber(str string) bool`
 - 判断字符串是否全部为数字
@@ -203,7 +203,7 @@ fun.Md5("123456")
 #### `IsDir(path string) bool`
 - 是否是目录
 
-### map 相关
+### map 相关方法
 
 #### `MapKeys[K comparable, V any](m map[K]V) []K`
 - 返回map所有键的切片
@@ -214,7 +214,7 @@ fun.Md5("123456")
 #### `MapMerge[K comparable, V any](maps ...map[K]V) map[K]V`
 - 合并多个map, 如果有相同的键, 则后者会覆盖前者
 
-### math
+### 数学相关方法
 
 #### `Max(a, b int) int`
 - 取 int 最大值
@@ -228,7 +228,7 @@ fun.Md5("123456")
 #### `MinInt64(a, b int64) int64`
 - 取 int64 最小值
 
-### 随机
+### 随机相关方法
 
 #### `Random() int`
 - 返回随机数 `[0, MaxInt)`
@@ -251,12 +251,12 @@ fun.Md5("123456")
 #### `RandomPool(pool string, length int) string`
 - 从提供的字符串池中返回指定长度的随机字符串
 
-### 正则
+### 正则相关方法
 
 #### `Matches(str, pattern string) bool`
 - 判断字符串是否匹配指定的正则表达式
 
-### 相似度
+### 相似度相关方法
 
 #### `Similarity(a, b string) float64`
 - 计算两个原始字符串的相似度
@@ -267,7 +267,7 @@ fun.Md5("123456")
 #### `LongestCommonSubString(x, y string) int`
 - 计算两个字符串最大公共子串长度
 
-### 切片
+### 切片相关方法
 
 #### `IntsToStrings(slice []int) []string`
 - int 切片转换为字符串切片
@@ -369,7 +369,7 @@ fmt.Println(
 // [YF4133 MM8541 KH0002 SJ9642]
 ```
 
-### 字符串
+### 字符串相关方法
 
 #### `BlankAll(strs ...string) bool`
 - 判断 Trim 后的字符串集, 是否全部为空白
@@ -491,12 +491,12 @@ fun.StrAfterLast("video.mp4.bak", ".")
 // bak
 ```
 
-### 结构体
+### 结构体相关方法
 
 #### `StructCopy(src, dst any)`
 - 复制 struct 对象
 
-### to 相关
+### to 相关方法
 
 #### `Ip2Long(ipStr string) uint32`
 - 字符串 IP 转整型
@@ -534,7 +534,7 @@ fun.StrAfterLast("video.mp4.bak", ".")
 #### `ToJson(object any) string`
 - 将对象转换为 Json 字符串
 
-### http
+### http 相关方法
 
 > Get, Post, Put, Delete 四种方法
 > 
