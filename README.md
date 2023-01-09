@@ -358,7 +358,7 @@ fmt.Println(fun.SliceUnion([]string{"123", "124"}, []string{"124", "125"}, []str
 
 ```
 fmt.Println(
-	SliceColumn[map[string]string, string]([]map[string]string{
+    SliceColumn[map[string]string, string]([]map[string]string{
         {"name": "衣服", "code": "YF4133"},
         {"name": "面膜", "code": "MM8541"},
         {"name": "口红", "code": "KH0002"},
