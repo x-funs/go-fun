@@ -50,6 +50,7 @@ func main() {
 fmt.Println(fun.Timestamp())
 // 1673225645
 
+// 加参数 true 为毫秒级时间戳
 fmt.Println(fun.Timestamp(true))
 // 1673225645077
 ```
@@ -535,13 +536,33 @@ fun.StrAfterLast("video.mp4.bak", ".")
 
 ### http
 
+> Get, Post, Put, Delete 四种方法
+> 
+> 带有 Resp 后缀的, 返回值是 *Response
+> 
+> 带有 Do 后缀的, 需要传参数 *Request
+> 
+> post form, post json 等此类命名的, 请求数据的类型不一样
+
 #### `HttpGet(urlStr string, args ...any) ([]byte, error)`
 - HttpGet 参数为请求地址 (HttpReq, 超时时间)
 - HttpGet(url)、HttpGet(url, HttpReq)、HttpGet(url, timeout)、HttpGet(url, HttpReq, timeout)
 
+#### `HttpGetResp(urlStr string, r *HttpReq, timeout int) (*HttpResp, error)`
+- HttpGetResp Http Get 请求, 参数为请求地址, HttpReq, 超时时间(毫秒)
+
+#### `HttpGetDo(urlStr string, r *HttpReq, timeout int) ([]byte, error)`
+- HttpGetDo Http Get 请求, 参数为请求地址, HttpReq, 超时时间(毫秒)
+
 #### `HttpDelete(urlStr string, args ...any) ([]byte, error)`
 - HttpDelete 参数为请求地址 (HttpReq, 超时时间)
 - HttpDelete(url)、HttpDelete(url, HttpReq)、HttpDelete(url, timeout)、HttpDelete(url, HttpReq, timeout)
+
+#### `HttpDeleteDo(urlStr string, r *HttpReq, timeout int) ([]byte, error)`
+- HttpDeleteDo Http Delete 请求, 参数为请求地址, HttpReq, 超时时间(毫秒)
+
+#### `HttpDeleteResp(urlStr string, r *HttpReq, timeout int) (*HttpResp, error)`
+- HttpDeleteResp Http Delete 请求, 参数为请求地址, HttpReq, 超时时间(毫秒)
 
 #### `HttpPost(urlStr string, args ...any) ([]byte, error)`
 - HttpPost 参数为请求地址 (body io.Reader, HttpReq, 超时时间)
@@ -555,6 +576,18 @@ fun.StrAfterLast("video.mp4.bak", ".")
 - HttpPostJson 参数为请求地址 (Json 数据 string, HttpReq, 超时时间)
 - HttpPostJson(url)、HttpPostJson(url, timeout)、HttpPostJson(url, json)、HttpPost(url, json, timeout)、HttpPost(url, json, HttpReq)、HttpPost(url, json, HttpReq, timeout)
 
+#### `HttpPostDo(urlStr string, body io.Reader, r *HttpReq, timeout int) ([]byte, error)`
+
+#### `HttpPostFormDo(urlStr string, posts map[string]string, r *HttpReq, timeout int) ([]byte, error)`
+
+#### `HttpPostJsonDo(urlStr string, json string, r *HttpReq, timeout int) ([]byte, error)`
+
+#### `HttpPostResp(urlStr string, body io.Reader, r *HttpReq, timeout int) (*HttpResp, error)`
+
+#### `HttpPostFormResp(urlStr string, posts map[string]string, r *HttpReq, timeout int) (*HttpResp, error)`
+
+#### `HttpPostJsonResp(urlStr string, json string, r *HttpReq, timeout int) (*HttpResp, error)`
+
 #### `HttpPut(urlStr string, args ...any) ([]byte, error)`
 - HttpPut 参数为请求地址 (body io.Reader, HttpReq, 超时时间)
 - HttpPut(url)、HttpPut(url, timeout)、HttpPut(url, body)、HttpPut(url, body, timeout)、HttpPut(url, body, HttpReq)、HttpPut(url, body, HttpReq, timeout)
@@ -567,53 +600,17 @@ fun.StrAfterLast("video.mp4.bak", ".")
 - HttpPutJson 参数为请求地址 (Json 数据 string, HttpReq, 超时时间)
 - HttpPutJson(url)、HttpPutJson(url, timeout)、HttpPutJson(url, json)、HttpPutJson(url, json, timeout)、HttpPutJson(url, json, httpReq)、HttpPutJson(url, json, httpReq, timeout)
 
-#### `HttpGetDo(urlStr string, r *HttpReq, timeout int) ([]byte, error)`
-- HttpGetDo Http Get 请求, 参数为请求地址, HttpReq, 超时时间(毫秒)
-
-#### `HttpDeleteDo(urlStr string, r *HttpReq, timeout int) ([]byte, error)`
-- HttpDeleteDo Http Delete 请求, 参数为请求地址, HttpReq, 超时时间(毫秒)
-
-#### `HttpPostDo(urlStr string, body io.Reader, r *HttpReq, timeout int) ([]byte, error)`
-- HttpPostDo Http Post, 参数为请求地址, body io.Reader, HttpReq, 超时时间(毫秒)
-
-#### `HttpPostFormDo(urlStr string, posts map[string]string, r *HttpReq, timeout int) ([]byte, error)`
-- HttpPostFormDo Http Post Form, 参数为请求地址, Form 数据 map[string]string, HttpReq, 超时时间(毫秒)
-
-#### `HttpPostJsonDo(urlStr string, json string, r *HttpReq, timeout int) ([]byte, error)`
-- HttpPostJsonDo Http Post Json 请求, 参数为请求地址, Json 数据 string, HttpReq, 超时时间(毫秒)
-
 #### `HttpPutDo(urlStr string, body io.Reader, r *HttpReq, timeout int) ([]byte, error)`
-- HttpPutDo Http Put, 参数为请求地址, body io.Reader, HttpReq, 超时时间(毫秒)
 
 #### `HttpPutFormDo(urlStr string, posts map[string]string, r *HttpReq, timeout int) ([]byte, error)`
-- HttpPutFormDo Http Put Form, 参数为请求地址, Form 数据 map[string]string, HttpReq, 超时时间(毫秒)
 
 #### `HttpPutJsonDo(urlStr string, json string, r *HttpReq, timeout int) ([]byte, error)`
-- HttpPutJsonDo Http Put Json 请求, 参数为请求地址, Json 数据 string, HttpReq, 超时时间(毫秒)
-
-#### `HttpGetResp(urlStr string, r *HttpReq, timeout int) (*HttpResp, error)`
-- HttpGetResp Http Get 请求, 参数为请求地址, HttpReq, 超时时间(毫秒)
-
-#### `HttpDeleteResp(urlStr string, r *HttpReq, timeout int) (*HttpResp, error)`
-- HttpDeleteResp Http Delete 请求, 参数为请求地址, HttpReq, 超时时间(毫秒)
-
-#### `HttpPostResp(urlStr string, body io.Reader, r *HttpReq, timeout int) (*HttpResp, error)`
-- HttpPostResp Http Post, 参数为请求地址, body io.Reader, HttpReq, 超时时间(毫秒)
-
-#### `HttpPostFormResp(urlStr string, posts map[string]string, r *HttpReq, timeout int) (*HttpResp, error)`
-- HttpPostFormResp Http Post Form, 参数为请求地址, Form 数据 map[string]string, HttpReq, 超时时间(毫秒)
-
-#### `HttpPostJsonResp(urlStr string, json string, r *HttpReq, timeout int) (*HttpResp, error)`
-- HttpPostJsonResp Http Post Json 请求, 参数为请求地址, Json 数据 string, HttpReq, 超时时间(毫秒)
 
 #### `HttpPutResp(urlStr string, body io.Reader, r *HttpReq, timeout int) (*HttpResp, error)`
-- HttpPutResp Http Put, 参数为请求地址, body io.Reader, HttpReq, 超时时间(毫秒)
 
 #### `HttpPutFormResp(urlStr string, posts map[string]string, r *HttpReq, timeout int) (*HttpResp, error)`
-- HttpPutFormResp Http Put Form, 参数为请求地址, Form 数据 map[string]string, HttpReq, 超时时间(毫秒)
 
 #### `HttpPutJsonResp(urlStr string, json string, r *HttpReq, timeout int) (*HttpResp, error)`
-- HttpPutJsonResp Http Put Json 请求, 参数为请求地址, Json 数据 string, HttpReq, 超时时间(毫秒)
 
 #### `HttpDo(req *http.Request, r *HttpReq, timeout int) ([]byte, error)`
 - HttpDo Http 请求, 参数为 http.Request, HttpReq, 超时时间(毫秒)
@@ -622,6 +619,6 @@ fun.StrAfterLast("video.mp4.bak", ".")
 - HttpDoResp Http 请求, 参数为 http.Request, HttpReq, 超时时间(毫秒)
 
 #### `UrlParse(rawURL string) (*url.URL, error)`
-- 解析URL。在没有 scheme 时不会出错
+- 解析字符串 URL 到 URL 对象。在没有 scheme 时不会出错
 
 
