@@ -8,7 +8,7 @@ Go with Fun (Functions) 是一个短小能干的 Golang 工具函数库。
 go get -u github.com/x-funs/go-fun
 ```
 
-## 例子
+## 示例
 
 ```go
 package main
@@ -20,10 +20,10 @@ import (
 )
 
 func main() {
-	// 判断是否为空
+	// 判断 any 是否为空
 	fmt.Println(fun.Empty(""))
 	
-	// 判断是否为空空白
+	// 判断字符串是否为空白
 	fmt.Println(fun.Blank("  "))
 	
 	// 返回 MD5 字符串
