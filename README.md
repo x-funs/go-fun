@@ -236,27 +236,42 @@ fun.Md5("123456")
 ### Map 相关
 
 #### `MapKeys[K comparable, V any](m map[K]V) []K`
+
 - 返回 map 所有键的切片
 
 #### `MapValues[K comparable, V any](m map[K]V) []V`
+
 - 返回 map 所有值的切片
 
 #### `MapMerge[K comparable, V any](maps ...map[K]V) map[K]V`
+
 - 合并多个 map, 如果有相同的键, 则后者会覆盖前者
 
 ### 数学相关
 
 #### `Max(a, b int) int`
+
 - 取 int 最大值
 
 #### `Min(a, b int) int`
+
 - 取 int 最小值
 
 #### `MaxInt64(a, b int64) int64`
+
 - 取 int64 最大值
 
 #### `MinInt64(a, b int64) int64`
+
 - 取 int64 最小值
+
+#### `MaxN[T GenNumber](args ...T) T`
+
+- 取 N 个数字的最大值
+
+#### `MinN[T GenNumber](args ...T) T`
+
+- 取 N 个数字的最小值
 
 ### 随机相关
 
@@ -564,11 +579,11 @@ fun.StrAfterLast("video.mp4.bak", ".")
 
 #### `RemoveSign(str string) string`
 
-- 将字符串的所有数据依次写成一行, 去除无意义字符串(标点符号、符号), 性能原因, 不使用 strings.NewReplacer
+- 将字符串的所有数据依次写成一行, 去除无意义字符串(标点符号、符号)
 
 #### `RemoveLines(str string) string`
 
-- 移除换行符, 换行符包括 \n \r\n, 性能原因, 不使用 strings.NewReplacer
+- 移除换行符, 换行符包括 \n \r\n
 
 #### `SubString(str string, pos, length int) string`
 

@@ -31,3 +31,25 @@ func MinInt64(a, b int64) int64 {
 	}
 	return b
 }
+
+// MaxN 取 N 个数字的最大值
+func MaxN[T GenNumber](args ...T) T {
+	max := args[0]
+	for _, arg := range args {
+		if arg > max {
+			max = arg
+		}
+	}
+	return max
+}
+
+// MinN 取 N 个数字的最小值
+func MinN[T GenNumber](args ...T) T {
+	min := args[0]
+	for _, arg := range args {
+		if arg < min {
+			min = arg
+		}
+	}
+	return min
+}
