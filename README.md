@@ -135,134 +135,94 @@ fmt.Println(fun.Empty(true))
 
 ### 哈希相关
 
-#### `Md5(str string) string` 返回字符串 Md5 值
+####  函数列表
+
+- `Md5(str string) string` 返回字符串 Md5 值
 
 ```
 fun.Md5("123456")
 // e10adc3949ba59abbe56e057f20f883e
 ```
 
-#### `Md5Bit16(str string) string` 返回 16位 字符串 Md5 值
+- `Md5Bit16(str string) string` 返回 16位 字符串 Md5 值
 
-#### `Sha1(str string) string` 返回字符串 Sha1 值
+- `Sha1(str string) string` 返回字符串 Sha1 值
 
-#### `Sha256(str string) string` 返回字符串 Sha256 值
+- `Sha256(str string) string` 返回字符串 Sha256 值
 
-#### `Sha384(str string) string` 返回字符串 Sha384 值
+- `Sha384(str string) string` 返回字符串 Sha384 值
 
-#### `Sha512(str string) string` 返回字符串 Sha512 值
+- `Sha512(str string) string` 返回字符串 Sha512 值
 
-#### `Base64Encode(str string) string` 返回字符串 Base64 值
+- `Base64Encode(str string) string` 返回字符串 Base64 值
 
-#### `Base64Decode(str string) string` 返回 Base64 值对应的字符串
+- `Base64Decode(str string) string` 返回 Base64 值对应的字符串
 
-#### `Base64UrlEncode(str string) string` 返回字符串 Url Safe Base64 值
+- `Base64UrlEncode(str string) string` 返回字符串 Url Safe Base64 值
 
-#### `Base64UrlDecode(str string) string` 返回 Url Safe Base64 值对应的字符串
+- `Base64UrlDecode(str string) string` 返回 Url Safe Base64 值对应的字符串
 
 ### 判断相关
 
-#### `IsNumber(str string) bool`
+####  函数列表
 
-- 判断字符串是否全部为数字
+- `IsNumber(str string) bool` 判断字符串是否全部为数字
 
-#### `IsUtf8(p []byte) bool`
+- `IsUtf8(p []byte) bool` 判断是否为 UTF-8 编码
 
-- 判断是否为 UTF-8 编码
+- `IsASCIILetter(str string) bool` 判断字符串是否全部为ASCII的字母
 
-#### `IsASCIILetter(str string) bool`
+- `IsLetter(str string) bool` 判断字符串是否全部为字母
 
-- 判断字符串是否全部为ASCII的字母
+- `IsASCII(s string) bool` 判断字符串是否全部 ASCII
 
-#### `IsLetter(str string) bool`
+- `IsEmail(str string) bool` 验证 Email 是否合法
 
-- 判断字符串是否全部为字母
+- `IsExist(path string) bool`  文件或目录是否存在
 
-#### `IsASCII(s string) bool`
-
-- 判断字符串是否全部 ASCII
-
-#### `IsEmail(str string) bool`
-
-- 验证 Email 是否合法
-
-#### `IsExist(path string) bool`
-
-- 文件或目录是否存在
-
-#### `IsDir(path string) bool`
-
-- 是否是目录
+- `IsDir(path string) bool` 是否是目录
 
 ### Map 相关
 
-#### `MapKeys[K comparable, V any](m map[K]V) []K`
+####  函数列表
 
-- 返回 map 所有键的切片
+- `MapKeys[K comparable, V any](m map[K]V) []K` 返回 map 所有键的切片
 
-#### `MapValues[K comparable, V any](m map[K]V) []V`
+- `MapValues[K comparable, V any](m map[K]V) []V` 返回 map 所有值的切片
 
-- 返回 map 所有值的切片
-
-#### `MapMerge[K comparable, V any](maps ...map[K]V) map[K]V`
-
-- 合并多个 map, 如果有相同的键, 则后者会覆盖前者
+- `MapMerge[K comparable, V any](maps ...map[K]V) map[K]V` 合并多个 map, 如果有相同的键, 则后者会覆盖前者
 
 ### 数学相关
 
-#### `Max(a, b int) int`
+####  函数列表
 
-- 取 int 最大值
+- `Max(a, b int) int` 取 int 最大值
 
-#### `Min(a, b int) int`
+- `Min(a, b int) int` 取 int 最小值
 
-- 取 int 最小值
+- `MaxInt64(a, b int64) int64` 取 int64 最大值
 
-#### `MaxInt64(a, b int64) int64`
+- `MinInt64(a, b int64) int64` 取 int64 最小值
 
-- 取 int64 最大值
+- `MaxN[T GenNumber](args ...T) T` 取 N 个数字的最大值
 
-#### `MinInt64(a, b int64) int64`
-
-- 取 int64 最小值
-
-#### `MaxN[T GenNumber](args ...T) T`
-
-- 取 N 个数字的最大值
-
-#### `MinN[T GenNumber](args ...T) T`
-
-- 取 N 个数字的最小值
+- `MinN[T GenNumber](args ...T) T` 取 N 个数字的最小值
 
 ### 随机相关
 
-#### `Random() int`
+- `Random() int` 返回随机数 `[0, MaxInt)`
 
-- 返回随机数 `[0, MaxInt)`
+- `RandomInt(min, max int) int` 返回随机数 `[min, max)`
 
-#### `RandomInt(min, max int) int`
+- `RandomInt64(min, max int64) int64` 返回随机数 `[min, max)`
 
-- 返回随机数 `[min, max)`
+- `RandomString(length int) string` 返回指定长度的随机字符串, 包含字母和数字
 
-#### `RandomInt64(min, max int64) int64`
+- `RandomLetter(length int) string` 返回指定长度的随机字符串, 仅包含字母
 
-- 返回随机数 `[min, max)`
+- `RandomNumber(length int) string` 返回指定长度的随机字符串, 仅包含数字
 
-#### `RandomString(length int) string`
-
-- 返回指定长度的随机字符串, 包含字母和数字
-
-#### `RandomLetter(length int) string`
-
-- 返回指定长度的随机字符串, 仅包含字母
-
-#### `RandomNumber(length int) string`
-
-- 返回指定长度的随机字符串, 仅包含数字
-
-#### `RandomPool(pool string, length int) string`
-
-- 从提供的字符串池中返回指定长度的随机字符串
+- `RandomPool(pool string, length int) string` 从提供的字符串池中返回指定长度的随机字符串
 
 ### 正则相关
 
