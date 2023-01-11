@@ -49,30 +49,37 @@ func main() {
 
 ### DateTime
 
-#### **<big>`Timestamp(millis ...any) int64`</big>** Return the current unix timestamp
+#### Function List
 
+- **<big>`Timestamp(millis ...any) int64`</big>** Return the current unix timestamp
+
+- **<big>`Date(layouts ...any) string`</big>** Return the formatted datetime string
+
+- **<big>`StrToTime(args ...any) int64`</big>** Auto parse datetime layout to int64 timestamp, just like PHP strtotime()
+
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/x-funs/go-fun"
+)
+
+func main() {
+	fmt.Println(fun.Timestamp())
+	// 1673225645
+	
+	fmt.Println(fun.Timestamp(true))
+	// 1673225645077
+	
+	fmt.Println(fun.StrToTime())
+	// 1673226381
+
+	fmt.Println(fun.StrToTime("-1 day"))
+	// 1673139981 (yesterday)
+
+	fmt.Println(fun.StrToTime("+1 day", 1673225645))
+	// 1673312045 (one day after a certain timestamp)
+}
 ```
-fmt.Println(fun.Timestamp())
-// 1673225645
-
-// 返回毫秒级时间戳
-fmt.Println(fun.Timestamp(true))
-// 1673225645077
-```
-
-#### **<big>`Date(layouts ...any) string`</big>** Return the formatted datetime string
-
-```
-fmt.Println(fun.Date())
-// 2023-01-09 09:00:52
-
-fmt.Println(fun.Date(1673225645))
-// 2023-01-09 08:54:05
-
-fmt.Println(fun.Date(fun.DateLayout))
-// 2023-01-09
-
-fmt.Println(fun.Date(fun.DateLayout, 1673225645))
-// 2023-01-09
-```
-
