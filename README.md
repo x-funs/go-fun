@@ -51,11 +51,11 @@ func main() {
 
 #### Function List
 
-- **<big>`Timestamp(millis ...any) int64`</big>** Return the current unix timestamp
+- **<big>`Timestamp(millis ...any) int64`</big>** Return the current unix timestamp.
 
-- **<big>`Date(layouts ...any) string`</big>** Return the formatted datetime string
+- **<big>`Date(layouts ...any) string`</big>** Return the formatted datetime string.
 
-- **<big>`StrToTime(args ...any) int64`</big>** Auto parse datetime layout to int64 timestamp, just like PHP strtotime()
+- **<big>`StrToTime(args ...any) int64`</big>** Auto parse datetime layout to int64 timestamp, just like PHP strtotime().
 
 ```go
 package main
