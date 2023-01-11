@@ -38,7 +38,7 @@ func main() {
 	fmt.Println(fun.SliceUnique([]string{"a", "b", "c", "a", "b", "c"}))
 
 	// 发送一个简单的 HTTP GET 请求, 返回字符串 HTML
-	html, _ := fun.HttpGet("https://www.163.com")
+	html, _ := fun.HttpGet("https://www.github.com")
 	fmt.Println(fun.String(html))
 }
 ```
