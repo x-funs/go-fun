@@ -47,9 +47,7 @@ func main() {
 
 ### 时间相关
 
-#### `Timestamp(millis ...any) int64`
-
-- 返回秒级时间戳
+#### `Timestamp(millis ...any) int64` 返回秒级时间戳
 
 ```
 fmt.Println(fun.Timestamp())
@@ -60,10 +58,7 @@ fmt.Println(fun.Timestamp(true))
 // 1673225645077
 ```
 
-#### `Date(layouts ...any) string`
-
-- 返回格式化后的日期时间字符串
-- 支持 Date()、Date(unixstamp)、Date(layout)、Date(layout, unixstamp)
+#### `Date(layouts ...any) string` 返回格式化后的日期时间字符串
 
 ```
 fmt.Println(fun.Date())
@@ -79,9 +74,7 @@ fmt.Println(fun.Date(fun.DateLayout, 1673225645))
 // 2023-01-09
 ```
 
-#### `StrToTime(args ...any) int64`
-
-- 自动解析日期时间字符串为秒时间戳, 近似 PHP strtotime()
+#### `StrToTime(args ...any) int64` 自动解析日期时间字符串为秒时间戳, 近似 PHP strtotime()
 
 ```
 fmt.Println(StrToTime())
@@ -96,9 +89,7 @@ fmt.Println(StrToTime("+1 day", 1673225645))
 
 ### 辅助相关
 
-#### `Empty(value any) bool`
-
-- 判断是否为空, 支持字符串、数值、数组、Slice、Map
+#### `Empty(value any) bool` 判断是否为空, 支持字符串、数值、数组、Slice、Map
 
 ```
 fmt.Println(fun.Empty(nil))
@@ -124,80 +115,46 @@ fmt.Println(fun.Empty(true))
 
 ```
 
-#### `EmptyAll(values ...any) bool`
+#### `EmptyAll(values ...any) bool` 判断是否全部为空
 
-- 判断是否全部为空
+#### `EmptyAny(values ...any) bool` 判断是否任意一个为空
 
-#### `EmptyAny(values ...any) bool`
+#### `MemoryBytes() map[string]int64` 返回当前主要的内存指标信息
 
-- 判断是否任意一个为空
+#### `Memory(format string) map[string]int64` 指定格式返回当前主要的内存指标信息
 
-#### `MemoryBytes() map[string]int64`
+#### `Bytes(s string) []byte` 更高效的字符串转字节数组, 参考来自 `Gin`
 
-- 返回当前主要的内存指标信息
+#### `String(b []byte) string` 更高效的字节数组转字符串, 参考来自 `Gin`
 
-#### `Memory(format string) map[string]int64`
-
-- 指定格式返回当前主要的内存指标信息
-
-#### `Bytes(s string) []byte`
-
-- 更高效的字符串转字节数组, 参考来自 `Gin`
-
-#### `String(b []byte) string`
-
-- 更高效的字节数组转字符串, 参考来自 `Gin`
-
-#### `Command(bin string, argv []string, baseDir string) ([]byte, error)`
-
-- 执行系统命令
+#### `Command(bin string, argv []string, baseDir string) ([]byte, error)` 执行系统命令
 
 ### 哈希相关
 
-#### `Md5(str string) string`
-
-- 返回字符串 Md5 值
+#### `Md5(str string) string` 返回字符串 Md5 值
 
 ```
 fun.Md5("123456")
 // e10adc3949ba59abbe56e057f20f883e
 ```
 
-#### `Md5Bit16(str string) string`
+#### `Md5Bit16(str string) string` 返回 16位 字符串 Md5 值
 
-- 返回 16位 字符串 Md5 值
+#### `Sha1(str string) string` 返回字符串 Sha1 值
 
-#### `Sha1(str string) string`
+#### `Sha256(str string) string` 返回字符串 Sha256 值
 
-- 返回字符串 Sha1 值
+#### `Sha384(str string) string` 返回字符串 Sha384 值
 
-#### `Sha256(str string) string`
+#### `Sha512(str string) string` 返回字符串 Sha512 值
 
-- 返回字符串 Sha256 值
+#### `Base64Encode(str string) string` 返回字符串 Base64 值
 
-#### `Sha384(str string) string`
+#### `Base64Decode(str string) string` 返回 Base64 值对应的字符串
 
-- 返回字符串 Sha384 值
+#### `Base64UrlEncode(str string) string` 返回字符串 Url Safe Base64 值
 
-#### `Sha512(str string) string`
-
-- 返回字符串 Sha512 值
-
-#### `Base64Encode(str string) string`
-
-- 返回字符串 Base64 值
-
-#### `Base64Decode(str string) string`
-
-- 返回 Base64 值对应的字符串
-
-#### `Base64UrlEncode(str string) string`
-
-- 返回字符串 Url Safe Base64 值
-
-#### `Base64UrlDecode(str string) string`
-
-- 返回 Url Safe Base64 值对应的字符串
+#### `Base64UrlDecode(str string) string` 返回 Url Safe Base64 值对应的字符串
 
 ### 判断相关
 
