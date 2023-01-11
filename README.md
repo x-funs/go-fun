@@ -51,42 +51,36 @@ func main() {
 
 - **<big>`Timestamp(millis ...any) int64`</big>** 返回秒级时间戳
 
-```
-fmt.Println(fun.Timestamp())
-// 1673225645
-
-// 返回毫秒级时间戳
-fmt.Println(fun.Timestamp(true))
-// 1673225645077
-```
-
 - **<big>`Date(layouts ...any) string`</big>** 返回格式化后的日期时间字符串
-
-```
-fmt.Println(fun.Date())
-// 2023-01-09 09:00:52
-
-fmt.Println(fun.Date(1673225645))
-// 2023-01-09 08:54:05
-
-fmt.Println(fun.Date(fun.DateLayout))
-// 2023-01-09
-
-fmt.Println(fun.Date(fun.DateLayout, 1673225645))
-// 2023-01-09
-```
 
 - **<big>`StrToTime(args ...any) int64`</big>** 自动解析日期时间字符串为秒时间戳, 近似 PHP strtotime()
 
-```
-fmt.Println(StrToTime())
-// 1673226381
+```go
+package main
 
-fmt.Println(StrToTime("-1 day"))
-// 1673139981(一天前的时间戳)
+import (
+	"fmt"
 
-fmt.Println(StrToTime("+1 day", 1673225645))
-// 1673312045(某一时间戳一天后的时间戳)
+	"github.com/x-funs/go-fun"
+)
+
+func main() {
+	fmt.Println(fun.Timestamp())
+	// 1673225645
+
+	// 返回毫秒级时间戳
+	fmt.Println(fun.Timestamp(true))
+	// 1673225645077
+	
+	fmt.Println(fun.StrToTime())
+	// 1673226381
+
+	fmt.Println(fun.StrToTime("-1 day"))
+	// 1673139981(一天前的时间戳)
+
+	fmt.Println(fun.StrToTime("+1 day", 1673225645))
+	// 1673312045(某一时间戳一天后的时间戳)
+}
 ```
 
 ### 辅助相关
@@ -94,30 +88,6 @@ fmt.Println(StrToTime("+1 day", 1673225645))
 #### 函数列表
 
 - **<big>`Empty(value any) bool`</big>** 判断是否为空, 支持字符串、数值、数组、Slice、Map
-
-```
-fmt.Println(fun.Empty(nil))
-// true
-
-fmt.Println(fun.Empty(0))
-// true
-
-fmt.Println(fun.Empty(""))
-// true
-
-fmt.Println(fun.Empty(false))
-// true
-
-fmt.Println(fun.Empty(" "))
-// false
-
-fmt.Println(fun.Empty(1))
-// false
-
-fmt.Println(fun.Empty(true))
-// false
-
-```
 
 - **<big>`EmptyAll(values ...any) bool`</big>** 判断是否全部为空
 
@@ -133,16 +103,44 @@ fmt.Println(fun.Empty(true))
 
 - **<big>`Command(bin string, argv []string, baseDir string) ([]byte, error)`</big>** 执行系统命令
 
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/x-funs/go-fun"
+)
+
+func main() {
+	fmt.Println(fun.Empty(nil))
+	// true
+
+	fmt.Println(fun.Empty(0))
+	// true
+
+	fmt.Println(fun.Empty(""))
+	// true
+
+	fmt.Println(fun.Empty(false))
+	// true
+
+	fmt.Println(fun.Empty(" "))
+	// false
+
+	fmt.Println(fun.Empty(1))
+	// false
+
+	fmt.Println(fun.Empty(true))
+	// false
+}
+```
+
 ### 哈希相关
 
 ####  函数列表
 
 - `Md5(str string) string` 返回字符串 Md5 值
-
-```
-fun.Md5("123456")
-// e10adc3949ba59abbe56e057f20f883e
-```
 
 - `Md5Bit16(str string) string` 返回 16位 字符串 Md5 值
 
@@ -226,47 +224,33 @@ fun.Md5("123456")
 
 ### 正则相关
 
-#### `Matches(str, pattern string) bool`
-
-- 判断字符串是否匹配指定的正则表达式
+- `Matches(str, pattern string) bool` 判断字符串是否匹配指定的正则表达式
 
 ### 相似度相关
 
-#### `Similarity(a, b string) float64`
+- `Similarity(a, b string) float64` 计算两个原始字符串的相似度
 
-- 计算两个原始字符串的相似度
+- `SimilarityText(a, b string) float64` 计算两个字符串移除特殊符号后的相似度
 
-#### `SimilarityText(a, b string) float64`
-
-- 计算两个字符串移除特殊符号后的相似度
-
-#### `LongestCommonSubString(x, y string) int`
-
-- 计算两个字符串最大公共子串长度
+- `LongestCommonSubString(x, y string) int` 计算两个字符串最大公共子串长度
 
 ### 切片相关方法
 
-#### `SliceSplit[T comparable](slice []T, size int) [][]T`
-
-- 对数值和字符串切片按照指定长度进行分割
+- `SliceSplit[T comparable](slice []T, size int) [][]T` 对数值和字符串切片按照指定长度进行分割
 
 ```
 fmt.Println(fun.SliceSplit([]string{"a", "b", "c", "d", "e", "f", "g"}, 3))
 // [[a b c] [d e f] [g]]
 ```
 
-#### `SliceUnion[T comparable](slices ...[]T) []T`
-
-- 顺序合并且去重
+- `SliceUnion[T comparable](slices ...[]T) []T` 顺序合并且去重
 
 ```
 fmt.Println(fun.SliceUnion([]string{"123", "124"}, []string{"124", "125"}, []string{"123", "125"}))
 // [123 124 125]
 ```
 
-#### `SliceColumn[T, V any](slice []T, key any) []V`
-
-- 返回所有行的某一列
+- `SliceColumn[T, V any](slice []T, key any) []V` 返回所有行的某一列
 
 ```
 fmt.Println(
@@ -280,97 +264,51 @@ fmt.Println(
 // [YF4133 MM8541 KH0002 SJ9642]
 ```
 
-#### `IntsToStrings(slice []int) []string`
+- `IntsToStrings(slice []int) []string` int 切片转换为字符串切片
 
-- int 切片转换为字符串切片
+- `StringsToInts(slice []string) []int` 字符串切片转换为 int 切片
 
-#### `StringsToInts(slice []string) []int`
+- `SliceContains[T comparable](slice []T, v T) bool` 判断整型和字符串是否在切片中
 
-- 字符串切片转换为 int 切片
+- `SliceUnique[T comparable](slice []T) []T` 对数值和字符串切片进行去重(会改变元素的顺序)
 
-#### `SliceContains[T comparable](slice []T, v T) bool`
+- `SliceIndex[T comparable](slice []T, v T) int` 对数值和字符串切片按照指定值进行查找
 
-- 判断整型和字符串是否在切片中
+- `SliceLastIndex[T comparable](slice []T, v T) int` 对数值和字符串切片按照指定值进行查找, 返回最后一个匹配的索引
 
-#### `SliceUnique[T comparable](slice []T) []T`
+- `SliceRemove[T comparable](slice []T, v T) []T` 移除数值和字符串切片中的指定值
 
-- 对数值和字符串切片进行去重(会改变元素的顺序)
+- `SliceRemoveBlank(slice []string) []string` 移除字符串切片中的空值
 
-#### `SliceIndex[T comparable](slice []T, v T) int`
+- `SliceTrim(slice []string) []string` 对字符串切片进行 Trim, 并自动忽略空值
 
-- 对数值和字符串切片按照指定值进行查找
+- `SliceConcat[T any](slice []T, values ...[]T) []T` 合并多个切片, 非去重, 非原始切片
 
-#### `SliceLastIndex[T comparable](slice []T, v T) int`
+- `SliceEqual[T comparable](slice1, slice2 []T) bool` 切片是否相等: 长度相同且所有元素的顺序和值相等
 
-- 对数值和字符串切片按照指定值进行查找, 返回最后一个匹配的索引
+- `SliceEvery[T any](slice []T, predicate func(index int, item T) bool) bool` 切片中的所有元素都满足函数，则返回 true
 
-#### `SliceRemove[T comparable](slice []T, v T) []T`
+- `SliceNone[T any](slice []T, predicate func(index int, item T) bool) bool` 切片中的所有元素都不满足函数，则返回 true
 
-- 移除数值和字符串切片中的指定值
+- `SliceSome[T any](slice []T, predicate func(index int, item T) bool) bool` 切片中有一个元素满足函数，就返回true
 
-#### `SliceRemoveBlank(slice []string) []string`
+- `SliceFilter[T any](slice []T, predicate func(index int, item T) bool) []T` 筛选出切片中满足函数的所有元素
 
-- 移除字符串切片中的空值
+- `SliceForEach[T any](slice []T, iteratee func(index int, item T))` 切片中所有元素都执行函数
 
-#### `SliceTrim(slice []string) []string`
+- `SliceMap[T any, U any](slice []T, iteratee func(index int, item T) U) []U` 切片中所有元素都执行函数, 有返回值
 
-- 对字符串切片进行 Trim, 并自动忽略空值
+- `SliceReduce[T any](slice []T, iteratee func(index int, result, item T) T, initial T) T` 处理所有切片中元素得到结果
 
-#### `SliceConcat[T any](slice []T, values ...[]T) []T`
+- `SliceReplace[T comparable](slice []T, old T, new T, n int) []T` 返回切片的副本，前n个元素替换为新的
 
-- 合并多个切片, 非去重, 非原始切片
+- `SliceReplaceAll[T comparable](slice []T, old T, new T) []T` 返回切片的副本，所有匹配到的元素都替换为新的
 
-#### `SliceEqual[T comparable](slice1, slice2 []T) bool`
+- `SliceUnionBy[T any, V comparable](predicate func(item T) V, slices ...[]T) []T` 顺序合并且去重, 支持自定义函数
 
-- 切片是否相等: 长度相同且所有元素的顺序和值相等
+- `SliceIntersection[T comparable](slices ...[]T) []T` 切片交集且去重(顺序不能保证)
 
-#### `SliceEvery[T any](slice []T, predicate func(index int, item T) bool) bool`
-
-- 切片中的所有元素都满足函数，则返回 true
-
-#### `SliceNone[T any](slice []T, predicate func(index int, item T) bool) bool`
-
-- 切片中的所有元素都不满足函数，则返回 true
-
-#### `SliceSome[T any](slice []T, predicate func(index int, item T) bool) bool`
-
-- 切片中有一个元素满足函数，就返回true
-
-#### `SliceFilter[T any](slice []T, predicate func(index int, item T) bool) []T`
-
-- 筛选出切片中满足函数的所有元素
-
-#### `SliceForEach[T any](slice []T, iteratee func(index int, item T))`
-
-- 切片中所有元素都执行函数
-
-#### `SliceMap[T any, U any](slice []T, iteratee func(index int, item T) U) []U`
-
-- 切片中所有元素都执行函数, 有返回值
-
-#### `SliceReduce[T any](slice []T, iteratee func(index int, result, item T) T, initial T) T`
-
-- 处理所有切片中元素得到结果
-
-#### `SliceReplace[T comparable](slice []T, old T, new T, n int) []T`
-
-- 返回切片的副本，前n个元素替换为新的
-
-#### `SliceReplaceAll[T comparable](slice []T, old T, new T) []T`
-
-- 返回切片的副本，所有匹配到的元素都替换为新的
-
-#### `SliceUnionBy[T any, V comparable](predicate func(item T) V, slices ...[]T) []T`
-
-- 顺序合并且去重, 支持自定义函数
-
-#### `SliceIntersection[T comparable](slices ...[]T) []T`
-
-- 切片交集且去重(顺序不能保证)
-
-#### `SliceSortBy(slice any, field string, sortType ...string) error`
-
-- 根据字段排序(field的大小写应该和字段保持一致)
+- `SliceSortBy(slice any, field string, sortType ...string) error` 根据字段排序(field的大小写应该和字段保持一致)
 
 ### 字符串相关
 
