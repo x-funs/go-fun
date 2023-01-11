@@ -43,11 +43,13 @@ func main() {
 }
 ```
 
-## 函数说明
+## 文档
 
 ### 时间相关
 
-#### `Timestamp(millis ...any) int64` 返回秒级时间戳
+#### 函数列表
+
+- **<big>`Timestamp(millis ...any) int64`</big>** 返回秒级时间戳
 
 ```
 fmt.Println(fun.Timestamp())
@@ -58,7 +60,7 @@ fmt.Println(fun.Timestamp(true))
 // 1673225645077
 ```
 
-#### `Date(layouts ...any) string` 返回格式化后的日期时间字符串
+- **<big>`Date(layouts ...any) string`</big>** 返回格式化后的日期时间字符串
 
 ```
 fmt.Println(fun.Date())
@@ -74,7 +76,7 @@ fmt.Println(fun.Date(fun.DateLayout, 1673225645))
 // 2023-01-09
 ```
 
-#### `StrToTime(args ...any) int64` 自动解析日期时间字符串为秒时间戳, 近似 PHP strtotime()
+- **<big>`StrToTime(args ...any) int64`</big>** 自动解析日期时间字符串为秒时间戳, 近似 PHP strtotime()
 
 ```
 fmt.Println(StrToTime())
@@ -89,7 +91,9 @@ fmt.Println(StrToTime("+1 day", 1673225645))
 
 ### 辅助相关
 
-#### `Empty(value any) bool` 判断是否为空, 支持字符串、数值、数组、Slice、Map
+#### 函数列表
+
+- **<big>`Empty(value any) bool`</big>** 判断是否为空, 支持字符串、数值、数组、Slice、Map
 
 ```
 fmt.Println(fun.Empty(nil))
@@ -115,19 +119,19 @@ fmt.Println(fun.Empty(true))
 
 ```
 
-#### `EmptyAll(values ...any) bool` 判断是否全部为空
+- **<big>`EmptyAll(values ...any) bool`</big>** 判断是否全部为空
 
-#### `EmptyAny(values ...any) bool` 判断是否任意一个为空
+- **<big>`EmptyAny(values ...any) bool`</big>** 判断是否任意一个为空
 
-#### `MemoryBytes() map[string]int64` 返回当前主要的内存指标信息
+- **<big>`MemoryBytes() map[string]int64`</big>** 返回当前主要的内存指标信息
 
-#### `Memory(format string) map[string]int64` 指定格式返回当前主要的内存指标信息
+- **<big>`Memory(format string) map[string]int64`</big>** 指定格式返回当前主要的内存指标信息
 
-#### `Bytes(s string) []byte` 更高效的字符串转字节数组, 参考来自 `Gin`
+- **<big>`Bytes(s string) []byte`</big>** 更高效的字符串转字节数组, 参考来自 `Gin`
 
-#### `String(b []byte) string` 更高效的字节数组转字符串, 参考来自 `Gin`
+- **<big>`String(b []byte) string`</big>** 更高效的字节数组转字符串, 参考来自 `Gin`
 
-#### `Command(bin string, argv []string, baseDir string) ([]byte, error)` 执行系统命令
+- **<big>`Command(bin string, argv []string, baseDir string) ([]byte, error)`</big>** 执行系统命令
 
 ### 哈希相关
 
