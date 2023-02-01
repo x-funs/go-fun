@@ -317,10 +317,10 @@ func main() {
 
 	fmt.Println(
 		fun.SliceColumn[map[string]string, string]([]map[string]string{
-			{"name": "衣服", "code": "YF4133"},
-			{"name": "面膜", "code": "MM8541"},
-			{"name": "口红", "code": "KH0002"},
-			{"name": "手机", "code": "SJ9642"},
+			{"name": "管理员", "code": "YF4133"},
+			{"name": "用户", "code": "MM8541"},
+			{"name": "测试", "code": "KH0002"},
+			{"name": "演示", "code": "SJ9642"},
 		}, "code"),
 	)
 	// [YF4133 MM8541 KH0002 SJ9642]

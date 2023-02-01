@@ -34,7 +34,8 @@ func main() {
 	// Auto parse datetime layout to int64 timestamp
 	fmt.Println(fun.StrToTime("2015-04-06 16:03:03"))
 	fmt.Println(fun.StrToTime("2015/04/06 16:03:03"))
-	fmt.Println(fun.StrToTime("2015年04月06日 16时03分03秒"))
+	fmt.Println(fun.StrToTime("2022-01-24T14:19:00Z"))
+	fmt.Println(fun.StrToTime("2022-01-24T14:19:01+07:00"))
 	
 	// Slice deduplication fileter
 	fmt.Println(fun.SliceUnique([]string{"a", "b", "c", "a", "b", "c"}))
@@ -315,10 +316,10 @@ func main() {
 
 	fmt.Println(
 		fun.SliceColumn[map[string]string, string]([]map[string]string{
-			{"name": "衣服", "code": "YF4133"},
-			{"name": "面膜", "code": "MM8541"},
-			{"name": "口红", "code": "KH0002"},
-			{"name": "手机", "code": "SJ9642"},
+			{"name": "admin", "code": "YF4133"},
+			{"name": "user", "code": "MM8541"},
+			{"name": "test", "code": "KH0002"},
+			{"name": "demo", "code": "SJ9642"},
 		}, "code"),
 	)
 	// [YF4133 MM8541 KH0002 SJ9642]
