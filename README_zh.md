@@ -62,26 +62,43 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/x-funs/go-fun"
 )
 
 func main() {
+	// 返回秒级时间戳
 	fmt.Println(fun.Timestamp())
 	// 1673225645
 
 	// 返回毫秒级时间戳
 	fmt.Println(fun.Timestamp(true))
 	// 1673225645077
-	
+
+	// 无参, 格式化当前时间(默认格式2006-01-02 15:04:05 )
+	fmt.Println(fun.Date())
+	// 2006-01-02 15:04:05
+
+	// 格式化指定时间(默认格式2006-01-02 15:04:05 )
+	fmt.Println(fun.Date(1650732457))
+	// 2022-04-24 00:47:37
+
+	// 格式化指定时间
+	fmt.Println(fun.Date(time.RFC3339, 1650732457))
+	// 2022-04-24T00:47:37+08:00
+
+	// 无参, 等同于 Timestamp()
 	fmt.Println(fun.StrToTime())
 	// 1673226381
 
+	// 一天前的时间戳
 	fmt.Println(fun.StrToTime("-1 day"))
-	// 1673139981(一天前的时间戳)
+	// 1673139981
 
+	// 某一时间戳一天后的时间戳
 	fmt.Println(fun.StrToTime("+1 day", 1673225645))
-	// 1673312045(某一时间戳一天后的时间戳)
+	// 1673312045
 }
 ```
 

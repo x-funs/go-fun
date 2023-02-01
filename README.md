@@ -68,15 +68,31 @@ import (
 )
 
 func main() {
+	// second timestamp
 	fmt.Println(fun.Timestamp())
 	// 1673225645
 	
+	// millisecond timestamp
 	fmt.Println(fun.Timestamp(true))
 	// 1673225645077
+
+	// no arguments, format datetime now (default by '2006-01-02 15:04:05')
+	fmt.Println(fun.Date())
+	// 2006-01-02 15:04:05
+
+	// format datetime by timestamp (default by '2006-01-02 15:04:05')
+	fmt.Println(fun.Date(1650732457))
+	// 2022-04-24 00:47:37
+
+	// use layout format datetime by timestamp
+	fmt.Println(fun.Date(time.RFC3339, 1650732457))
+	// 2022-04-24T00:47:37+08:00
 	
+	// no arguments, same as Timestamp()
 	fmt.Println(fun.StrToTime())
 	// 1673226381
 
+	// one day before now timestamp
 	fmt.Println(fun.StrToTime("-1 day"))
 	// 1673139981 (yesterday)
 
@@ -89,19 +105,19 @@ func main() {
 
 #### Function List
 
-- **<big>`Empty(value any) bool`</big>** Determine whether it is empty, support string, value, array, Slice, Map
+- **<big>`Empty(value any) bool`</big>** Whether it is empty, support string, integer, array, slice, map
 
-- **<big>`EmptyAll(values ...any) bool`</big>** Judge whether all are empty
+- **<big>`EmptyAll(values ...any) bool`</big>** Whether all are empty
 
-- **<big>`EmptyAny(values ...any) bool`</big>** Judge whether any one is empty
+- **<big>`EmptyAny(values ...any) bool`</big>** Whether any is empty
 
-- **<big>`MemoryBytes() map[string]int64`</big>** Returns the current main memory metrics.
+- **<big>`MemoryBytes() map[string]int64`</big>** Return the current main memory metrics.
 
-- **<big>`Memory(format string) map[string]int64`</big>** The specified format returns the current main memory metric information.
+- **<big>`Memory(format string) map[string]int64`</big>** Specified format return the current main memory metric information.
 
-- **<big>`Bytes(s string) []byte`</big>** More efficient string to byte array, reference from `Gin`
+- **<big>`Bytes(s string) []byte`</big>** Efficient string to byte array, reference from `Gin`
 
-- **<big>`String(b []byte) string`</big>** More efficient byte array to string, reference from `Gin`
+- **<big>`String(b []byte) string`</big>** Efficient byte array to string, reference from `Gin`
 
 - **<big>`Command(bin string, argv []string, baseDir string) ([]byte, error)`</big>** Execute system commands
 
@@ -142,25 +158,25 @@ func main() {
 
 #### Function List
 
-- **<big>`Md5(str string) string`</big>** Returns the Md5 value
+- **<big>`Md5(str string) string`</big>** Return the Md5 string
 
-- **<big>`Md5Bit16(str string) string`</big>** Returns the 16-bit Md5 value
+- **<big>`Md5Bit16(str string) string`</big>** Return the 16-bit Md5 string
 
-- **<big>`Sha1(str string) string`</big>** Returns the Sha1 value
+- **<big>`Sha1(str string) string`</big>** Return the Sha1 string
 
-- **<big>`Sha256(str string) string`</big>** Returns the Sha256 value
+- **<big>`Sha256(str string) string`</big>** Return the Sha256 string
 
-- **<big>`Sha384(str string) string`</big>** Returns the Sha384 value
+- **<big>`Sha384(str string) string`</big>** Return the Sha384 string
 
-- **<big>`Sha512(str string) string`</big>** Returns the Sha512 value
+- **<big>`Sha512(str string) string`</big>** Return the Sha512 string
 
-- **<big>`Base64Encode(str string) string`</big>** Returns the Base64 value
+- **<big>`Base64Encode(str string) string`</big>** Return the Base64 string
 
-- **<big>`Base64Decode(str string) string`</big>** Returns the string corresponding to the Base64 value.
+- **<big>`Base64Decode(str string) string`</big>** Return the Base64 decode string
 
-- **<big>`Base64UrlEncode(str string) string`</big>** Returns the value of the Url Safe Base64
+- **<big>`Base64UrlEncode(str string) string`</big>** Return the Url Safe Base64 string
 
-- **<big>`Base64UrlDecode(str string) string`</big>** Returns the string corresponding to the Url Safe Base64 value.
+- **<big>`Base64UrlDecode(str string) string`</big>** Return the Url Safe Base64 decode string
 
 ### Judgment
 
@@ -186,9 +202,9 @@ func main() {
 
 #### Function List
 
-- **<big>`MapKeys[K comparable, V any](m map[K]V) []K`</big>** Returns slices of all keys of map
+- **<big>`MapKeys[K comparable, V any](m map[K]V) []K`</big>** Return slices of all keys of map
 
-- **<big>`MapValues[K comparable, V any](m map[K]V) []V`</big>** Returns a slice of all values of map
+- **<big>`MapValues[K comparable, V any](m map[K]V) []V`</big>** Return a slice of all values of map
 
 - **<big>`MapMerge[K comparable, V any](maps ...map[K]V) map[K]V`</big>** Merge multiple maps, if there are the same keys, the latter will overwrite the former
 
@@ -212,19 +228,19 @@ func main() {
 
 #### Function List
 
-- **<big>`Random() int`</big>** Returns a random number `[0, MaxInt)`
+- **<big>`Random() int`</big>** Return a random number `[0, MaxInt)`
 
-- **<big>`RandomInt(min, max int) int`</big>** Returns a random number `[min, max)`
+- **<big>`RandomInt(min, max int) int`</big>** Return a random number `[min, max)`
 
-- **<big>`RandomInt64(min, max int64) int64`</big>** Returns a random number `[min, max)`
+- **<big>`RandomInt64(min, max int64) int64`</big>** Return a random number `[min, max)`
 
-- **<big>`RandomString(length int) string`</big>** Returns a random string of the specified length, including letters and numbers.
+- **<big>`RandomString(length int) string`</big>** Return a random string of the specified length, including letters and numbers.
 
-- **<big>`RandomLetter(length int) string`</big>** Returns a random string of the specified length, containing only letters.
+- **<big>`RandomLetter(length int) string`</big>** Return a random string of the specified length, containing only letters.
 
-- **<big>`RandomNumber(length int) string`</big>** Returns a random string of the specified length, containing only numbers.
+- **<big>`RandomNumber(length int) string`</big>** Return a random string of the specified length, containing only numbers.
 
-- **<big>`RandomPool(pool string, length int) string`</big>** Returns a random string of the specified length from the supplied string pool
+- **<big>`RandomPool(pool string, length int) string`</big>** Return a random string of the specified length from the supplied string pool
 
 ### Regex
 
@@ -250,7 +266,7 @@ func main() {
 
 - **<big>`SliceUnion[T comparable](slices ...[]T) []T`</big>** Sequential merge and deweight
 
-- **<big>`SliceColumn[T, V any](slice []T, key any) []V`</big>** Returns a column of all rows
+- **<big>`SliceColumn[T, V any](slice []T, key any) []V`</big>** Return a column of all rows
 
 - **<big>`IntsToStrings(slice []int) []string`</big>** Int slice to string slice
 
@@ -276,9 +292,9 @@ func main() {
 
 - **<big>`SliceEvery[T any](slice []T, predicate func(index int, item T) bool) bool`</big>** All elements in the slice satisfy the function, return true
 
-- **<big>`SliceNone[T any](slice []T, predicate func(index int, item T) bool) bool`</big>** Returns true if all elements in the slice do not satisfy the function.
+- **<big>`SliceNone[T any](slice []T, predicate func(index int, item T) bool) bool`</big>** Return true if all elements in the slice do not satisfy the function.
 
-- **<big>`SliceSome[T any](slice []T, predicate func(index int, item T) bool) bool`</big>** If one element in the slice satisfies the function, it returns true.
+- **<big>`SliceSome[T any](slice []T, predicate func(index int, item T) bool) bool`</big>** If one element in the slice satisfies the function, it Return true.
 
 - **<big>`SliceFilter[T any](slice []T, predicate func(index int, item T) bool) []T`</big>** Filter out all elements in the slice that satisfy the function
 
@@ -288,9 +304,9 @@ func main() {
 
 - **<big>`SliceReduce[T any](slice []T, iteratee func(index int, result, item T) T, initial T) T`</big>** Process all elements in slices to get results
 
-- **<big>`SliceReplace[T comparable](slice []T, old T, new T, n int) []T`</big>** Returns a copy of the slice, with the first n elements replaced with the new
+- **<big>`SliceReplace[T comparable](slice []T, old T, new T, n int) []T`</big>** Return a copy of the slice, with the first n elements replaced with the new
 
-- **<big>`SliceReplaceAll[T comparable](slice []T, old T, new T) []T`</big>** Returns a copy of the slice, and all matching elements are replaced with new ones.
+- **<big>`SliceReplaceAll[T comparable](slice []T, old T, new T) []T`</big>** Return a copy of the slice, and all matching elements are replaced with new ones.
 
 - **<big>`SliceUnionBy[T any, V comparable](predicate func(item T) V, slices ...[]T) []T`</big>** Order merge and de-heavy, support custom functions
 
