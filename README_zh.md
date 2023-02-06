@@ -406,7 +406,7 @@ func main() {
 
 - **<big>`SubString(str string, pos, length int) string`</big>** 字符串截取
 
-- **<big>`NormaliseSpace(str string) string`</big>** 规范化此字符串中的空白, 多个空格合并为一个空格, 所有空白字符例如换行符、制表符, 都转换为一个简单的空格。
+- **<big>`NormaliseSpace(str string) string`</big>** 规范化此字符串中的空白, 多个空格合并为一个空格, 所有空白字符例如换行符、制表符, 都转换为一个简单的空格
 
 - **<big>`NormaliseLine(str string) string`</big>** 规范化此字符串中的换行, 多个换行合并为一个换行
 
