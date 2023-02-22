@@ -4,6 +4,7 @@ Go with Fun (Functions) 是一个短小能干的 Golang 工具函数库。
 
 简体中文 | [English](./README.md)
 
+
 ## 使用
 
 ```shell
