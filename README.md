@@ -4,8 +4,7 @@
 
 <h4 align="center">Go with Fun (Functions) is a small and useful Golang util function library.</h4>
 
-简体中文 | [English](./README.md)
-
+English | [简体中文](./README_zh.md)
 
 ## Installation
 
