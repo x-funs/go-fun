@@ -1,8 +1,11 @@
-# Go With Fun (Functions)
+<h1 align="center">
+  Go With Fun (Functions)
+</h1>
 
-Go with Fun (Functions) 是一个短小能干的 Golang 工具函数库。
+<h4 align="center">Go with Fun (Functions) 是一个短小能干的 Golang 工具函数库。</h4>
 
 简体中文 | [English](./README.md)
+
 
 ## 使用
 
