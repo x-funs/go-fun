@@ -1,8 +1,10 @@
-# Go With Fun (Functions)
+<h1 align="center">
+  Go With Fun (Functions)
+</h1>
 
-Go with Fun (Functions) is a small and useful Golang util function library.
+<h4 align="center">Go with Fun (Functions) is a small and useful Golang util function library.</h4>
 
-English | [简体中文](./README_zh.md)
+简体中文 | [English](./README.md)
 
 
 ## Installation
