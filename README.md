@@ -107,6 +107,8 @@ func main() {
 
 #### Function List
 
+- **<big>`If(condition bool, trueVal, falseVal T) T`</big>** Whether condition is true, return trueVal or falseVal
+
 - **<big>`Empty(value any) bool`</big>** Whether it is empty, support string, integer, array, slice, map
 
 - **<big>`EmptyAll(values ...any) bool`</big>** Whether all are empty

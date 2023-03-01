@@ -108,6 +108,8 @@ func main() {
 
 #### 函数列表
 
+- **<big>`If(condition bool, trueVal, falseVal T) T`</big>** 三元运算符函数
+
 - **<big>`Empty(value any) bool`</big>** 判断是否为空, 支持字符串、数值、数组、Slice、Map
 
 - **<big>`EmptyAll(values ...any) bool`</big>** 判断是否全部为空
