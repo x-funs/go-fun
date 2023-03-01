@@ -75,3 +75,11 @@ func TestCommand(t *testing.T) {
 	result, _ := Command("ls", []string{"-l"}, "/")
 	fmt.Println(String(result))
 }
+
+func TestIf(t *testing.T) {
+	assert.Equal(t, "a", If(true, "a", "b"))
+	assert.Equal(t, 2, If(false, 1, 2))
+
+	datas := []string{"a", "b", "c"}
+	assert.Equal(t, []string{"d"}, If(Empty(datas), []string{"c"}, []string{"d"}))
+}

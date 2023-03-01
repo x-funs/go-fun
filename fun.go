@@ -164,3 +164,12 @@ func Command(bin string, argv []string, baseDir string) ([]byte, error) {
 	}
 	return stdout.Bytes(), nil
 }
+
+// If 三元运算符
+func If[T any](condition bool, trueVal, falseVal T) T {
+	if condition {
+		return trueVal
+	}
+
+	return falseVal
+}
