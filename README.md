@@ -1,5 +1,11 @@
 <h1 align="center">
-  Go With Fun (Functions)
+                      ____          
+   ____ _____        / __/_  ______ 
+  / __ `/ __ \______/ /_/ / / / __ \
+ / /_/ / /_/ /_____/ __/ /_/ / / / /
+ \__, /\____/     /_/  \__,_/_/ /_/ 
+/____/                              
+
 </h1>
 
 <p align="center">Go with Fun (Functions) is a small and useful Golang util function library.</p>
