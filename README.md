@@ -1,4 +1,4 @@
-
+```
                       ____          
    ____ _____        / __/_  ______ 
   / __ `/ __ \______/ /_/ / / / __ \
@@ -6,6 +6,7 @@
  \__, /\____/     /_/  \__,_/_/ /_/ 
 /____/                              
 
+```
 
 <p align="center">Go with Fun (Functions) is a small and useful Golang util function library.</p>
 
