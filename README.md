@@ -45,7 +45,7 @@ func main() {
 	fmt.Println(fun.StrToTime("2022-01-24T14:19:00Z"))
 	fmt.Println(fun.StrToTime("2022-01-24T14:19:01+07:00"))
 	
-	// Slice deduplication fileter
+	// Slice deduplication filter
 	fmt.Println(fun.SliceUnique([]string{"a", "b", "c", "a", "b", "c"}))
 
 	// Send a Simple HTTP GET request, Return HTML string
