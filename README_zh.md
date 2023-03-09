@@ -8,7 +8,7 @@
 
 ```
 
-Go with Fun (Functions) 是一个短小能干的 Golang 工具函数库。
+Go with Fun (Functions) 是一个短小能干的 Golang 工具函数库。它包含 Empty、Blank、Strtotime、Similarity、HttpGet 等常用函数。
 
 简体中文 | [English](./README.md)
 
