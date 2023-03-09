@@ -24,6 +24,7 @@ func Ip2Long(ipStr string) uint32 {
 	if ip == nil {
 		return 0
 	}
+
 	return binary.BigEndian.Uint32(ip)
 }
 
@@ -32,6 +33,7 @@ func Long2Ip(long uint32) string {
 	ipByte := make([]byte, 4)
 	binary.BigEndian.PutUint32(ipByte, long)
 	ip := net.IP(ipByte)
+
 	return ip.String()
 }
 
@@ -161,6 +163,7 @@ func ToUtf8(origin []byte, encode string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return s, nil
 }
 
@@ -176,6 +179,7 @@ func Utf8To(utf8 []byte, encode string) ([]byte, error) {
 	if err != nil {
 		return nil, err
 	}
+
 	return s, nil
 }
 
@@ -185,5 +189,6 @@ func ToJson(object any) string {
 	if err != nil {
 		return ""
 	}
+
 	return String(res)
 }

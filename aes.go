@@ -30,6 +30,7 @@ func AesCBCEncrypt(text string, key string, iv string) (string, error) {
 	cipherText := make([]byte, len(paddingText))
 	mode.CryptBlocks(cipherText, paddingText)
 	cipherHex := hex.EncodeToString(cipherText)
+
 	return cipherHex, nil
 }
 
@@ -64,13 +65,15 @@ func AesCBCDecrypt(cipherStr string, key string, iv string) (string, error) {
 // pKCS7Padding 对数据进行填充，满足加密块大小
 func pKCS7Padding(data []byte, blockSize int) []byte {
 	padding := blockSize - len(data)%blockSize
-	padtext := bytes.Repeat([]byte{byte(padding)}, padding)
-	return append(data, padtext...)
+	padText := bytes.Repeat([]byte{byte(padding)}, padding)
+
+	return append(data, padText...)
 }
 
 // pKCS7UnPadding 去除填充的数据
 func pKCS7UnPadding(data []byte) []byte {
 	length := len(data)
-	unpadding := int(data[length-1])
-	return data[:(length - unpadding)]
+	unPadding := int(data[length-1])
+
+	return data[:(length - unPadding)]
 }

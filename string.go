@@ -202,6 +202,7 @@ func PadLeft(str string, padStr string, padLen int) string {
 	if len(str) >= padLen || padStr == "" {
 		return str
 	}
+
 	return buildPadStr(str, padStr, padLen, true, false)
 }
 
@@ -210,6 +211,7 @@ func PadRight(str string, padStr string, padLen int) string {
 	if len(str) >= padLen || padStr == "" {
 		return str
 	}
+
 	return buildPadStr(str, padStr, padLen, false, true)
 }
 
@@ -218,6 +220,7 @@ func PadBoth(str string, padStr string, padLen int) string {
 	if len(str) >= padLen || padStr == "" {
 		return str
 	}
+
 	return buildPadStr(str, padStr, padLen, true, true)
 }
 
@@ -293,6 +296,7 @@ func Reverse(str string) string {
 	for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
 		runes[i], runes[j] = runes[j], runes[i]
 	}
+
 	return string(runes)
 }
 
@@ -301,6 +305,7 @@ func Remove(str, remove string) string {
 	if str == "" || remove == "" {
 		return remove
 	}
+
 	return strings.Replace(str, remove, "", -1)
 }
 
@@ -309,6 +314,7 @@ func RemovePrefix(str, prefix string) string {
 	if str == "" || prefix == "" {
 		return str
 	}
+
 	return strings.TrimPrefix(str, prefix)
 }
 
@@ -317,6 +323,7 @@ func RemoveSuffix(str string, suffix string) string {
 	if str == "" || suffix == "" {
 		return str
 	}
+
 	return strings.TrimSuffix(str, suffix)
 }
 
@@ -325,9 +332,11 @@ func RemoveAny(str string, removes ...string) string {
 	if str == "" || len(removes) == 0 {
 		return str
 	}
+
 	for _, rr := range removes {
 		str = Remove(str, rr)
 	}
+
 	return str
 }
 
@@ -350,6 +359,7 @@ func RemoveSign(str string) string {
 	}
 
 	m := regexp.MustCompile(`[\pP\pS]`)
+
 	return m.ReplaceAllString(str, "")
 }
 
@@ -383,6 +393,7 @@ func SubString(str string, pos, length int) string {
 	if l > max {
 		l = max
 	}
+
 	return string(runes[pos:l])
 }
 
@@ -421,6 +432,7 @@ func StrBefore(s, char string) string {
 		return s
 	}
 	i := strings.Index(s, char)
+
 	return s[0:i]
 }
 
@@ -430,6 +442,7 @@ func StrBeforeLast(s, char string) string {
 		return s
 	}
 	i := strings.LastIndex(s, char)
+
 	return s[0:i]
 }
 
@@ -439,6 +452,7 @@ func StrAfter(s, char string) string {
 		return s
 	}
 	i := strings.Index(s, char)
+
 	return s[i+len(char):]
 }
 
@@ -448,5 +462,6 @@ func StrAfterLast(s, char string) string {
 		return s
 	}
 	i := strings.LastIndex(s, char)
+
 	return s[i+len(char):]
 }

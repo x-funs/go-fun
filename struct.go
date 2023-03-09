@@ -7,6 +7,7 @@ func StructCopy(src, dst any) {
 	if src == nil || dst == nil {
 		return
 	}
+
 	structCopy(reflect.ValueOf(src), reflect.ValueOf(dst))
 }
 
@@ -14,10 +15,12 @@ func StructCopy(src, dst any) {
 func structCopy(src, dst reflect.Value) {
 	st := src.Type()
 	dt := dst.Type()
+
 	if st.Kind() == reflect.Ptr {
 		src = src.Elem()
 		st = st.Elem()
 	}
+
 	if dt.Kind() == reflect.Ptr {
 		dst = dst.Elem()
 		dt = dt.Elem()

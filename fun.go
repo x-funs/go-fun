@@ -162,6 +162,7 @@ func Command(bin string, argv []string, baseDir string) ([]byte, error) {
 	if err != nil {
 		return stdout.Bytes(), fmt.Errorf("%s: %s", err, stderr.Bytes())
 	}
+
 	return stdout.Bytes(), nil
 }
 

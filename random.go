@@ -53,11 +53,14 @@ func RandomPool(pool string, length int) string {
 	if length <= 0 {
 		return ""
 	}
+
 	var chars = Bytes(pool)
 	var result []byte
+
 	for i := 0; i < length; i++ {
 		c := chars[RandomInt(0, len(chars))]
 		result = append(result, c)
 	}
+
 	return String(result)
 }
