@@ -19,5 +19,6 @@ var (
 // Matches 判断字符串是否匹配指定的正则表达式
 func Matches(str, pattern string) bool {
 	match, _ := regexp.MatchString(pattern, str)
+
 	return match
 }

@@ -17,6 +17,7 @@ func IntsToStrings(slice []int) []string {
 	for _, v := range slice {
 		str = append(str, strconv.Itoa(v))
 	}
+
 	return str
 }
 
@@ -31,6 +32,7 @@ func StringsToInts(slice []string) []int {
 			ints = append(ints, i)
 		}
 	}
+
 	return ints
 }
 
@@ -45,6 +47,7 @@ func SliceContains[T comparable](slice []T, v T) bool {
 			return true
 		}
 	}
+
 	return false
 }
 
@@ -106,6 +109,7 @@ func SliceIndex[T comparable](slice []T, v T) int {
 			return i
 		}
 	}
+
 	return -1
 }
 
@@ -116,6 +120,7 @@ func SliceLastIndex[T comparable](slice []T, v T) int {
 			return i
 		}
 	}
+
 	return -1
 }
 
@@ -131,6 +136,7 @@ func SliceRemove[T comparable](slice []T, v T) []T {
 			res = append(res, s)
 		}
 	}
+
 	return res
 }
 
@@ -147,6 +153,7 @@ func SliceRemoveBlank(slice []string) []string {
 			res = append(res, s)
 		}
 	}
+
 	return res
 }
 
@@ -163,6 +170,7 @@ func SliceTrim(slice []string) []string {
 			res = append(res, str)
 		}
 	}
+
 	return res
 }
 
@@ -466,5 +474,6 @@ func SliceColumn[T, V any](slice []T, key any) []V {
 			values[i] = reflect.ValueOf(v).FieldByName(reflect.ValueOf(key).String()).Interface().(V)
 		}
 	}
+
 	return values
 }

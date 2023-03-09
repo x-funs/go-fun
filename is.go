@@ -86,6 +86,7 @@ func IsExist(path string) bool {
 	if errors.Is(err, os.ErrNotExist) {
 		return false
 	}
+
 	return false
 }
 
@@ -95,5 +96,6 @@ func IsDir(path string) bool {
 	if err != nil {
 		return false
 	}
+
 	return s.IsDir()
 }

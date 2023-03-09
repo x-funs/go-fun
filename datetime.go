@@ -36,7 +36,7 @@ func unixMilliTimestamp() int64 {
 }
 
 // Date 返回格式化后的日期时间字符串。
-// 支持 Date()、Date(unixstamp)、Date(layout)、Date(layout, unixstamp)
+// 支持 Date()、Date(unixStamp)、Date(layout)、Date(layout, unixStamp)
 func Date(layouts ...any) string {
 	l := len(layouts)
 
