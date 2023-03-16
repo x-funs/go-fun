@@ -113,17 +113,17 @@ func main() {
 
 #### Function List
 
-- **<big>`If(condition bool, trueVal, falseVal T) T`</big>** Whether condition is true, return trueVal or falseVal
+- **<big>`If(condition bool, trueVal, falseVal T) T`</big>** Verify condition is true, return trueVal or falseVal
 
-- **<big>`Empty(value any) bool`</big>** Whether it is empty, support string, integer, array, slice, map
+- **<big>`Empty(value any) bool`</big>** Verify whether value it is empty, support string, integer, array, slice, map 验证
 
-- **<big>`EmptyAll(values ...any) bool`</big>** Whether all are empty
+- **<big>`EmptyAll(values ...any) bool`</big>** Verify whether values all are empty
 
-- **<big>`EmptyAny(values ...any) bool`</big>** Whether any is empty
+- **<big>`EmptyAny(values ...any) bool`</big>** Verify whether values any is empty
 
 - **<big>`MemoryBytes() map[string]int64`</big>** Return the current main memory metrics.
 
-- **<big>`Memory(format string) map[string]int64`</big>** Specified format return the current main memory metric information.
+- **<big>`Memory(format string) map[string]int64`</big>** Specified format return the current main memory metric.
 
 - **<big>`Bytes(s string) []byte`</big>** Efficient string to byte array, reference from `Gin`
 
