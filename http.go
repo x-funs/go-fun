@@ -38,6 +38,9 @@ type HttpReq struct {
 	// 禁止跳转
 	DisableRedirect bool
 
+	// 请求失败错误时仍然读取 Body
+	ReadBodyWithFail bool
+
 	// http.Transport
 	Transport http.RoundTripper
 }
@@ -385,7 +388,7 @@ func HttpPutJson(urlStr string, args ...any) ([]byte, error) {
 func HttpGetDo(urlStr string, r *HttpReq, timeout int) ([]byte, error) {
 	resp, err := HttpGetResp(urlStr, r, timeout)
 	if err != nil {
-		return nil, err
+		return resp.Body, err
 	} else {
 		return resp.Body, nil
 	}
@@ -396,7 +399,7 @@ func HttpGetDo(urlStr string, r *HttpReq, timeout int) ([]byte, error) {
 func HttpDeleteDo(urlStr string, r *HttpReq, timeout int) ([]byte, error) {
 	resp, err := HttpDeleteResp(urlStr, r, timeout)
 	if err != nil {
-		return nil, err
+		return resp.Body, err
 	} else {
 		return resp.Body, nil
 	}
@@ -407,7 +410,7 @@ func HttpDeleteDo(urlStr string, r *HttpReq, timeout int) ([]byte, error) {
 func HttpPostDo(urlStr string, body io.Reader, r *HttpReq, timeout int) ([]byte, error) {
 	resp, err := HttpPostResp(urlStr, body, r, timeout)
 	if err != nil {
-		return nil, err
+		return resp.Body, err
 	} else {
 		return resp.Body, nil
 	}
@@ -418,7 +421,7 @@ func HttpPostDo(urlStr string, body io.Reader, r *HttpReq, timeout int) ([]byte,
 func HttpPostFormDo(urlStr string, posts map[string]string, r *HttpReq, timeout int) ([]byte, error) {
 	resp, err := HttpPostFormResp(urlStr, posts, r, timeout)
 	if err != nil {
-		return nil, err
+		return resp.Body, err
 	} else {
 		return resp.Body, nil
 	}
@@ -429,7 +432,7 @@ func HttpPostFormDo(urlStr string, posts map[string]string, r *HttpReq, timeout 
 func HttpPostJsonDo(urlStr string, json string, r *HttpReq, timeout int) ([]byte, error) {
 	resp, err := HttpPostJsonResp(urlStr, json, r, timeout)
 	if err != nil {
-		return nil, err
+		return resp.Body, err
 	} else {
 		return resp.Body, nil
 	}
@@ -440,7 +443,7 @@ func HttpPostJsonDo(urlStr string, json string, r *HttpReq, timeout int) ([]byte
 func HttpPutDo(urlStr string, body io.Reader, r *HttpReq, timeout int) ([]byte, error) {
 	resp, err := HttpPutResp(urlStr, body, r, timeout)
 	if err != nil {
-		return nil, err
+		return resp.Body, err
 	} else {
 		return resp.Body, nil
 	}
@@ -451,7 +454,7 @@ func HttpPutDo(urlStr string, body io.Reader, r *HttpReq, timeout int) ([]byte, 
 func HttpPutFormDo(urlStr string, posts map[string]string, r *HttpReq, timeout int) ([]byte, error) {
 	resp, err := HttpPutFormResp(urlStr, posts, r, timeout)
 	if err != nil {
-		return nil, err
+		return resp.Body, err
 	} else {
 		return resp.Body, nil
 	}
@@ -462,7 +465,7 @@ func HttpPutFormDo(urlStr string, posts map[string]string, r *HttpReq, timeout i
 func HttpPutJsonDo(urlStr string, json string, r *HttpReq, timeout int) ([]byte, error) {
 	resp, err := HttpPutJsonResp(urlStr, json, r, timeout)
 	if err != nil {
-		return nil, err
+		return resp.Body, err
 	} else {
 		return resp.Body, nil
 	}
@@ -583,7 +586,7 @@ func HttpPutJsonResp(urlStr string, json string, r *HttpReq, timeout int) (*Http
 func HttpDo(req *http.Request, r *HttpReq, timeout int) ([]byte, error) {
 	resp, err := HttpDoResp(req, r, timeout)
 	if err != nil {
-		return nil, err
+		return resp.Body, err
 	} else {
 		return resp.Body, nil
 	}
@@ -647,6 +650,8 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 
 	// HttpResp
 	httpResp := &HttpResp{}
+	var body []byte
+	httpResp.Body = body
 
 	// Do
 	resp, err := client.Do(req)
@@ -660,7 +665,9 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
 		httpResp.Success = true
 	} else {
-		return httpResp, errors.New("ErrorStatusCode")
+		if !r.ReadBodyWithFail {
+			return httpResp, errors.New("ErrorStatusCode")
+		}
 	}
 
 	httpResp.Headers = &resp.Header
@@ -670,7 +677,6 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 	// http.Transport 定义了当请求头不包含 Accept-Encoding 或为空时, 默认会发送 Accept-Encoding=gzip
 	// 它会自动判断服务端是否是gzip 然后在接受响应时自动 uncompress, 并会自动移除响应头中的 Content-Encoding、Content-Length
 	// 为了获取 Content-Length, 我们需要手动设置不为空的 Accept-Encoding (默认是 HttpDefaultAcceptEncoding), 并且手动 uncompress
-	var body []byte
 	var reader io.ReadCloser
 	switch strings.ToLower(resp.Header.Get("Content-Encoding")) {
 	case "gzip":
@@ -717,7 +723,11 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 		httpResp.Body = body
 	}
 
-	return httpResp, nil
+	if httpResp.Success {
+		return httpResp, nil
+	} else {
+		return httpResp, errors.New("ErrorStatusCode")
+	}
 }
 
 // allowContentTypes 判断 Content-Type 是否在允许列表中
