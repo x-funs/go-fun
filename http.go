@@ -15,7 +15,7 @@ import (
 
 const (
 	HttpDefaultTimeOut        = 10000
-	HttpDefaultUserAgent      = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
+	HttpDefaultUserAgent      = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36"
 	HttpDefaultAcceptEncoding = "gzip, deflate"
 )
 
