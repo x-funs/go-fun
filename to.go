@@ -192,3 +192,13 @@ func ToJson(object any) string {
 
 	return String(res)
 }
+
+// ToJsonIndent 将对象转换为 Json 字符串, 带缩进
+func ToJsonIndent(object any) string {
+	res, err := json.MarshalIndent(object, "", "  ")
+	if err != nil {
+		return ""
+	}
+
+	return String(res)
+}

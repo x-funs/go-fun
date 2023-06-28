@@ -153,6 +153,9 @@ func TestToJson(t *testing.T) {
 	assert.Equal(t, `123`, ToJson(123))
 	assert.Equal(t, `["a","1","b","2"]`, ToJson([]string{"a", "1", "b", "2"}))
 	assert.Equal(t, `{"a":"1","b":"2"}`, ToJson(map[string]string{"a": "1", "b": "2"}))
+
+	t.Log(ToJson(map[string]string{"a": "1", "b": "2"}))
+	t.Log(ToJsonIndent(map[string]string{"a": "1", "b": "2"}))
 }
 
 func BenchmarkToJson(b *testing.B) {
