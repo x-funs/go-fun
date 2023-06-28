@@ -33,6 +33,15 @@ func TestToInt64(t *testing.T) {
 	assert.Equal(t, int64(-123), ToLong("-123"))
 }
 
+func TestToFloat(t *testing.T) {
+	assert.Equal(t, float32(0), ToFloat32(""))
+	assert.Equal(t, float32(0), ToFloat32(" "))
+	assert.Equal(t, float32(1.1), ToFloat32("1.1"))
+	assert.Equal(t, float32(1.123), ToFloat32(1.123))
+	assert.Equal(t, float32(123), ToFloat32(123))
+	assert.Equal(t, float64(123), ToFloat64(123))
+}
+
 func BenchmarkToInt64(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		ToInt64("123")
