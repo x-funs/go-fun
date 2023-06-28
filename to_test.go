@@ -2,6 +2,7 @@ package fun
 
 import (
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -165,6 +166,17 @@ func TestToJson(t *testing.T) {
 
 	t.Log(ToJson(map[string]string{"a": "1", "b": "2"}))
 	t.Log(ToJsonIndent(map[string]string{"a": "1", "b": "2"}))
+}
+
+func TestToDuration(t *testing.T) {
+	assert.Equal(t, time.Second, ToDuration("1s"))
+	assert.Equal(t, time.Hour, ToDuration("1h"))
+	assert.Equal(t, time.Nanosecond, ToDuration("1"))
+	assert.Equal(t, time.Nanosecond, ToDuration(1))
+
+	assert.Equal(t, time.Millisecond, ToDurationMs(1))
+	assert.Equal(t, time.Millisecond, ToDurationMs("1"))
+	assert.Equal(t, time.Millisecond*1000*3600, ToDurationMs("1h"))
 }
 
 func BenchmarkToJson(b *testing.B) {

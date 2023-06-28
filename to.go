@@ -9,6 +9,8 @@ import (
 	"io"
 	"net"
 	"strconv"
+	"strings"
+	"time"
 
 	"golang.org/x/text/encoding/ianaindex"
 	"golang.org/x/text/transform"
@@ -235,4 +237,47 @@ func ToJsonIndent(object any) string {
 	}
 
 	return String(res)
+}
+
+// ToDuration 将数字字符串转换为 time.Duration，默认是 ns, 如果是字符串，支持 ns,u,µ,m,h
+func ToDuration(value any) time.Duration {
+	switch v := value.(type) {
+	case time.Duration:
+		return v
+	case int, int64, int32, int16, int8, uint, uint64, uint32, uint16, uint8:
+		return time.Duration(ToInt64(v))
+	case float32, float64:
+		return time.Duration(ToFloat64(v))
+	case string:
+		if strings.ContainsAny(v, "nsuµmh") {
+			d, _ := time.ParseDuration(v)
+			return d
+		} else {
+			d, _ := time.ParseDuration(v + "ns")
+			return d
+		}
+	}
+
+	return 0
+}
+
+func ToDurationMs(value any) time.Duration {
+	switch v := value.(type) {
+	case time.Duration:
+		return v
+	case int, int64, int32, int16, int8, uint, uint64, uint32, uint16, uint8:
+		return ToDuration(value) * time.Millisecond
+	case float32, float64:
+		return ToDuration(value) * time.Millisecond
+	case string:
+		if strings.ContainsAny(v, "nsuµmh") {
+			d, _ := time.ParseDuration(v)
+			return d
+		} else {
+			d, _ := time.ParseDuration(v + "ms")
+			return d
+		}
+	}
+
+	return 0
 }
