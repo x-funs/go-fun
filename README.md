@@ -495,3 +495,7 @@ func main() {
 - **<big>`HttpPostJson(urlStr string, args ...any) ([]byte, error)`</big>** The HttpPostJson parameter is the request address (JsonData string, HttpReq, timeout)
 
 - **<big>`UrlParse(rawURL string) (*url.URL, error)`</big>** Parses the string URL to the URL object. There will be no mistakes without scheme.
+
+- **<big>`UserAgentRandom() string`</big>** generates a random DESKTOP browser user-agent on every requests .
+
+- **<big>`UserAgentRandomMobile() string`</big>** generates a random MOBILE browser user-agent on every requests.
