@@ -497,6 +497,9 @@ func main() {
 
 - **<big>`UrlParse(rawURL string) (*url.URL, error)`</big>** 解析字符串 URL 到 URL 对象。在没有 scheme 时不会出错
 
+- **<big>`UserAgentRandom() string`</big>** 生成桌面浏览器客户端 user-agent 字符 .
+
+- **<big>`UserAgentRandomMobile() string`</big>** 生成移动端浏览器客户端 user-agent 字符.
 
 
 
