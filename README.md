@@ -472,11 +472,21 @@ func main() {
 
 - **<big>`ToInt64(value any) int64`</big>** Number or string to int64
 
+- **<big>`ToFloat32(value any) float32`</big>** Number or string to float32
+
+- **<big>`ToFloat64(value any) float64`</big>** Number or string to float64
+
 - **<big>`ToUtf8(origin []byte, encode string) ([]byte, error)`</big>** Specify character set conversion utf-8
 
 - **<big>`Utf8To(utf8 []byte, encode string) ([]byte, error)`</big>** utf-8 to specify character set
 
 - **<big>`ToJson(object any) string`</big>** Converts an object to a Json string
+
+- **<big>`ToJsonIndent(object any) string`</big>** Converts an object to a Indent Json string
+
+- **<big>`ToDuration(value any) time.Duration`</big>** Converts number or string to time.Duration, default is Nanosecond, string support "ns,ms,us,s,m,h"
+
+- **<big>`ToDurationMs(value any) time.Duration`</big>** Converts number or string to time.Duration, default is Millisecond, string support "ns,ms,us,s,m,h"
 
 ### http
 

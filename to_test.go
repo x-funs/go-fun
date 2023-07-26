@@ -171,6 +171,8 @@ func TestToJson(t *testing.T) {
 func TestToDuration(t *testing.T) {
 	assert.Equal(t, time.Second, ToDuration("1s"))
 	assert.Equal(t, time.Hour, ToDuration("1h"))
+	assert.Equal(t, time.Minute, ToDuration("1m"))
+	assert.Equal(t, time.Millisecond, ToDuration("1ms"))
 	assert.Equal(t, time.Nanosecond, ToDuration("1"))
 	assert.Equal(t, time.Nanosecond, ToDuration(1))
 
