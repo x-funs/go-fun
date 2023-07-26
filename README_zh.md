@@ -474,11 +474,21 @@ func main() {
 
 - **<big>`ToInt64(value any) int64`</big>** 数字或字符串转 int64
 
+- **<big>`ToFloat32(value any) float32`</big>** 数字或字符串转 float32
+
+- **<big>`ToFloat64(value any) float64`</big>** 数字或字符串转 float64
+
 - **<big>`ToUtf8(origin []byte, encode string) ([]byte, error)`</big>** 指定字符集转 utf-8
 
 - **<big>`Utf8To(utf8 []byte, encode string) ([]byte, error)`</big>** utf-8 转指定字符集
 
 - **<big>`ToJson(object any) string`</big>** 将对象转换为 Json 字符串
+
+- **<big>`ToJsonIndent(object any) string`</big>** 将对象转换为具有锁进的 Json 字符串
+
+- **<big>`ToDuration(value any) time.Duration`</big>** 数字或字符串转 time.Duration，默认是纳秒，字符串支持 "ns,ms,us,s,m,h"
+
+- **<big>`ToDurationMs(value any) time.Duration`</big>** 数字或字符串转 time.Duration，默认是毫秒，字符串支持 "ns,ms,us,s,m,h"
 
 ### http 相关方法
 
