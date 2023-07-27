@@ -488,6 +488,19 @@ func main() {
 
 - **<big>`ToDurationMs(value any) time.Duration`</big>** Converts number or string to time.Duration, default is Millisecond, string support "ns,ms,us,s,m,h"
 
+
+### 文件相关
+
+#### 函数列表
+
+- **<big>`Mkdir(dir string, perm os.FileMode) error`</big>** Create a directory, ignoring if the directory already exists
+
+- **<big>`FileExists(path string) bool`</big>** Check whether the directory or file exists, return bool
+
+- **<big>`WriteFile(name string, data []byte, flag int, perm os.FileMode, sync bool) error`</big>** write file shortcut
+
+- **<big>`WriteFileAppend(name string, data []byte, perm os.FileMode, sync bool) error`</big>** write file shortcut with append mode
+
 ### http
 
 > HttpXXResp the suffix, the return value is *Response
