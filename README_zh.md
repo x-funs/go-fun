@@ -502,7 +502,7 @@ func main() {
 
 - **<big>`WriteFileAppend(name string, data []byte, perm os.FileMode, sync bool) error`</big>** 追加写入文件
 
-### http 相关
+### Http 相关
 
 > HttpXXResp 后缀的, 返回值是 *Response
 > HttpXXDo 后缀的, 需要传参数 *Request
