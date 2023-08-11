@@ -239,7 +239,7 @@ func ToJsonIndent(object any) string {
 	return String(res)
 }
 
-// ToDuration 将数字字符串转换为 time.Duration，默认是 ns, 如果是字符串，支持 ns,u,µ,m,h
+// ToDuration 将数字、字符串转换为 time.Duration，默认是 ns, 如果是字符串，支持 ns,ms,us,s,m,h
 func ToDuration(value any) time.Duration {
 	switch v := value.(type) {
 	case time.Duration:
@@ -261,6 +261,7 @@ func ToDuration(value any) time.Duration {
 	return 0
 }
 
+// ToDurationMs 将数字、字符串转换为 time.Duration，默认是 ms, 如果是字符串，支持 ns,ms,us,s,m,h
 func ToDurationMs(value any) time.Duration {
 	switch v := value.(type) {
 	case time.Duration:

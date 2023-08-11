@@ -474,15 +474,38 @@ func main() {
 
 - **<big>`ToInt64(value any) int64`</big>** 数字或字符串转 int64
 
+- **<big>`ToFloat32(value any) float32`</big>** 数字或字符串转 float32
+
+- **<big>`ToFloat64(value any) float64`</big>** 数字或字符串转 float64
+
 - **<big>`ToUtf8(origin []byte, encode string) ([]byte, error)`</big>** 指定字符集转 utf-8
 
 - **<big>`Utf8To(utf8 []byte, encode string) ([]byte, error)`</big>** utf-8 转指定字符集
 
 - **<big>`ToJson(object any) string`</big>** 将对象转换为 Json 字符串
 
-### http 相关方法
+- **<big>`ToJsonIndent(object any) string`</big>** 将对象转换为具有锁进的 Json 字符串
+
+- **<big>`ToDuration(value any) time.Duration`</big>** 数字或字符串转 time.Duration，默认是纳秒，字符串支持 "ns,ms,us,s,m,h"
+
+- **<big>`ToDurationMs(value any) time.Duration`</big>** 数字或字符串转 time.Duration，默认是毫秒，字符串支持 "ns,ms,us,s,m,h"
+
+### 文件相关
+
+#### 函数列表
+
+- **<big>`Mkdir(dir string, perm os.FileMode) error`</big>** 创建一个目录，如果目录已存在则忽略
+
+- **<big>`FileExists(path string) bool`</big>** 检测目录或者文件是否存在，返回 bool
+
+- **<big>`WriteFile(name string, data []byte, flag int, perm os.FileMode, sync bool) error`</big>** WriteFile 写入文件
+
+- **<big>`WriteFileAppend(name string, data []byte, perm os.FileMode, sync bool) error`</big>** 追加写入文件
+
+### Http 相关
 
 > HttpXXResp 后缀的, 返回值是 *Response
+
 > HttpXXDo 后缀的, 需要传参数 *Request
 
 #### 函数列表
