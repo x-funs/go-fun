@@ -43,6 +43,9 @@ type HttpReq struct {
 
 	// http.Transport
 	Transport http.RoundTripper
+
+	// http.CookieJar
+	Jar http.CookieJar
 }
 
 type HttpResp struct {
@@ -605,11 +608,13 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 		client = &http.Client{
 			Timeout:   time.Duration(timeout) * time.Millisecond,
 			Transport: r.Transport,
+			Jar:       r.Jar,
 		}
 	} else {
 		client = &http.Client{
 			Timeout:   time.Duration(timeout) * time.Millisecond,
 			Transport: HttpDefaultTransport,
+			Jar:       r.Jar,
 		}
 	}
 
