@@ -2,7 +2,9 @@ package fun
 
 import (
 	"errors"
+	"net"
 	"os"
+	"strings"
 	"unicode"
 	"unicode/utf8"
 )
@@ -98,4 +100,28 @@ func IsDir(path string) bool {
 	}
 
 	return s.IsDir()
+}
+
+// IsIp 是否是有效的 IP
+func IsIp(ipStr string) bool {
+	ip := net.ParseIP(ipStr)
+	return ip != nil
+}
+
+// IsIpV4 是否是有效的 IpV4
+func IsIpV4(ipStr string) bool {
+	ip := net.ParseIP(ipStr)
+	if ip == nil {
+		return false
+	}
+	return strings.Contains(ipStr, ".")
+}
+
+// IsIpV6 是否是有效的 IpV6
+func IsIpV6(ipStr string) bool {
+	ip := net.ParseIP(ipStr)
+	if ip == nil {
+		return false
+	}
+	return strings.Contains(ipStr, ":")
 }

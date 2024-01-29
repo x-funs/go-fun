@@ -75,3 +75,10 @@ func TestIsExist(t *testing.T) {
 func TestIsUtf8(t *testing.T) {
 	assert.Equal(t, true, IsUtf8(Bytes("中文")))
 }
+
+func TestIsIp(t *testing.T) {
+	assert.Equal(t, true, IsIp("192.168.0.100"))
+	assert.Equal(t, true, IsIpV4("36.112.24.10"))
+	assert.Equal(t, false, IsIpV4("2001:db8:4006:812::200e"))
+	assert.Equal(t, true, IsIpV6("2001:db8:4006:812::200e"))
+}
