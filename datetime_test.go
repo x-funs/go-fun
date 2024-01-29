@@ -20,7 +20,6 @@ func TestTime(t *testing.T) {
 }
 
 func TestDate(t *testing.T) {
-
 	fmt.Println(Date(Timestamp()))
 	fmt.Println(Date(DatetimeMilliPattern, Timestamp(true)))
 
@@ -136,5 +135,24 @@ func TestStrToTime(t *testing.T) {
 		timeStamp := StrToTime(d)
 		result := Date(timeStamp)
 		fmt.Printf("%s -> %s\n", d, result)
+	}
+}
+
+func BenchmarkStrToTime(b *testing.B) {
+	fmt.Println(StrToTime("2024-02-03 23:22:11"))
+
+	for i := 0; i < b.N; i++ {
+		StrToTime("2024-02-03 23:22:11")
+	}
+}
+
+func BenchmarkDate(b *testing.B) {
+	cstTime, _ := time.ParseInLocation("2006-01-02 15:04:05", "2024-02-03 23:22:11", time.Local)
+	cstUnix := time.Unix(cstTime.Unix(), 0)
+	fmt.Println(cstUnix.Unix())
+
+	for i := 0; i < b.N; i++ {
+		cstTime, _ := time.ParseInLocation("2006-01-02 15:04:05", "2024-02-03 23:22:11", time.Local)
+		time.Unix(cstTime.Unix(), 0)
 	}
 }

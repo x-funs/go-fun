@@ -40,7 +40,7 @@ func TestTimeMarshal(t *testing.T) {
 	p1json, _ := json.Marshal(p1)
 	t.Log(string(p1json))
 
-	// 反序列化时候必须得给 RFC3339 格式, 否则解析不了
+	// 反序列化时候必须得给 RFC3339 格式, 否则会解析错误
 	var p2 person
 	jsonStr := `{"name":"Bob","birthday":"1991-02-03","joinTime":"2021-02-03 01:02:03"}`
 	json.Unmarshal([]byte(jsonStr), &p2)
@@ -63,7 +63,7 @@ func TestAliasTimeMarshal(t *testing.T) {
 
 	// 反序列化自动识别格式
 	var u2 user
-	jsonStr := `{"name":"Alice","birthday":"2006年01月02日","joinTime":"2021/02/03 01:02:03"}`
+	jsonStr := `{"name":"Alice","birthday":"2012年01月02日","joinTime":"2021/02/03 01:02:03"}`
 	json.Unmarshal([]byte(jsonStr), &u2)
 	t.Log(u2)
 	t.Log(u2.Birthday.Time.IsZero())
