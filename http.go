@@ -614,7 +614,6 @@ func HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error) {
 		client = &http.Client{
 			Timeout:   time.Duration(timeout) * time.Millisecond,
 			Transport: HttpDefaultTransport,
-			Jar:       r.Jar,
 		}
 	}
 
