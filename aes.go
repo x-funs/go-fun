@@ -6,10 +6,17 @@ import (
 	"crypto/cipher"
 	"encoding/hex"
 	"errors"
+	"fmt"
 )
 
 // AesCBCEncrypt Aes CBC 对称加密, key 的长度决定 AES-128, AES-192, or AES-256
 func AesCBCEncrypt(text string, key string, iv string) (string, error) {
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println("Recovered from panic:", r)
+		}
+	}()
+
 	textBytes := Bytes(text)
 	keyBytes := Bytes(key)
 	ivBytes := Bytes(iv)
@@ -36,6 +43,12 @@ func AesCBCEncrypt(text string, key string, iv string) (string, error) {
 
 // AesCBCDecrypt Aes CBC 对称加密
 func AesCBCDecrypt(cipherStr string, key string, iv string) (string, error) {
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println("Recovered from panic:", r)
+		}
+	}()
+
 	cipherBytes, err := hex.DecodeString(cipherStr)
 	if err != nil {
 		return "", errors.New(err.Error())

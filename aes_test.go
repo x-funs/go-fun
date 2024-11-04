@@ -1,6 +1,7 @@
 package fun
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -26,4 +27,16 @@ func TestAesCBCDecrypt(t *testing.T) {
 	t.Log(bit16)
 	decrypt2, _ := AesCBCDecrypt("2ba4f416d2f6dcaa13661933cf56db41a02fdeef1d210b1cda643cd71957ecd8", bit16, bit16)
 	assert.Equal(t, "Hello, 你好，中国！", decrypt2)
+}
+
+func TestEncryptPanic(t *testing.T) {
+	encrypt1, err := AesCBCEncrypt("Hello, world!", "123", "0")
+	fmt.Println(encrypt1)
+	fmt.Println(err)
+}
+
+func TestDecryptPanic(t *testing.T) {
+	decrypt1, err := AesCBCDecrypt("f87cd942", "0123456789abcdef", "0123456789abcdef")
+	fmt.Println(decrypt1)
+	fmt.Println(err)
 }
