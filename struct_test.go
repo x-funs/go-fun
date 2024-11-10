@@ -36,16 +36,41 @@ func TestCopyStruct(t *testing.T) {
 
 	b := &bStruct{}
 
-	StructCopy(a, b)
+	err := StructCopy(a, b)
+	if err != nil {
+		return
+	}
 
 	fmt.Printf("%+v\n", b)
+	fmt.Printf("%+v\n", err)
 
 	bb := &bStruct{
 		Name: "test-bb",
 	}
 	bb.Wrap = "234"
-	StructCopy(a, bb)
+	err = StructCopy(a, bb)
+	if err != nil {
+		return
+	}
 
 	fmt.Printf("%+v\n", bb)
+	fmt.Printf("%+v\n", err)
 
+}
+
+func TestStructCompareSomeField(t *testing.T) {
+	dst := aStruct{
+		Name:  "test-a",
+		Age:   12,
+		State: true,
+	}
+
+	some := aStruct{
+		Name: "test-a",
+	}
+
+	result, err := StructCompareSomeField(some, dst)
+
+	t.Log(result)
+	t.Log(err)
 }
