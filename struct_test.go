@@ -59,18 +59,32 @@ func TestCopyStruct(t *testing.T) {
 }
 
 func TestStructCompareSomeField(t *testing.T) {
-	dst := aStruct{
+	dstA := &aStruct{
 		Name:  "test-a",
 		Age:   12,
 		State: true,
 	}
-
-	some := aStruct{
-		Name: "test-a",
+	someA := &someAStruct{
+		Name:  "test-a",
+		State: true,
 	}
 
-	result, err := StructCompareSomeField(some, dst)
+	resultA, err := StructCompareSomeField(someA, dstA)
+	t.Log(resultA)
+	t.Log(err)
 
-	t.Log(result)
+	dstB := &bStruct{
+		Name: "test-b",
+		Age:  18,
+	}
+	dstB.Wrap = "abc"
+	someB := &someBStruct{
+		Name:  "test-b",
+		Age:   18,
+		Float: 0,
+		Wrap:  "abc",
+	}
+	resultB, err := StructCompareSomeField(someB, dstB)
+	t.Log(resultB)
 	t.Log(err)
 }
