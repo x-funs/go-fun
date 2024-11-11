@@ -27,6 +27,18 @@ type bStruct struct {
 	wrapStruct
 }
 
+type someAStruct struct {
+	Name  string
+	State bool
+}
+
+type someBStruct struct {
+	Name  string
+	Age   int
+	Float float64
+	Wrap  string
+}
+
 type cStruct struct {
 	School string
 	Grade  int

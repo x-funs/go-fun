@@ -2,7 +2,6 @@ package fun
 
 import (
 	"errors"
-	"fmt"
 	"reflect"
 )
 
@@ -37,11 +36,13 @@ func structCopy(src, dst reflect.Value) error {
 
 	var dstField reflect.Value
 	for i := 0; i < tSrc.NumField(); i++ {
+		// 如果不是嵌入字段
 		if !tSrc.Field(i).Anonymous {
 			dstField = dst.FieldByName(tSrc.Field(i).Name)
 			if dstField.IsValid() && dstField.CanSet() {
 				dstField.Set(src.Field(i))
 			}
+			// 递归
 		} else {
 			return structCopy(src.Field(i).Addr(), dst)
 		}
@@ -50,6 +51,7 @@ func structCopy(src, dst reflect.Value) error {
 	return nil
 }
 
+// StructCompareSomeField 比较结构体的部分字段，以 some 为基准，判断 some 中的字段与 dst 的同名字段值是否相同
 func StructCompareSomeField(some, dst any) (bool, error) {
 	if some == nil || dst == nil {
 		return false, errors.New("value is nil")
@@ -85,14 +87,12 @@ func StructCompareSomeField(some, dst any) (bool, error) {
 		if fieldB.IsValid() {
 			valueA := vSome.Field(i)
 			valueB := fieldB
-
-			fmt.Println(valueA)
-			fmt.Println(valueB)
-
 			// 比较字段值
 			if !reflect.DeepEqual(valueA.Interface(), valueB.Interface()) {
 				return false, nil
 			}
+		} else {
+			return false, errors.New("field not match")
 		}
 	}
 
