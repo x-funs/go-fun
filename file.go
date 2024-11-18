@@ -4,20 +4,16 @@ import "os"
 
 // Mkdir 创建一个目录，如果目录已存在则忽略
 func Mkdir(dir string, perm os.FileMode) error {
-	if !FileExists(dir) {
+	if !IsExist(dir) {
 		return os.Mkdir(dir, perm)
 	}
 
 	return nil
 }
 
-// FileExists 检测目录或者文件是否存在，返回 bool
-func FileExists(path string) bool {
-	_, err := os.Stat(path)
-	if err != nil && os.IsNotExist(err) {
-		return false
-	}
-	return true
+// MkdirAll 创建任何必要的父目录
+func MkdirAll(dir string, perm os.FileMode) error {
+	return os.MkdirAll(dir, perm)
 }
 
 // WriteFile 写入文件

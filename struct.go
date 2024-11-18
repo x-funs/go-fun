@@ -51,7 +51,7 @@ func structCopy(src, dst reflect.Value) error {
 	return nil
 }
 
-// StructCompareSomeField 比较结构体的部分字段，以 some 为基准，判断 some 中的字段与 dst 的同名字段值是否相同
+// StructCompareSomeField 比较结构体的部分字段，以 some 为基准，判断 some 中的字段与 dst 的同名字段值是否相同，通常用于编辑的场景
 func StructCompareSomeField(some, dst any) (bool, error) {
 	if some == nil || dst == nil {
 		return false, errors.New("value is nil")
