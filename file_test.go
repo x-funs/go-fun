@@ -12,6 +12,7 @@ func TestMkdir(t *testing.T) {
 	tempDir := os.TempDir()
 	dir := filepath.Join(tempDir, "test")
 	assert.Equal(t, nil, Mkdir(dir, 0755))
+	assert.Equal(t, nil, MkdirAll(dir, 0755))
 }
 
 func TestWriteFileAppend(t *testing.T) {
