@@ -149,15 +149,42 @@ func ToInt64(value any) int64 {
 	return 0
 }
 
+// ToUint64 数字或字符串转 uint64
+func ToUint64(value any) uint64 {
+	switch v := value.(type) {
+	case int:
+		return uint64(v)
+	case uint8:
+		return uint64(v)
+	case int8:
+		return uint64(v)
+	case int16:
+		return uint64(v)
+	case uint16:
+		return uint64(v)
+	case int32:
+		return uint64(v)
+	case uint32:
+		return uint64(v)
+	case int64:
+		return uint64(v)
+	case uint64:
+		return v
+	case string:
+		i, _ := strconv.ParseUint(v, 10, 64)
+		return i
+	}
+
+	return 0
+}
+
 // ToFloat32 数字或字符串转 float32
 func ToFloat32(value any) float32 {
 	switch v := value.(type) {
-	case int, int8, int16, int32, int64, uint, uint8, uint16, uint32, uint64:
+	case int, int8, int16, int32, int64, uint, uint8, uint16, uint32:
 		return float32(ToInt64(v))
 	case float32:
 		return v
-	case float64:
-		return float32(v)
 	case string:
 		i, _ := strconv.ParseFloat(v, 32)
 		return float32(i)
