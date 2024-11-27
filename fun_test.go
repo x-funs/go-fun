@@ -7,47 +7,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-type aStruct struct {
-	Name    string
-	Age     int
-	State   bool
-	Ps      *string
-	CStruct cStruct
-	Wrap    string
-}
-
-type bStruct struct {
-	Name    string
-	Age     int
-	State   bool
-	Float   float64
-	Ps      *string
-	PStr    *string
-	CStruct cStruct
-	wrapStruct
-}
-
-type someAStruct struct {
-	Name  string
-	State bool
-}
-
-type someBStruct struct {
-	Name  string
-	Age   int
-	Float float64
-	Wrap  string
-}
-
-type cStruct struct {
-	School string
-	Grade  int
-}
-
-type wrapStruct struct {
-	Wrap string
-}
-
 func TestMemory(t *testing.T) {
 	fmt.Println(MemoryBytes())
 	fmt.Println(Memory(SizeKB))

@@ -2,6 +2,7 @@ package fun
 
 import (
 	"errors"
+	"fmt"
 	"reflect"
 )
 
@@ -35,16 +36,21 @@ func structCopy(src, dst reflect.Value) error {
 	}
 
 	var dstField reflect.Value
+	fmt.Println(tSrc.NumField())
 	for i := 0; i < tSrc.NumField(); i++ {
+		anonymous := tSrc.Field(i).Anonymous
 		// 如果不是嵌入字段
-		if !tSrc.Field(i).Anonymous {
-			dstField = dst.FieldByName(tSrc.Field(i).Name)
+		if !anonymous {
+			srcFieldName := tSrc.Field(i).Name
+			dstField = dst.FieldByName(srcFieldName)
 			if dstField.IsValid() && dstField.CanSet() {
 				dstField.Set(src.Field(i))
 			}
-			// 递归
+			// 递归，如果出现错误就直接返回错误
 		} else {
-			return structCopy(src.Field(i).Addr(), dst)
+			if err := structCopy(src.Field(i).Addr(), dst); err != nil {
+				return err
+			}
 		}
 	}
 
@@ -92,7 +98,7 @@ func StructCompareSomeField(some, dst any) (bool, error) {
 				return false, nil
 			}
 		} else {
-			return false, errors.New("field not match")
+			return false, errors.New("dst struct field not match")
 		}
 	}
 
