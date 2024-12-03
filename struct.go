@@ -2,7 +2,6 @@ package fun
 
 import (
 	"errors"
-	"fmt"
 	"reflect"
 )
 
