@@ -2,7 +2,6 @@ package fun
 
 import (
 	"errors"
-	"fmt"
 	"reflect"
 )
 
@@ -36,7 +35,9 @@ func structCopy(src, dst reflect.Value) error {
 	}
 
 	var dstField reflect.Value
-	fmt.Println(tSrc.NumField())
+
+	//fmt.Println(tSrc.NumField())
+
 	for i := 0; i < tSrc.NumField(); i++ {
 		anonymous := tSrc.Field(i).Anonymous
 		// 如果不是嵌入字段
