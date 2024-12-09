@@ -21,14 +21,12 @@ var uaGens = []func() string{
 	genFirefoxUA,
 	genChromeUA,
 	genEdgeUA,
-	genOperaUA,
 }
 
 var uaGensMobile = []func() string{
 	genMobilePixel7UA,
 	genMobilePixel6UA,
 	genMobilePixel5UA,
-	genMobilePixel4UA,
 	genMobileNexus10UA,
 }
 
@@ -38,110 +36,38 @@ var ffVersions = []float32{
 	// NOTE: Only version released after Jun 1, 2022 will be listed.
 	// Data source: https://en.wikipedia.org/wiki/Firefox_version_history
 
-	// 2022
-	102.0,
-	103.0,
-	104.0,
-	105.0,
-	106.0,
-	107.0,
-	108.0,
-
-	// 2023
+	// Firefox 109 was released on January 17, 2023
 	109.0,
 	110.0,
 	111.0,
 	112.0,
 	113.0,
+	113.0,
+	113.0,
+	113.0,
+	113.0,
+	114.0,
+	115.0,
+	116.0,
+	117.0,
+	118.0,
+	119.0,
+	120.0,
+	121.0,
+
+	// Firefox 122 was released on January 23, 2024
+	122.0,
+	123.0,
+	124.0,
+	125.0,
+	126.0,
+	127.0,
+	128.0,
 }
 
 var chromeVersions = []string{
 	// NOTE: Only version released after Jun 1, 2022 will be listed.
 	// Data source: https://chromereleases.googleblog.com/search/label/Stable%20updates
-
-	// https://chromereleases.googleblog.com/2022/06/stable-channel-update-for-desktop.html
-	"102.0.5005.115",
-
-	// https://chromereleases.googleblog.com/2022/06/stable-channel-update-for-desktop_21.html
-	"103.0.5060.53",
-
-	// https://chromereleases.googleblog.com/2022/06/stable-channel-update-for-desktop_27.html
-	"103.0.5060.66",
-
-	// https://chromereleases.googleblog.com/2022/07/stable-channel-update-for-desktop.html
-	"103.0.5060.114",
-
-	// https://chromereleases.googleblog.com/2022/07/stable-channel-update-for-desktop_19.html
-	"103.0.5060.134",
-
-	// https://chromereleases.googleblog.com/2022/08/stable-channel-update-for-desktop.html
-	"104.0.5112.79",
-	"104.0.5112.80",
-	"104.0.5112.81",
-
-	// https://chromereleases.googleblog.com/2022/08/stable-channel-update-for-desktop_16.html
-	"104.0.5112.101",
-	"104.0.5112.102",
-
-	// https://chromereleases.googleblog.com/2022/08/stable-channel-update-for-desktop_30.html
-	"105.0.5195.52",
-	"105.0.5195.53",
-	"105.0.5195.54",
-
-	// https://chromereleases.googleblog.com/2022/09/stable-channel-update-for-desktop.html
-	"105.0.5195.102",
-
-	// https://chromereleases.googleblog.com/2022/09/stable-channel-update-for-desktop_14.html
-	"105.0.5195.125",
-	"105.0.5195.126",
-	"105.0.5195.127",
-
-	// https://chromereleases.googleblog.com/2022/09/stable-channel-update-for-desktop_27.html
-	"106.0.5249.61",
-	"106.0.5249.62",
-
-	// https://chromereleases.googleblog.com/2022/09/stable-channel-update-for-desktop_30.html
-	"106.0.5249.91",
-
-	// https://chromereleases.googleblog.com/2022/10/stable-channel-update-for-desktop.html
-	"106.0.5249.103",
-
-	// https://chromereleases.googleblog.com/2022/10/stable-channel-update-for-desktop_11.html
-	"106.0.5249.119",
-
-	// https://chromereleases.googleblog.com/2022/10/stable-channel-update-for-desktop_25.html
-	"107.0.5304.62",
-	"107.0.5304.63",
-	"107.0.5304.68",
-
-	// https://chromereleases.googleblog.com/2022/10/stable-channel-update-for-desktop_27.html
-	"107.0.5304.87",
-	"107.0.5304.88",
-
-	// https://chromereleases.googleblog.com/2022/11/stable-channel-update-for-desktop.html
-	"107.0.5304.106",
-	"107.0.5304.107",
-	"107.0.5304.110",
-
-	// https://chromereleases.googleblog.com/2022/11/stable-channel-update-for-desktop_24.html
-	"107.0.5304.121",
-	"107.0.5304.122",
-
-	// https://chromereleases.googleblog.com/2022/11/stable-channel-update-for-desktop_29.html
-	"108.0.5359.71",
-	"108.0.5359.72",
-
-	// https://chromereleases.googleblog.com/2022/12/stable-channel-update-for-desktop.html
-	"108.0.5359.94",
-	"108.0.5359.95",
-
-	// https://chromereleases.googleblog.com/2022/12/stable-channel-update-for-desktop_7.html
-	"108.0.5359.98",
-	"108.0.5359.99",
-
-	// https://chromereleases.googleblog.com/2022/12/stable-channel-update-for-desktop_13.html
-	"108.0.5359.124",
-	"108.0.5359.125",
 
 	// https://chromereleases.googleblog.com/2023/01/stable-channel-update-for-desktop.html
 	"109.0.5414.74",
@@ -208,19 +134,36 @@ var chromeVersions = []string{
 	// https://chromereleases.googleblog.com/2023/05/stable-channel-update-for-desktop_8.html
 	"113.0.5672.92",
 	"113.0.5672.93",
+
+	// https://chromereleases.googleblog.com/2023/06/stable-channel-update-for-desktop_26.html
+	"114.0.5735.198",
+	"114.0.5735.199",
+
+	// https://chromereleases.googleblog.com/2023/07/stable-channel-update-for-desktop_25.html
+	"115.0.5790.110",
+
+	// https://chromereleases.googleblog.com/2023/08/stable-channel-update-for-desktop_29.html
+	"116.0.5845.140",
+	"116.0.5845.141",
+
+	// https://chromereleases.googleblog.com/2023/09/extended-stable-channel-update-for.html
+	"116.0.5845.228",
+
+	// https://chromereleases.googleblog.com/2023/10/stable-channel-update-for-desktop_31.html
+	"119.0.6045.105",
+	"119.0.6045.106",
+
+	// https://chromereleases.googleblog.com/2023/11/extended-stable-channel-update-for_28.html
+	"118.0.5993.159",
+
+	// https://chromereleases.googleblog.com/2023/12/stable-channel-update-for-desktop_20.html
+	"120.0.6099.129",
+	"120.0.6099.130",
 }
 
 var edgeVersions = []string{
 	// NOTE: Only version released after Jun 1, 2022 will be listed.
 	// Data source: https://learn.microsoft.com/en-us/deployedge/microsoft-edge-release-schedule
-
-	// 2022
-	"103.0.0.0,103.0.1264.37",
-	"104.0.0.0,104.0.1293.47",
-	"105.0.0.0,105.0.1343.25",
-	"106.0.0.0,106.0.1370.34",
-	"107.0.0.0,107.0.1418.24",
-	"108.0.0.0,108.0.1462.42",
 
 	// 2023
 	"109.0.0.0,109.0.1518.49",
@@ -228,48 +171,23 @@ var edgeVersions = []string{
 	"111.0.0.0,111.0.1661.41",
 	"112.0.0.0,112.0.1722.34",
 	"113.0.0.0,113.0.1774.3",
-}
+	"114.0.0.0,114.0.1823.37",
+	"115.0.0.0,115.0.1901.183",
+	"116.0.0.0,116.0.1938.54",
+	"117.0.0.0,117.0.2045.31",
+	"118.0.0.0,118.0.2088.46",
+	"119.0.0.0,119.0.2151.44",
+	"120.0.0.0,120.0.2210.61",
 
-var operaVersions = []string{
-	// NOTE: Only version released after Jan 1, 2023 will be listed.
-	// Data source: https://blogs.opera.com/desktop/
-
-	// https://blogs.opera.com/desktop/changelog-for-96/
-	"110.0.5449.0,96.0.4640.0",
-	"110.0.5464.2,96.0.4653.0",
-	"110.0.5464.2,96.0.4660.0",
-	"110.0.5481.30,96.0.4674.0",
-	"110.0.5481.30,96.0.4691.0",
-	"110.0.5481.30,96.0.4693.12",
-	"110.0.5481.77,96.0.4693.16",
-	"110.0.5481.100,96.0.4693.20",
-	"110.0.5481.178,96.0.4693.31",
-	"110.0.5481.178,96.0.4693.50",
-	"110.0.5481.192,96.0.4693.80",
-
-	// https://blogs.opera.com/desktop/changelog-for-97/
-	"111.0.5532.2,97.0.4711.0",
-	"111.0.5532.2,97.0.4704.0",
-	"111.0.5532.2,97.0.4697.0",
-	"111.0.5562.0,97.0.4718.0",
-	"111.0.5563.19,97.0.4719.4",
-	"111.0.5563.19,97.0.4719.11",
-	"111.0.5563.41,97.0.4719.17",
-	"111.0.5563.65,97.0.4719.26",
-	"111.0.5563.65,97.0.4719.28",
-	"111.0.5563.111,97.0.4719.43",
-	"111.0.5563.147,97.0.4719.63",
-	"111.0.5563.147,97.0.4719.83",
-
-	// https://blogs.opera.com/desktop/changelog-for-98/
-	"112.0.5596.2,98.0.4756.0",
-	"112.0.5596.2,98.0.4746.0",
-	"112.0.5615.20,98.0.4759.1",
-	"112.0.5615.50,98.0.4759.3",
-	"112.0.5615.87,98.0.4759.6",
-	"112.0.5615.165,98.0.4759.15",
-	"112.0.5615.165,98.0.4759.21",
-	"112.0.5615.165,98.0.4759.39",
+	// 2024
+	"121.0.0.0,121.0.2277.83",
+	"122.0.0.0,122.0.2365.52",
+	"123.0.0.0,123.0.2420.53",
+	"125.0.0.0,124.0.2478.51",
+	"125.0.0.0,125.0.2535.51",
+	"126.0.0.0,126.0.2592.56",
+	"127.0.0.0,127.0.2651.74",
+	"128.0.0.0,128.0.2739.42",
 }
 
 var pixel7AndroidVersions = []string{
@@ -291,16 +209,6 @@ var pixel5AndroidVersions = []string{
 	// Data source:
 	// - https://developer.android.com/about/versions
 	// - https://source.android.com/docs/setup/about/build-numbers#source-code-tags-and-builds
-	"11",
-	"12",
-	"13",
-}
-
-var pixel4AndroidVersions = []string{
-	// Data source:
-	// - https://developer.android.com/about/versions
-	// - https://source.android.com/docs/setup/about/build-numbers#source-code-tags-and-builds
-	"10",
 	"11",
 	"12",
 	"13",
@@ -353,24 +261,6 @@ var nexus10Builds = []string{
 }
 
 var osStrings = []string{
-	// MacOS - High Sierra
-	"Macintosh; Intel Mac OS X 10_13",
-	"Macintosh; Intel Mac OS X 10_13_1",
-	"Macintosh; Intel Mac OS X 10_13_2",
-	"Macintosh; Intel Mac OS X 10_13_3",
-	"Macintosh; Intel Mac OS X 10_13_4",
-	"Macintosh; Intel Mac OS X 10_13_5",
-	"Macintosh; Intel Mac OS X 10_13_6",
-
-	// MacOS - Mojave
-	"Macintosh; Intel Mac OS X 10_14",
-	"Macintosh; Intel Mac OS X 10_14_1",
-	"Macintosh; Intel Mac OS X 10_14_2",
-	"Macintosh; Intel Mac OS X 10_14_3",
-	"Macintosh; Intel Mac OS X 10_14_4",
-	"Macintosh; Intel Mac OS X 10_14_5",
-	"Macintosh; Intel Mac OS X 10_14_6",
-
 	// MacOS - Catalina
 	"Macintosh; Intel Mac OS X 10_15",
 	"Macintosh; Intel Mac OS X 10_15_1",
@@ -478,17 +368,6 @@ func genEdgeUA() string {
 	return fmt.Sprintf("Mozilla/5.0 (%s) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/%s Safari/537.36 Edg/%s", os, chromeVersion, edgeVersion)
 }
 
-// Generates Opera Browser User-Agent (Desktop)
-//
-// -> "Mozilla/5.0 (Macintosh; Intel Mac OS X 13_3_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36 OPR/98.0.4759.3"
-func genOperaUA() string {
-	version := operaVersions[rand.Intn(len(operaVersions))]
-	chromeVersion := strings.Split(version, ",")[0]
-	operaVersion := strings.Split(version, ",")[1]
-	os := osStrings[rand.Intn(len(osStrings))]
-	return fmt.Sprintf("Mozilla/5.0 (%s) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/%s Safari/537.36 OPR/%s", os, chromeVersion, operaVersion)
-}
-
 // Generates Pixel 7 Browser User-Agent (Mobile)
 //
 // -> Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36
@@ -514,15 +393,6 @@ func genMobilePixel5UA() string {
 	android := pixel5AndroidVersions[rand.Intn(len(pixel5AndroidVersions))]
 	chrome := chromeVersions[rand.Intn(len(chromeVersions))]
 	return fmt.Sprintf("Mozilla/5.0 (Linux; Android %s; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/%s Safari/537.36", android, chrome)
-}
-
-// Generates Pixel 4 Browser User-Agent (Mobile)
-//
-// -> "Mozilla/5.0 (Linux; Android 13; Pixel 4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Mobile Safari/537.36"
-func genMobilePixel4UA() string {
-	android := pixel4AndroidVersions[rand.Intn(len(pixel4AndroidVersions))]
-	chrome := chromeVersions[rand.Intn(len(chromeVersions))]
-	return fmt.Sprintf("Mozilla/5.0 (Linux; Android %s; Pixel 4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/%s Safari/537.36", android, chrome)
 }
 
 // Generates Nexus 10 Browser User-Agent (Mobile)
