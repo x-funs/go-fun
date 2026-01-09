@@ -18,4 +18,7 @@ func TestMaxMin(t *testing.T) {
 	assert.Equal(t, int64(9), MaxN[int64](1, 2, 3, 4, 5, 6, 7, 9))
 	assert.Equal(t, 1.36, MinN(1.36, 2.69, 5.68, 8.62, 22.96))
 	assert.Equal(t, 22.96, MaxN(1.36, 2.69, 5.68, 8.62, 22.96))
+
+	// 无参数调用，返回 0
+	assert.Equal(t, int64(0), MinN[int64]())
 }
