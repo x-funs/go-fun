@@ -524,5 +524,14 @@ func main() {
 
 - **<big>`UserAgentRandomMobile() string`</big>** 生成移动端浏览器客户端 user-agent 字符.
 
+### AES 加密
 
+#### 函数列表
 
+- **<big>`AesCBCEncrypt(text string, key string, iv string) (string, error)`</big>** AES CBC 对称加密，key 长度决定 AES-128、AES-192 或 AES-256
+
+- **<big>`AesCBCDecrypt(cipherStr string, key string, iv string) (string, error)`</big>** AES CBC 对称解密
+
+- **<big>`AesGCMEncrypt(text string, key string, nonce string) (string, string, error)`</big>** AES GCM 对称加密，返回密文和认证标签
+
+- **<big>`AesGCMDecrypt(cipherStr string, tagStr string, key string, nonce string) (string, error)`</big>** AES GCM 对称解密

@@ -11,11 +11,23 @@ import (
 
 // AesCBCEncrypt Aes CBC 对称加密, key 的长度决定 AES-128, AES-192, or AES-256
 func AesCBCEncrypt(text string, key string, iv string) (string, error) {
+	var result string
+	var err error
+
 	defer func() {
 		if r := recover(); r != nil {
-			fmt.Println("Recovered from panic:", r)
+			err = fmt.Errorf("panic occurred: %v", r)
 		}
 	}()
+
+	// 参数验证
+	if len(key) != 16 && len(key) != 24 && len(key) != 32 {
+		return "", errors.New("key length must be 16, 24, or 32 bytes for AES-128, AES-192, or AES-256")
+	}
+
+	if len(iv) != 16 {
+		return "", errors.New("iv length must be 16 bytes for CBC mode")
+	}
 
 	textBytes := Bytes(text)
 	keyBytes := Bytes(key)
@@ -23,7 +35,7 @@ func AesCBCEncrypt(text string, key string, iv string) (string, error) {
 
 	block, err := aes.NewCipher(keyBytes)
 	if err != nil {
-		return "", errors.New(err.Error())
+		return "", err
 	}
 
 	// 对数据进行填充，使其满足加密块大小，加密块大小为 16 字节
@@ -38,20 +50,37 @@ func AesCBCEncrypt(text string, key string, iv string) (string, error) {
 	mode.CryptBlocks(cipherText, paddingText)
 	cipherHex := hex.EncodeToString(cipherText)
 
-	return cipherHex, nil
+	result = cipherHex
+	return result, err
 }
 
 // AesCBCDecrypt Aes CBC 对称加密
 func AesCBCDecrypt(cipherStr string, key string, iv string) (string, error) {
+	var result string
+	var err error
+
 	defer func() {
 		if r := recover(); r != nil {
-			fmt.Println("Recovered from panic:", r)
+			err = fmt.Errorf("panic occurred: %v", r)
 		}
 	}()
 
+	// 参数验证
+	if len(key) != 16 && len(key) != 24 && len(key) != 32 {
+		return "", errors.New("key length must be 16, 24, or 32 bytes for AES-128, AES-192, or AES-256")
+	}
+
+	if len(iv) != 16 {
+		return "", errors.New("iv length must be 16 bytes for CBC mode")
+	}
+
+	if len(cipherStr) == 0 {
+		return "", errors.New("cipher string cannot be empty")
+	}
+
 	cipherBytes, err := hex.DecodeString(cipherStr)
 	if err != nil {
-		return "", errors.New(err.Error())
+		return "", err
 	}
 
 	keyBytes := Bytes(key)
@@ -60,7 +89,12 @@ func AesCBCDecrypt(cipherStr string, key string, iv string) (string, error) {
 	// 创建解密器
 	block, err := aes.NewCipher(keyBytes)
 	if err != nil {
-		return "", errors.New(err.Error())
+		return "", err
+	}
+
+	// 验证密文长度是否为块大小的倍数
+	if len(cipherBytes)%block.BlockSize() != 0 {
+		return "", errors.New("ciphertext length must be a multiple of the block size")
 	}
 
 	// 创建解密块链
@@ -72,7 +106,8 @@ func AesCBCDecrypt(cipherStr string, key string, iv string) (string, error) {
 
 	textBytes = pKCS7UnPadding(textBytes)
 
-	return String(textBytes), nil
+	result = String(textBytes)
+	return result, err
 }
 
 // pKCS7Padding 对数据进行填充，满足加密块大小
@@ -89,4 +124,123 @@ func pKCS7UnPadding(data []byte) []byte {
 	unPadding := int(data[length-1])
 
 	return data[:(length - unPadding)]
+}
+
+// AesGCMEncrypt Aes GCM 对称加密, key 的长度决定 AES-128, AES-192, or AES-256，返回密文和认证标签
+// GCM 模式不需要手动填充，且会自动生成认证标签，解密需要同时提供密文和认证标签
+// 安全性更高、并行加密解密性能更好
+func AesGCMEncrypt(text string, key string, nonce string) (string, string, error) {
+	var cipherHex string
+	var tagHex string
+	var err error
+
+	defer func() {
+		if r := recover(); r != nil {
+			err = fmt.Errorf("panic occurred: %v", r)
+		}
+	}()
+
+	// 参数验证
+	if len(key) != 16 && len(key) != 24 && len(key) != 32 {
+		return "", "", errors.New("key length must be 16, 24, or 32 bytes for AES-128, AES-192, or AES-256")
+	}
+
+	// nonce 长度建议为 12 字节（96 位），这是 GCM 模式的最佳实践
+	if len(nonce) != 12 {
+		return "", "", errors.New("nonce length should be 12 bytes for optimal GCM performance and security")
+	}
+
+	textBytes := Bytes(text)
+	keyBytes := Bytes(key)
+	nonceBytes := Bytes(nonce)
+
+	block, err := aes.NewCipher(keyBytes)
+	if err != nil {
+		return "", "", err
+	}
+
+	// 创建 GCM 模式的加密器
+	aesGCM, err := cipher.NewGCM(block)
+	if err != nil {
+		return "", "", err
+	}
+
+	// 加密数据并生成认证标签
+	cipherText := aesGCM.Seal(nil, nonceBytes, textBytes, nil)
+
+	// 分离密文和认证标签
+	tagSize := aesGCM.Overhead()
+	cipherData := cipherText[:len(cipherText)-tagSize]
+	tag := cipherText[len(cipherText)-tagSize:]
+
+	cipherHex = hex.EncodeToString(cipherData)
+	tagHex = hex.EncodeToString(tag)
+
+	return cipherHex, tagHex, err
+}
+
+// AesGCMDecrypt Aes GCM 对称加密
+func AesGCMDecrypt(cipherStr string, tagStr string, key string, nonce string) (string, error) {
+	var result string
+	var err error
+
+	defer func() {
+		if r := recover(); r != nil {
+			err = fmt.Errorf("panic occurred: %v", r)
+		}
+	}()
+
+	// 参数验证
+	if len(key) != 16 && len(key) != 24 && len(key) != 32 {
+		return "", errors.New("key length must be 16, 24, or 32 bytes for AES-128, AES-192, or AES-256")
+	}
+
+	if len(nonce) != 12 {
+		return "", errors.New("nonce length should be 12 bytes for optimal GCM performance and security")
+	}
+
+	if len(cipherStr) == 0 {
+		return "", errors.New("cipher string cannot be empty")
+	}
+
+	if len(tagStr) == 0 {
+		return "", errors.New("tag string cannot be empty")
+	}
+
+	cipherBytes, err := hex.DecodeString(cipherStr)
+	if err != nil {
+		return "", err
+	}
+
+	tagBytes, err := hex.DecodeString(tagStr)
+	if err != nil {
+		return "", err
+	}
+
+	keyBytes := Bytes(key)
+	nonceBytes := Bytes(nonce)
+
+	// 创建解密器
+	block, err := aes.NewCipher(keyBytes)
+	if err != nil {
+		return "", err
+	}
+
+	// 创建 GCM 模式的解密器
+	aesGCM, err := cipher.NewGCM(block)
+	if err != nil {
+		return "", err
+	}
+
+	// 组合密文和认证标签
+	cipherText := append(cipherBytes, tagBytes...)
+
+	// 解密数据并验证认证标签
+	textBytes, err := aesGCM.Open(nil, nonceBytes, cipherText, nil)
+	if err != nil {
+		return "", err
+	}
+
+	result = String(textBytes)
+	return result, err
 }
