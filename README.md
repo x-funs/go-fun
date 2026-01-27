@@ -497,9 +497,13 @@ func main() {
 
 - **<big>`FileExists(path string) bool`</big>** Check whether the directory or file exists, return bool
 
-- **<big>`WriteFile(name string, data []byte, flag int, perm os.FileMode, sync bool) error`</big>** write file shortcut
+- **<big>`WriteFile(name string, data []byte, flag int, perm os.FileMode, sync bool) error`</big>** write file shortcut, auto create directory
 
-- **<big>`WriteFileAppend(name string, data []byte, perm os.FileMode, sync bool) error`</big>** write file shortcut with append mode
+- **<big>`WriteFileAppend(name string, data []byte, perm os.FileMode, sync bool) error`</big>** write file shortcut with append mode, auto create directory
+
+- **<big>`WriteFileDefault(name string, data []byte) error`</big>** write file shortcut with append mode, no sync, auto create directory
+
+- **<big>`WriteFileDefaultSync(name string, data []byte) error`</big>** write file shortcut with append mode, with sync, auto create directory
 
 ### Http
 

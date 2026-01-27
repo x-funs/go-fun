@@ -498,9 +498,13 @@ func main() {
 
 - **<big>`FileExists(path string) bool`</big>** 检测目录或者文件是否存在，返回 bool
 
-- **<big>`WriteFile(name string, data []byte, flag int, perm os.FileMode, sync bool) error`</big>** WriteFile 写入文件
+- **<big>`WriteFile(name string, data []byte, flag int, perm os.FileMode, sync bool) error`</big>** WriteFile 写入文件, 如果目录不存在自动创建
 
-- **<big>`WriteFileAppend(name string, data []byte, perm os.FileMode, sync bool) error`</big>** 追加写入文件
+- **<big>`WriteFileAppend(name string, data []byte, perm os.FileMode, sync bool) error`</big>** 追加写入文件, 如果目录不存在自动创建
+
+- **<big>`WriteFileDefault(name string, data []byte) error`</big>** 追加写入文件, 不同步，如果目录不存在自动创建
+
+- **<big>`WriteFileDefaultSync(name string, data []byte) error`</big>** 追加写入文件, 同步，如果目录不存在自动创建
 
 ### Http 相关
 
