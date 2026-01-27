@@ -129,7 +129,9 @@ func Empty(value any) bool {
 	return false
 }
 
-// Bytes 更高效的字符串转字节数组
+// Bytes 更高效的字符串转字节数组，来自 Gin 框架
+// 警告：仅在性能敏感场景使用，且确保不修改返回的字节数组
+// 警告：返回的字节数组与原始字符串共享底层内存，修改会影响原始字符串
 func Bytes(s string) []byte {
 	return *(*[]byte)(unsafe.Pointer(
 		&struct {
