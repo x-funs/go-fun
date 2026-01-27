@@ -522,3 +522,15 @@ func main() {
 - **<big>`UserAgentRandom() string`</big>** generates a random DESKTOP browser user-agent on every requests .
 
 - **<big>`UserAgentRandomMobile() string`</big>** generates a random MOBILE browser user-agent on every requests.
+
+### AES
+
+#### Function List
+
+- **<big>`AesCBCEncrypt(text string, key string, iv string) (string, error)`</big>** Aes CBC symmetric encryption, key length determines AES-128, AES-192, or AES-256
+
+- **<big>`AesCBCDecrypt(cipherStr string, key string, iv string) (string, error)`</big>** Aes CBC symmetric decryption
+
+- **<big>`AesGCMEncrypt(text string, key string, nonce string) (string, string, error)`</big>** Aes GCM symmetric encryption, returns ciphertext and authentication tag
+
+- **<big>`AesGCMDecrypt(cipherStr string, tagStr string, key string, nonce string) (string, error)`</big>** Aes GCM symmetric decryption
