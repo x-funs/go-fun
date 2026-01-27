@@ -511,7 +511,7 @@ func HttpPostResp(urlStr string, body io.Reader, r *HttpReq, timeout int) (*Http
 // 返回 HttpResp, 错误信息
 func HttpPostFormResp(urlStr string, posts map[string]string, r *HttpReq, timeout int) (*HttpResp, error) {
 	data := url.Values{}
-	if posts != nil && len(posts) > 0 {
+	if len(posts) > 0 {
 		for k, v := range posts {
 			data.Set(k, v)
 		}
@@ -555,7 +555,7 @@ func HttpPutResp(urlStr string, body io.Reader, r *HttpReq, timeout int) (*HttpR
 // 返回 HttpResp, 错误信息
 func HttpPutFormResp(urlStr string, posts map[string]string, r *HttpReq, timeout int) (*HttpResp, error) {
 	data := url.Values{}
-	if posts != nil && len(posts) > 0 {
+	if len(posts) > 0 {
 		for k, v := range posts {
 			data.Set(k, v)
 		}
@@ -740,7 +740,7 @@ func allowContentTypes(r *HttpReq, headers *http.Header) (bool, error) {
 		return true, nil
 	}
 
-	if r.AllowedContentTypes != nil && len(r.AllowedContentTypes) > 0 {
+	if len(r.AllowedContentTypes) > 0 {
 		valid := false
 
 		ct := strings.TrimSpace(strings.ToLower(headers.Get("Content-Type")))
