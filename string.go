@@ -379,19 +379,19 @@ func RemoveLines(str string) string {
 // SubString 字符串截取
 func SubString(str string, pos, length int) string {
 	runes := []rune(str)
-	max := len(runes)
+	maxLen := len(runes)
 
 	if pos < 0 || length <= 0 {
 		return str
 	}
 
-	if pos > max {
+	if pos > maxLen {
 		return ""
 	}
 
 	l := pos + length
-	if l > max {
-		l = max
+	if l > maxLen {
+		l = maxLen
 	}
 
 	return string(runes[pos:l])
