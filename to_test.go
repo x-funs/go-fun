@@ -1,6 +1,8 @@
 package fun
 
 import (
+	"fmt"
+	"math"
 	"testing"
 	"time"
 
@@ -15,6 +17,15 @@ func TestToInt(t *testing.T) {
 	assert.Equal(t, 123, ToInt("0123"))
 	assert.Equal(t, 0, ToInt("1.1"))
 	assert.Equal(t, -123, ToInt("-123"))
+
+	var i uint64
+	i = math.MaxUint64
+	result, err := ToIntE(i)
+	if err != nil {
+		fmt.Println(err)
+	} else {
+		fmt.Println(result)
+	}
 }
 
 func BenchmarkToInt(b *testing.B) {
@@ -32,6 +43,7 @@ func TestToInt64(t *testing.T) {
 	assert.Equal(t, int64(0), ToInt64("1.1"))
 	assert.Equal(t, int64(0), ToLong("1.1"))
 	assert.Equal(t, int64(-123), ToLong("-123"))
+	assert.Equal(t, uint64(111), ToUint64("111"))
 }
 
 func TestToFloat(t *testing.T) {
