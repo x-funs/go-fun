@@ -11,7 +11,15 @@ func StructCopy(src, dst any) error {
 		return errors.New("value is null")
 	}
 
-	return structCopy(reflect.ValueOf(src), reflect.ValueOf(dst))
+	srcVal := reflect.ValueOf(src)
+	dstVal := reflect.ValueOf(dst)
+
+	// 检查dst是否为指针
+	if dstVal.Kind() != reflect.Ptr {
+		return errors.New("dst must be a pointer to struct")
+	}
+
+	return structCopy(srcVal, dstVal)
 }
 
 // structCopy 复制 struct 对象
@@ -19,40 +27,55 @@ func structCopy(src, dst reflect.Value) error {
 	tSrc := src.Type()
 	tDst := dst.Type()
 
+	// 处理src指针
 	if tSrc.Kind() == reflect.Ptr {
 		src = src.Elem()
 		tSrc = tSrc.Elem()
 	}
 
+	// 处理dst指针
 	if tDst.Kind() == reflect.Ptr {
 		dst = dst.Elem()
 		tDst = tDst.Elem()
 	}
 
-	// Only struct are supported
+	// 检查是否为结构体
 	if tSrc.Kind() != reflect.Struct || tDst.Kind() != reflect.Struct {
 		return errors.New("value is not struct")
 	}
 
-	var dstField reflect.Value
-
-	//fmt.Println(tSrc.NumField())
-
 	for i := 0; i < tSrc.NumField(); i++ {
-		anonymous := tSrc.Field(i).Anonymous
-		// 如果不是嵌入字段
-		if !anonymous {
-			srcFieldName := tSrc.Field(i).Name
-			dstField = dst.FieldByName(srcFieldName)
-			if dstField.IsValid() && dstField.CanSet() {
-				dstField.Set(src.Field(i))
+		srcField := tSrc.Field(i)
+		srcVal := src.Field(i)
+
+		// 处理嵌入字段
+		if srcField.Anonymous {
+			// 检查嵌入字段是否为结构体
+			if srcVal.Kind() == reflect.Struct {
+				// 递归复制嵌入字段
+				if err := structCopy(srcVal.Addr(), dst.Addr()); err != nil {
+					return err
+				}
 			}
-			// 递归，如果出现错误就直接返回错误
-		} else {
-			if err := structCopy(src.Field(i).Addr(), dst); err != nil {
-				return err
-			}
+			continue
 		}
+
+		// 处理普通字段
+		dstField := dst.FieldByName(srcField.Name)
+		if !dstField.IsValid() {
+			continue // 目标结构体中没有该字段，跳过
+		}
+
+		if !dstField.CanSet() {
+			continue // 字段不可设置，跳过（如未导出字段）
+		}
+
+		// 检查字段类型是否匹配
+		if srcVal.Type() != dstField.Type() {
+			continue // 类型不匹配，跳过
+		}
+
+		dstField.Set(srcVal)
 	}
 
 	return nil
