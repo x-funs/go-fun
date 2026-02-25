@@ -123,8 +123,6 @@ func Empty(value any) bool {
 			return r.Len() == 0
 		case reflect.Ptr, reflect.Interface:
 			return r.IsNil()
-		default:
-			panic("unhandled default case in Empty")
 		}
 	}
 
