@@ -81,7 +81,8 @@ func structCopy(src, dst reflect.Value) error {
 	return nil
 }
 
-// StructCompareSomeField 比较结构体的部分字段，以 some 为基准，判断 some 中的字段与 dst 的同名字段值是否相同，通常用于编辑的场景
+// StructCompareSomeField 比较结构体的部分字段，以 some 为基准，判断 some 中的字段与 dst 的同名字段值是否相同
+// 通常用于编辑的场景，决定是否需要更新（如执行 SQL update）
 func StructCompareSomeField(some, dst any) (bool, error) {
 	if some == nil || dst == nil {
 		return false, errors.New("value is nil")
@@ -90,39 +91,62 @@ func StructCompareSomeField(some, dst any) (bool, error) {
 	vSome := reflect.ValueOf(some)
 	vDst := reflect.ValueOf(dst)
 
-	tSome := vSome.Type()
-	tDst := vDst.Type()
-
-	if tSome.Kind() == reflect.Ptr {
+	// 处理指针
+	if vSome.Kind() == reflect.Ptr {
+		if vSome.IsNil() {
+			return false, errors.New("some pointer is nil")
+		}
 		vSome = vSome.Elem()
-		tSome = tSome.Elem()
 	}
 
-	if tDst.Kind() == reflect.Ptr {
+	if vDst.Kind() == reflect.Ptr {
+		if vDst.IsNil() {
+			return false, errors.New("dst pointer is nil")
+		}
 		vDst = vDst.Elem()
-		tDst = tDst.Elem()
 	}
 
-	// Only struct are supported
-	if tSome.Kind() != reflect.Struct || tDst.Kind() != reflect.Struct {
+	// 检查是否为结构体
+	if vSome.Kind() != reflect.Struct || vDst.Kind() != reflect.Struct {
 		return false, errors.New("value is not struct")
 	}
 
+	tSome := vSome.Type()
+
 	// 遍历结构体的字段
 	for i := 0; i < tSome.NumField(); i++ {
-		fieldA := tSome.Field(i)
-		fieldB := vDst.FieldByName(fieldA.Name)
+		srcField := tSome.Field(i)
+		srcVal := vSome.Field(i)
 
-		// 如果另一个结构体中存在相同名称的字段
-		if fieldB.IsValid() {
-			valueA := vSome.Field(i)
-			valueB := fieldB
-			// 比较字段值
-			if !reflect.DeepEqual(valueA.Interface(), valueB.Interface()) {
-				return false, nil
+		// 处理嵌入字段
+		if srcField.Anonymous {
+			if srcVal.Kind() == reflect.Struct {
+				// 递归比较嵌入字段
+				match, err := StructCompareSomeField(srcVal.Interface(), vDst.Interface())
+				if err != nil {
+					return false, err
+				}
+				if !match {
+					return false, nil
+				}
 			}
-		} else {
-			return false, errors.New("dst struct field not match")
+			continue
+		}
+
+		// 查找目标字段
+		dstField := vDst.FieldByName(srcField.Name)
+		if !dstField.IsValid() {
+			return false, errors.New("dst struct field not match: " + srcField.Name)
+		}
+
+		// 检查字段类型是否匹配
+		if srcVal.Type() != dstField.Type() {
+			return false, errors.New("field type not match: " + srcField.Name)
+		}
+
+		// 比较字段值
+		if !reflect.DeepEqual(srcVal.Interface(), dstField.Interface()) {
+			return false, nil
 		}
 	}
 
