@@ -176,7 +176,7 @@ func TestStructCopy(t *testing.T) {
 		t.Error("切片字段复制失败")
 	}
 
-	// 测试map字段
+	// 测试map字段复制
 	src8 := struct {
 		ID   int
 		Data map[string]int
@@ -193,5 +193,106 @@ func TestStructCopy(t *testing.T) {
 
 	if dst8.ID != src8.ID || dst8.Data["a"] != src8.Data["a"] || dst8.Data["b"] != src8.Data["b"] {
 		t.Error("map字段复制失败")
+	}
+}
+
+func TestStructCompareSomeField(t *testing.T) {
+	// 测试普通结构体比较
+	src := User{ID: 1, Name: "Alice", Age: 30}
+	dst := User{ID: 1, Name: "Alice", Age: 30}
+
+	match, err := StructCompareSomeField(&src, &dst)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if !match {
+		t.Error("相同结构体应该匹配")
+	}
+
+	// 测试不同结构体比较
+	dst2 := User{ID: 1, Name: "Alice", Age: 31}
+	match, err = StructCompareSomeField(&src, &dst2)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if match {
+		t.Error("不同结构体应该不匹配")
+	}
+
+	// 测试嵌入结构体比较
+	srcWithAddr := UserWithAddress{
+		User:    User{ID: 2, Name: "Bob", Age: 25},
+		Address: "Beijing",
+	}
+	dstWithAddr := UserWithAddress{
+		User:    User{ID: 2, Name: "Bob", Age: 25},
+		Address: "Beijing",
+	}
+
+	match, err = StructCompareSomeField(&srcWithAddr, &dstWithAddr)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if !match {
+		t.Error("相同嵌入结构体应该匹配")
+	}
+
+	// 测试部分字段比较
+	src2 := User{ID: 3, Name: "Charlie", Age: 35}
+	dst3 := UserCopy{ID: 3, Name: "Charlie", Age: 35, City: "Shanghai"}
+
+	match, err = StructCompareSomeField(&src2, &dst3)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if !match {
+		t.Error("部分字段匹配应该返回true")
+	}
+
+	// 测试字段不匹配
+	src3 := User{ID: 4, Name: "David", Age: 40}
+	dst4 := UserCopy{ID: 4, Name: "David", Age: 41, City: "Beijing"}
+
+	match, err = StructCompareSomeField(&src3, &dst4)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if match {
+		t.Error("字段不匹配应该返回false")
+	}
+
+	// 测试nil指针
+	match, err = StructCompareSomeField(nil, &dst)
+	if err == nil {
+		t.Error("nil src应该返回错误")
+	}
+
+	match, err = StructCompareSomeField(&src, nil)
+	if err == nil {
+		t.Error("nil dst应该返回错误")
+	}
+
+	// 测试指针指向nil
+	var nilSrc *User
+	match, err = StructCompareSomeField(nilSrc, &dst)
+	if err == nil {
+		t.Error("nil src指针应该返回错误")
+	}
+
+	// 测试类型不匹配
+	src4 := User{ID: 5, Name: "Eve", Age: 28}
+	dst5 := struct {
+		ID   string
+		Name string
+	}{ID: "5", Name: "Eve"}
+
+	match, err = StructCompareSomeField(&src4, &dst5)
+	if err == nil {
+		t.Error("类型不匹配应该返回错误")
 	}
 }
