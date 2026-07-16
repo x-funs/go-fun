@@ -8,7 +8,7 @@
 
 ```
 
-Go with Fun (Functions) is a small and useful Golang util function library. It Includes such as Empty、Blank、Strtotime、Similarity、HttpGet etc.
+Go with Fun (Functions) is a small and useful Golang utility function library. It includes helpers such as Empty, Blank, StrToTime, Similarity, and HttpGet.
 
 English | [简体中文](./README_zh.md)
 
@@ -71,6 +71,7 @@ package main
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/x-funs/go-fun"
 )
@@ -115,7 +116,7 @@ func main() {
 
 - **<big>`If(condition bool, trueVal, falseVal T) T`</big>** Verify condition is true, return trueVal or falseVal
 
-- **<big>`Empty(value any) bool`</big>** Verify whether value it is empty, support string, integer, array, slice, map 验证
+- **<big>`Empty(value any) bool`</big>** Verify whether a value is empty; supports strings, numbers, arrays, slices, and maps
 
 - **<big>`EmptyAll(values ...any) bool`</big>** Verify whether values all are empty
 
@@ -194,7 +195,7 @@ func main() {
 
 - **<big>`IsNumber(str string) bool`</big>** Determine whether all strings are numbers
 
-- **<big>`IsUtf8(p []byte) bool`</big>** Determine whether it is a UTF-8 code
+- **<big>`IsUtf8(p []byte) bool`</big>** Determine whether bytes are valid UTF-8
 
 - **<big>`IsASCIILetter(str string) bool`</big>** Determine whether all strings are ASCII letters
 
@@ -207,6 +208,12 @@ func main() {
 - **<big>`IsExist(path string) bool`</big>**  Does the file or directory exist
 
 - **<big>`IsDir(path string) bool`</big>** Is it a directory
+
+- **<big>`IsIp(ipStr string) bool`</big>** Determine whether a string is a valid IP address
+
+- **<big>`IsIpV4(ipStr string) bool`</big>** Determine whether a string is a valid IPv4 address
+
+- **<big>`IsIpV6(ipStr string) bool`</big>** Determine whether a string is a valid IPv6 address
 
 ### Map
 
@@ -266,7 +273,7 @@ func main() {
 
 - **<big>`SimilarityText(a, b string) float64`</big>** Calculate the similarity of two strings after removing special symbols
 
-- **<big>`LongestCommonSubString(x, y string) int`</big>** Calculates the maximum common substring length of two strings
+- **<big>`LongestCommonSubString(x, y string) int`</big>** Calculates the longest common subsequence length of two strings
 
 ### Slice
 
@@ -448,7 +455,9 @@ func main() {
 
 #### Function List
 
-- **<big>`StructCopy(src, dst any)`</big>** Copy struct object
+- **<big>`StructCopy(src, dst any) error`</big>** Copy matching exported fields from one struct to another
+
+- **<big>`StructCompareSomeField(some, dst any) (bool, error)`</big>** Compare selected fields from one struct against another
 
 ### To
 
@@ -456,25 +465,47 @@ func main() {
 
 - **<big>`Ip2Long(ipStr string) uint32`</big>** String IP to integer
 
+- **<big>`Ip2LongE(ipStr string) (uint32, error)`</big>** String IP to integer, with error return
+
 - **<big>`Long2Ip(long uint32) string`</big>** Integer to string IP
 
 - **<big>`ToString(value any) string`</big>** Converts any type to a string
 
 - **<big>`ToInt(value any) int`</big>** Number or string to int type
 
+- **<big>`ToIntE(value any) (int, error)`</big>** Number or string to int type, with error return
+
 - **<big>`ToLong(value any) int64`</big>** ToInt64 alias, number or string to int64
+
+- **<big>`ToLongE(value any) (int64, error)`</big>** ToInt64E alias, with error return
 
 - **<big>`ToBool(str string) bool`</big>** string to bool type
 
+- **<big>`ToBoolE(str string) (bool, error)`</big>** string to bool type, with error return
+
 - **<big>`ToUint(value any) uint`</big>** Number or string to uint
+
+- **<big>`ToUintE(value any) (uint, error)`</big>** Number or string to uint, with error return
 
 - **<big>`ToUint8(value any) uint8`</big>** Number or string to uint8
 
+- **<big>`ToUint8E(value any) (uint8, error)`</big>** Number or string to uint8, with error return
+
 - **<big>`ToInt64(value any) int64`</big>** Number or string to int64
+
+- **<big>`ToInt64E(value any) (int64, error)`</big>** Number or string to int64, with error return
+
+- **<big>`ToUint64(value any) uint64`</big>** Number or string to uint64
+
+- **<big>`ToUint64E(value any) (uint64, error)`</big>** Number or string to uint64, with error return
 
 - **<big>`ToFloat32(value any) float32`</big>** Number or string to float32
 
+- **<big>`ToFloat32E(value any) (float32, error)`</big>** Number or string to float32, with error return
+
 - **<big>`ToFloat64(value any) float64`</big>** Number or string to float64
+
+- **<big>`ToFloat64E(value any) (float64, error)`</big>** Number or string to float64, with error return
 
 - **<big>`ToUtf8(origin []byte, encode string) ([]byte, error)`</big>** Specify character set conversion utf-8
 
@@ -482,7 +513,7 @@ func main() {
 
 - **<big>`ToJson(object any) string`</big>** Converts an object to a Json string
 
-- **<big>`ToJsonIndent(object any) string`</big>** Converts an object to a Indent Json string
+- **<big>`ToJsonIndent(object any) string`</big>** Converts an object to an indented JSON string
 
 - **<big>`ToDuration(value any) time.Duration`</big>** Converts number or string to time.Duration, default is Nanosecond, string support "ns,ms,us,s,m,h"
 
@@ -495,25 +526,29 @@ func main() {
 
 - **<big>`Mkdir(dir string, perm os.FileMode) error`</big>** Create a directory, ignoring if the directory already exists
 
-- **<big>`FileExists(path string) bool`</big>** Check whether the directory or file exists, return bool
+- **<big>`MkdirAll(dir string, perm os.FileMode) error`</big>** Create a directory and any necessary parent directories
+
+- **<big>`IsExist(path string) bool`</big>** Check whether the directory or file exists
 
 - **<big>`WriteFile(name string, data []byte, flag int, perm os.FileMode, sync bool) error`</big>** write file shortcut, auto create directory
 
 - **<big>`WriteFileAppend(name string, data []byte, perm os.FileMode, sync bool) error`</big>** write file shortcut with append mode, auto create directory
 
-- **<big>`WriteFileDefault(name string, data []byte) error`</big>** write file shortcut with append mode, no sync, auto create directory
+- **<big>`WriteFileDefault(name string, data []byte) error`</big>** write file shortcut with truncate mode, no sync, auto create directory
 
-- **<big>`WriteFileDefaultSync(name string, data []byte) error`</big>** write file shortcut with append mode, with sync, auto create directory
+- **<big>`WriteFileDefaultSync(name string, data []byte) error`</big>** write file shortcut with truncate mode and sync, auto create directory
 
 ### Http
 
-> HttpXXResp the suffix, the return value is *Response
+> `HttpXXResp` functions return `*HttpResp`.
 
-> HttpXXDo the suffix, Need to pass parameters *Request
+> `HttpXXDo` functions return `[]byte` and accept concrete request data plus `*HttpReq` where applicable.
 
 #### Function List
 
 - **<big>`HttpGet(urlStr string, args ...any) ([]byte, error)`</big>** The HttpGet parameter is the request address (HttpReq, timeout)
+
+- **<big>`HttpDelete(urlStr string, args ...any) ([]byte, error)`</big>** The HttpDelete parameter is the request address (HttpReq, timeout)
 
 - **<big>`HttpPost(urlStr string, args ...any) ([]byte, error)`</big>** The HttpPost parameter is the request address (body io.Reader, HttpReq, timeout)
 
@@ -521,7 +556,21 @@ func main() {
 
 - **<big>`HttpPostJson(urlStr string, args ...any) ([]byte, error)`</big>** The HttpPostJson parameter is the request address (JsonData string, HttpReq, timeout)
 
-- **<big>`UrlParse(rawURL string) (*url.URL, error)`</big>** Parses the string URL to the URL object. There will be no mistakes without scheme.
+- **<big>`HttpPut(urlStr string, args ...any) ([]byte, error)`</big>** The HttpPut parameter is the request address (body io.Reader, HttpReq, timeout)
+
+- **<big>`HttpPutForm(urlStr string, args ...any) ([]byte, error)`</big>** The HttpPutForm parameter is the request address (FormData map[string]string, HttpReq, timeout)
+
+- **<big>`HttpPutJson(urlStr string, args ...any) ([]byte, error)`</big>** The HttpPutJson parameter is the request address (JsonData string, HttpReq, timeout)
+
+- **<big>`HttpDo(req *http.Request, r *HttpReq, timeout int) ([]byte, error)`</big>** Execute a custom HTTP request and return the response body
+
+- **<big>`HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error)`</big>** Execute a custom HTTP request and return response metadata
+
+- **<big>`HttpXXResp(...) (*HttpResp, error)`</big>** Response variants are available for GET, DELETE, POST, POST form/json, PUT, and PUT form/json
+
+- **<big>`HttpXXDo(...) ([]byte, error)`</big>** Body-only variants are available for GET, DELETE, POST, POST form/json, PUT, and PUT form/json
+
+- **<big>`UrlParse(rawURL string) (*url.URL, error)`</big>** Parse a URL string and require a valid hostname; include a scheme such as `http://` for plain domains
 
 - **<big>`UserAgentRandom() string`</big>** generates a random DESKTOP browser user-agent on every requests .
 
