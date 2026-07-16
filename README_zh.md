@@ -209,6 +209,12 @@ func main() {
 
 - **<big>`IsDir(path string) bool`</big>** 是否是目录
 
+- **<big>`IsIp(ipStr string) bool`</big>** 是否是有效的 IP 地址
+
+- **<big>`IsIpV4(ipStr string) bool`</big>** 是否是有效的 IPv4 地址
+
+- **<big>`IsIpV6(ipStr string) bool`</big>** 是否是有效的 IPv6 地址
+
 ### Map 相关
 
 #### 函数列表
@@ -267,7 +273,7 @@ func main() {
 
 - **<big>`SimilarityText(a, b string) float64`</big>** 计算两个字符串移除特殊符号后的相似度
 
-- **<big>`LongestCommonSubString(x, y string) int`</big>** 计算两个字符串最大公共子串长度
+- **<big>`LongestCommonSubString(x, y string) int`</big>** 计算两个字符串最长公共子序列长度
 
 ### 切片相关方法
 
@@ -450,7 +456,9 @@ func main() {
 
 #### 函数列表
 
-- **<big>`StructCopy(src, dst any)`</big>** 复制 struct 对象
+- **<big>`StructCopy(src, dst any) error`</big>** 复制 struct 对象中同名、同类型的可导出字段
+
+- **<big>`StructCompareSomeField(some, dst any) (bool, error)`</big>** 以 some 为基准比较两个结构体的同名字段
 
 ### 转换相关
 
@@ -458,25 +466,47 @@ func main() {
 
 - **<big>`Ip2Long(ipStr string) uint32`</big>** 字符串 IP 转整型
 
+- **<big>`Ip2LongE(ipStr string) (uint32, error)`</big>** 字符串 IP 转整型，带错误返回
+
 - **<big>`Long2Ip(long uint32) string`</big>** 整型转字符串 IP
 
 - **<big>`ToString(value any) string`</big>** 将任意一个类型转换为字符串
 
 - **<big>`ToInt(value any) int`</big>** 数字或字符串转 int 类型
 
+- **<big>`ToIntE(value any) (int, error)`</big>** 数字或字符串转 int 类型，带错误返回
+
 - **<big>`ToLong(value any) int64`</big>** ToInt64 别名, 数字或字符串转 int64
+
+- **<big>`ToLongE(value any) (int64, error)`</big>** ToInt64E 别名，带错误返回
 
 - **<big>`ToBool(str string) bool`</big>** 字符串转 bool 类型
 
+- **<big>`ToBoolE(str string) (bool, error)`</big>** 字符串转 bool 类型，带错误返回
+
 - **<big>`ToUint(value any) uint`</big>** 数字或字符串转 uint
+
+- **<big>`ToUintE(value any) (uint, error)`</big>** 数字或字符串转 uint，带错误返回
 
 - **<big>`ToUint8(value any) uint8`</big>** 数字或字符串转 uint8
 
+- **<big>`ToUint8E(value any) (uint8, error)`</big>** 数字或字符串转 uint8，带错误返回
+
 - **<big>`ToInt64(value any) int64`</big>** 数字或字符串转 int64
+
+- **<big>`ToInt64E(value any) (int64, error)`</big>** 数字或字符串转 int64，带错误返回
+
+- **<big>`ToUint64(value any) uint64`</big>** 数字或字符串转 uint64
+
+- **<big>`ToUint64E(value any) (uint64, error)`</big>** 数字或字符串转 uint64，带错误返回
 
 - **<big>`ToFloat32(value any) float32`</big>** 数字或字符串转 float32
 
+- **<big>`ToFloat32E(value any) (float32, error)`</big>** 数字或字符串转 float32，带错误返回
+
 - **<big>`ToFloat64(value any) float64`</big>** 数字或字符串转 float64
+
+- **<big>`ToFloat64E(value any) (float64, error)`</big>** 数字或字符串转 float64，带错误返回
 
 - **<big>`ToUtf8(origin []byte, encode string) ([]byte, error)`</big>** 指定字符集转 utf-8
 
@@ -484,7 +514,7 @@ func main() {
 
 - **<big>`ToJson(object any) string`</big>** 将对象转换为 Json 字符串
 
-- **<big>`ToJsonIndent(object any) string`</big>** 将对象转换为具有锁进的 Json 字符串
+- **<big>`ToJsonIndent(object any) string`</big>** 将对象转换为具有缩进的 Json 字符串
 
 - **<big>`ToDuration(value any) time.Duration`</big>** 数字或字符串转 time.Duration，默认是纳秒，字符串支持 "ns,ms,us,s,m,h"
 
@@ -496,25 +526,29 @@ func main() {
 
 - **<big>`Mkdir(dir string, perm os.FileMode) error`</big>** 创建一个目录，如果目录已存在则忽略
 
-- **<big>`FileExists(path string) bool`</big>** 检测目录或者文件是否存在，返回 bool
+- **<big>`MkdirAll(dir string, perm os.FileMode) error`</big>** 创建目录以及所有必要的父目录
+
+- **<big>`IsExist(path string) bool`</big>** 检测目录或者文件是否存在
 
 - **<big>`WriteFile(name string, data []byte, flag int, perm os.FileMode, sync bool) error`</big>** WriteFile 写入文件, 如果目录不存在自动创建
 
 - **<big>`WriteFileAppend(name string, data []byte, perm os.FileMode, sync bool) error`</big>** 追加写入文件, 如果目录不存在自动创建
 
-- **<big>`WriteFileDefault(name string, data []byte) error`</big>** 追加写入文件, 不同步，如果目录不存在自动创建
+- **<big>`WriteFileDefault(name string, data []byte) error`</big>** 覆盖写入文件, 不同步，如果目录不存在自动创建
 
-- **<big>`WriteFileDefaultSync(name string, data []byte) error`</big>** 追加写入文件, 同步，如果目录不存在自动创建
+- **<big>`WriteFileDefaultSync(name string, data []byte) error`</big>** 覆盖写入文件并同步，如果目录不存在自动创建
 
 ### Http 相关
 
-> HttpXXResp 后缀的, 返回值是 *Response
+> `HttpXXResp` 后缀的函数返回 `*HttpResp`。
 
-> HttpXXDo 后缀的, 需要传参数 *Request
+> `HttpXXDo` 后缀的函数返回 `[]byte`，按请求类型接收请求数据以及可选的 `*HttpReq`。
 
 #### 函数列表
 
 - **<big>`HttpGet(urlStr string, args ...any) ([]byte, error)`</big>** HttpGet 参数为请求地址 (HttpReq, 超时时间)
+
+- **<big>`HttpDelete(urlStr string, args ...any) ([]byte, error)`</big>** HttpDelete 参数为请求地址 (HttpReq, 超时时间)
 
 - **<big>`HttpPost(urlStr string, args ...any) ([]byte, error)`</big>** HttpPost 参数为请求地址 (body io.Reader, HttpReq, 超时时间)
 
@@ -522,7 +556,21 @@ func main() {
 
 - **<big>`HttpPostJson(urlStr string, args ...any) ([]byte, error)`</big>** HttpPostJson 参数为请求地址 (Json 数据 string, HttpReq, 超时时间)
 
-- **<big>`UrlParse(rawURL string) (*url.URL, error)`</big>** 解析字符串 URL 到 URL 对象。在没有 scheme 时不会出错
+- **<big>`HttpPut(urlStr string, args ...any) ([]byte, error)`</big>** HttpPut 参数为请求地址 (body io.Reader, HttpReq, 超时时间)
+
+- **<big>`HttpPutForm(urlStr string, args ...any) ([]byte, error)`</big>** HttpPutForm 参数为请求地址 (Form 数据 map[string]string, HttpReq, 超时时间)
+
+- **<big>`HttpPutJson(urlStr string, args ...any) ([]byte, error)`</big>** HttpPutJson 参数为请求地址 (Json 数据 string, HttpReq, 超时时间)
+
+- **<big>`HttpDo(req *http.Request, r *HttpReq, timeout int) ([]byte, error)`</big>** 执行自定义 HTTP 请求并返回响应体
+
+- **<big>`HttpDoResp(req *http.Request, r *HttpReq, timeout int) (*HttpResp, error)`</big>** 执行自定义 HTTP 请求并返回响应信息
+
+- **<big>`HttpXXResp(...) (*HttpResp, error)`</big>** GET、DELETE、POST、POST Form/JSON、PUT、PUT Form/JSON 均提供返回 `*HttpResp` 的变体
+
+- **<big>`HttpXXDo(...) ([]byte, error)`</big>** GET、DELETE、POST、POST Form/JSON、PUT、PUT Form/JSON 均提供只返回响应体的变体
+
+- **<big>`UrlParse(rawURL string) (*url.URL, error)`</big>** 解析字符串 URL 到 URL 对象，并要求存在有效 hostname；普通域名请包含 `http://` 等 scheme
 
 - **<big>`UserAgentRandom() string`</big>** 生成桌面浏览器客户端 user-agent 字符 .
 
