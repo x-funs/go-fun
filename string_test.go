@@ -302,6 +302,13 @@ func TestTemplate(t *testing.T) {
 	t.Log(Template(tpl, data))
 }
 
+func TestTemplateParseError(t *testing.T) {
+	result, err := Template(`{{ if .name }`, map[string]string{"name": "张三"})
+
+	assert.Empty(t, result)
+	assert.Error(t, err)
+}
+
 func BenchmarkTemplate(b *testing.B) {
 	tpl := `{
   "name": {{ .name }},
@@ -322,4 +329,9 @@ func TestBeforeAfter(t *testing.T) {
 	assert.Equal(t, "github.com", StrAfter("https://github.com", "://"))
 	assert.Equal(t, "video.mp4", StrBeforeLast("video.mp4.bak", "."))
 	assert.Equal(t, "bak", StrAfterLast("video.mp4.bak", "."))
+
+	assert.Equal(t, "github.com", StrBefore("github.com", "://"))
+	assert.Equal(t, "", StrAfter("github.com", "://"))
+	assert.Equal(t, "README", StrBeforeLast("README", "."))
+	assert.Equal(t, "", StrAfterLast("README", "."))
 }

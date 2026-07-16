@@ -1,6 +1,9 @@
 package fun
 
-import "testing"
+import (
+	"sync"
+	"testing"
+)
 
 func TestRandom(t *testing.T) {
 	t.Log(Random())
@@ -10,4 +13,22 @@ func TestRandom(t *testing.T) {
 	t.Log(RandomNumber(10))
 	t.Log(RandomLetter(10))
 	t.Log(RandomString(10))
+}
+
+func TestRandomConcurrent(t *testing.T) {
+	var wg sync.WaitGroup
+
+	for i := 0; i < 100; i++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+
+			_ = Random()
+			_ = RandomInt(1, 100)
+			_ = RandomInt64(1, 100)
+			_ = RandomString(16)
+		}()
+	}
+
+	wg.Wait()
 }

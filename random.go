@@ -3,15 +3,20 @@ package fun
 import (
 	"math"
 	"math/rand"
+	"sync"
 	"time"
 )
 
 var (
 	randomNew = rand.New(rand.NewSource(time.Now().UnixNano()))
+	randomMu  sync.Mutex
 )
 
 // Random 返回随机数 `[0, MaxInt)`
 func Random() int {
+	randomMu.Lock()
+	defer randomMu.Unlock()
+
 	return randomNew.Intn(math.MaxInt)
 }
 
@@ -21,6 +26,9 @@ func RandomInt(min, max int) int {
 		min, max = max, min
 	}
 
+	randomMu.Lock()
+	defer randomMu.Unlock()
+
 	return randomNew.Intn(max-min) + min
 }
 
@@ -29,6 +37,9 @@ func RandomInt64(min, max int64) int64 {
 	if min > max {
 		min, max = max, min
 	}
+
+	randomMu.Lock()
+	defer randomMu.Unlock()
 
 	return randomNew.Int63n(max-min) + min
 }
