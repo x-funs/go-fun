@@ -36,27 +36,38 @@ func TestDate(t *testing.T) {
 	assert.Empty(t, Date("", ""))
 	assert.Empty(t, Date("", "", ""))
 
-	assert.Equal(t, now.Format(DatetimePattern), Date())
-	assert.Equal(t, now.Format(DatetimePattern), Date(DatetimePattern))
+	parsedDate, err := time.ParseInLocation(DatetimePattern, Date(), time.Local)
+	assert.NoError(t, err)
+	assert.WithinDuration(t, now, parsedDate, time.Second)
+
+	parsedDateByPattern, err := time.ParseInLocation(DatetimePattern, Date(DatetimePattern), time.Local)
+	assert.NoError(t, err)
+	assert.WithinDuration(t, now, parsedDateByPattern, time.Second)
+
 	assert.Equal(t, "2022-04-24 00:47:37", Date(timeStamp))
 	assert.Equal(t, "2022-04-24 00:47:37", Date(DatetimePattern, timeStamp))
 }
 
 func TestStrTotimeEn(t *testing.T) {
-	dateStrs := []string{
-		"30 August 2022",
-		"02 Sep 2022",
-		"02 Sep 2022 11:40",
-		"02 Sep 2022 11:40:53am",
-		"02 Sep 2022 11:40:53am",
-		"02 Sep 2022 11:40 aM",
-		"Sep 02 2022 11:40:00 aM",
-		"Sep 02 2022 11:40 aM",
-		"Sep 02 2022 11:40",
-		"20220601",
+	tests := []struct {
+		input string
+		want  string
+	}{
+		{"30 August 2022", "2022-08-30 00:00:00"},
+		{"02 Sep 2022", "2022-09-02 00:00:00"},
+		{"02 Sep 2022 11:40", "2022-09-02 11:40:00"},
+		{"02 Sep 2022 11:40:53am", "2022-09-02 11:40:53"},
+		{"02 Sep 2022 11:40 aM", "2022-09-02 11:40:00"},
+		{"Sep 02 2022 11:40:00 aM", "2022-09-02 11:40:00"},
+		{"Sep 02 2022 11:40 aM", "2022-09-02 11:40:00"},
+		{"Sep 02 2022 11:40", "2022-09-02 11:40:00"},
+		{"20220601", "2022-06-01 00:00:00"},
 	}
-	for _, dateStr := range dateStrs {
-		t.Log(Date(StrToTime(dateStr)))
+
+	for _, tt := range tests {
+		t.Run(tt.input, func(t *testing.T) {
+			assert.Equal(t, tt.want, Date(StrToTime(tt.input)))
+		})
 	}
 }
 
@@ -78,9 +89,15 @@ func TestStrToTime(t *testing.T) {
 	assert.Equal(t, "2023-01-01 00:00:59", Date(StrToTime("+1 minute", StrToTime("2022-12-31 23:59:59"))))
 	assert.Equal(t, "2023-01-01 00:00:00", Date(StrToTime("+1 second", StrToTime("2022-12-31 23:59:59"))))
 
-	assert.Equal(t, Timestamp(), StrToTime())
+	beforeNow := Timestamp()
+	nowTimestamp := StrToTime()
+	assert.GreaterOrEqual(t, nowTimestamp, beforeNow)
+	assert.LessOrEqual(t, nowTimestamp, Timestamp())
 	assert.Equal(t, int64(0), StrToTime(""))
-	assert.Equal(t, Timestamp(), StrToTime("now"))
+	beforeNow = Timestamp()
+	nowTimestamp = StrToTime("now")
+	assert.GreaterOrEqual(t, nowTimestamp, beforeNow)
+	assert.LessOrEqual(t, nowTimestamp, Timestamp())
 	assert.Equal(t, date, Date(StrToTime(date)))
 
 	assert.Equal(t, "2015-04-06 00:00:00", Date(StrToTime("2015-04-06")))
@@ -136,6 +153,49 @@ func TestStrToTime(t *testing.T) {
 		result := Date(timeStamp)
 		fmt.Printf("%s -> %s\n", d, result)
 	}
+}
+
+func TestStrToTimeStandardLayouts(t *testing.T) {
+	tests := []struct {
+		name   string
+		input  string
+		layout string
+	}{
+		{
+			name:   "RFC1123Z with numeric timezone",
+			input:  "Thu, 26 May 2016 00:00:00 +0800",
+			layout: time.RFC1123Z,
+		},
+		{
+			name:   "RFC1123 with zone abbreviation",
+			input:  "Thu, 26 May 2016 00:00:00 GMT",
+			layout: time.RFC1123,
+		},
+		{
+			name:   "RFC822Z with numeric timezone",
+			input:  "26 May 16 00:00 +0800",
+			layout: time.RFC822Z,
+		},
+		{
+			name:   "RFC3339 with numeric timezone",
+			input:  "2022-01-24T14:19:02+02:00",
+			layout: time.RFC3339,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			expected, err := time.Parse(tt.layout, tt.input)
+			assert.NoError(t, err)
+			assert.Equal(t, expected.Unix(), StrToTime(tt.input))
+		})
+	}
+
+	issueInput := "Thu, 26 May 2016 00:00:00 +0800"
+	issueExpected, err := time.Parse(time.RFC1123Z, issueInput)
+	assert.NoError(t, err)
+	assert.Equal(t, int64(1464192000), StrToTime(issueInput))
+	assert.Equal(t, issueExpected.In(time.Local).Format(DatetimePattern), Date(StrToTime(issueInput)))
 }
 
 func BenchmarkStrToTime(b *testing.B) {

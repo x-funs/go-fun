@@ -14,6 +14,11 @@ import (
 // Parse takes an English string - such as "next Friday 3 pm" - and an int64 unix timestamp to compare it with.
 // It returns the translated English text into an int64 unix timestamp, or an error if the input cannot be recognized.
 func Parse(s string, relativeTo int64) (int64, error) {
+	// Match complete standard layouts first so weekday prefixes are not
+	// interpreted as relative weekday expressions.
+	if v, ok := parseKnownDateTime(s); ok {
+		return v, nil
+	}
 
 	if strings.Contains(s, "T") {
 
@@ -106,6 +111,34 @@ func Parse(s string, relativeTo int64) (int64, error) {
 			return 0, fmt.Errorf(`strtotime: Unrecognizable input: "%v"`, s)
 		}
 	}
+}
+
+func parseKnownDateTime(s string) (int64, bool) {
+	s = strings.TrimSpace(s)
+	if s == "" {
+		return 0, false
+	}
+
+	layouts := []string{
+		time.RFC3339Nano,
+		time.RFC3339,
+		time.RFC1123Z,
+		time.RFC1123,
+		time.RFC822Z,
+		time.RFC822,
+		time.RFC850,
+		time.RubyDate,
+		time.UnixDate,
+	}
+
+	for _, layout := range layouts {
+		t, err := time.Parse(layout, s)
+		if err == nil {
+			return t.Unix(), true
+		}
+	}
+
+	return 0, false
 }
 
 // processMeridian converts 12 hour format type to 24 hour format
